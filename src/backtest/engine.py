@@ -46,14 +46,16 @@ class WalkForwardBacktester:
         else:
             model = BaselineClassifier(model_type="xgboost")
 
+        # Import RETRAIN_EVERY_N_DAYS
+        from config import RETRAIN_EVERY_N_DAYS
+
         # Walk-Forward Simulation Loop
         for i in range(min_train_size, n_samples):
-            # Training context strictly up to day i-1
-            X_train = X.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
-            y_train = y.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
-
-            # Fit model on training context
-            model.fit(X_train, y_train)
+            # Retrain model only every N days or on first iteration
+            if (i - min_train_size) % RETRAIN_EVERY_N_DAYS == 0 or i == min_train_size:
+                X_train = X.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
+                y_train = y.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
+                model.fit(X_train, y_train)
 
             # Predict day i
             X_test = X.iloc[i:i+1]

@@ -9,10 +9,11 @@ from src.data.fetcher import MarketDataFetcher
 from src.data.news_fetcher import NewsFetcher
 from src.data.political_fetcher import PoliticalTradesFetcher
 from src.data.social_fetcher import SocialFetcher
+from src.data.sec_fetcher import SecFetcher
 
 class FeatureBuilder:
     """
-    Compiles multi-source features (Technicals, Macro, News, Political Trades, Social Sentiment)
+    Compiles multi-source features (Technicals, Macro, News, SEC Filings, Political Trades, Social Sentiment)
     and constructs forward-looking swing labels for TabFM training & walk-forward backtesting.
     """
     def __init__(self):
@@ -20,6 +21,7 @@ class FeatureBuilder:
         self.news_fetcher = NewsFetcher()
         self.pol_fetcher = PoliticalTradesFetcher()
         self.soc_fetcher = SocialFetcher()
+        self.sec_fetcher = SecFetcher()
 
     def build_dataset(self) -> pd.DataFrame:
         print("[FeatureBuilder] Building dataset from multi-source data feeds...")
@@ -38,15 +40,22 @@ class FeatureBuilder:
         news_df = self.news_fetcher.fetch_news_features(df.index)
         df = df.join(news_df, how='left')
 
-        # 5. Political Trade Features
+        # 5. Event-Driven News Catalyst & Lead-Lag Transformations
+        df = self._add_event_catalyst_features(df)
+
+        # 6. Official SEC EDGAR Filings & Disclosure Features
+        sec_df = self.sec_fetcher.fetch_sec_features(df.index)
+        df = df.join(sec_df, how='left')
+
+        # 7. Political Trade Features
         pol_df = self.pol_fetcher.fetch_political_features(df.index)
         df = df.join(pol_df, how='left')
 
-        # 6. Social Media Features
+        # 8. Social Media Features
         soc_df = self.soc_fetcher.fetch_social_features(df.index)
         df = df.join(soc_df, how='left')
 
-        # 7. Construct Forward Target Labels (strictly for training labels, not features!)
+        # 8. Construct Forward Target Labels (strictly for training labels, not features!)
         df = self._add_swing_targets(df)
 
         # Drop warm-up rows with NaN values in core indicators
@@ -112,6 +121,28 @@ class FeatureBuilder:
         if 'vix_close' in df.columns:
             df['vix_change_1d'] = df['vix_close'].pct_change(1)
 
+        return df
+
+    def _add_event_catalyst_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Transforms raw news sentiment into event-driven catalyst flags and lead-lag signals.
+        Filters out raw noise by isolating significant sentiment surges & news catalyst events.
+        """
+        if 'news_sentiment' in df.columns:
+            # 1. Sentiment anomaly / spike (|sentiment - 3d_ma| > 0.25)
+            diff_from_ma = (df['news_sentiment'] - df['news_sentiment_3d_ma']).abs()
+            df['news_sentiment_spike'] = (diff_from_ma > 0.25).astype(int)
+
+            # 2. News Catalyst Gate: Active when press release OR major news spike occurs
+            df['news_catalyst_gate'] = ((df['press_release_flag'] == 1) | (df['news_sentiment_spike'] == 1)).astype(int)
+
+            # 3. Lead-Lag Sentiment Signals (1-day & 2-day prior sentiment lead)
+            df['news_lead_1d'] = df['news_sentiment'].shift(1).fillna(0.0)
+            df['news_lead_2d'] = df['news_sentiment'].shift(2).fillna(0.0)
+
+            # 4. Tech + News Conviction Interaction (RSI divergence * catalyst gate)
+            rsi_norm = (df['rsi_14'] - 50.0) / 50.0
+            df['tech_news_conviction'] = rsi_norm * df['news_catalyst_gate']
         return df
 
     def _add_swing_targets(self, df: pd.DataFrame) -> pd.DataFrame:

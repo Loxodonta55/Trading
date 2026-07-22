@@ -34,8 +34,9 @@ def run_main_pipeline():
 
     best_df = exp_dfs[best_exp_name]
 
-    # Save Predictions (Outputs) and Backtest Run Summaries to DB
-    db.save_predictions(best_df, model_name=f"TabFM_{best_exp_name}", ticker="TSLA")
+    # Save Predictions (Outputs) for all experiments and Backtest Run Summaries to DB
+    for exp_name, exp_df in exp_dfs.items():
+        db.save_predictions(exp_df, model_name=f"TabFM_{exp_name}", ticker="TSLA")
     db.save_backtest_run(summary_df.to_dict(orient="records"))
 
     # Clean summary dataframe from NaN

@@ -137,8 +137,10 @@ class DatabaseManager:
     def save_backtest_run(self, summary_records: list):
         """Save summary ablation results for a pipeline run."""
         summary_df = pd.DataFrame(summary_records)
+        if 'experiment' in summary_df.columns:
+            summary_df.rename(columns={'experiment': 'experiment_name'}, inplace=True)
         with self._get_connection() as conn:
-            summary_df.to_sql('backtest_runs', conn, if_exists='append', index=False)
+            summary_df.to_sql('backtest_runs', conn, if_exists='replace', index=False)
             print(f"[DatabaseManager] Saved {len(summary_df)} backtest run summaries to DB.")
 
     def load_features(self, ticker: str = "TSLA") -> pd.DataFrame:

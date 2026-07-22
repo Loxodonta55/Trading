@@ -29,12 +29,12 @@ class TabFMWrapper:
         except Exception as e:
             print(f"[TabFMWrapper] TabFM native load info/fallback: {e}")
             print("[TabFMWrapper] Using Gradient Boosted In-Context Classifier for Tabular Zero-Shot baseline...")
-            from sklearn.ensemble import HistGradientBoostingClassifier
-            self.fallback_model = HistGradientBoostingClassifier(
-                max_iter=100,
-                max_depth=4,
-                learning_rate=0.05,
-                random_state=42
+            from sklearn.ensemble import RandomForestClassifier
+            self.fallback_model = RandomForestClassifier(
+                n_estimators=30,
+                max_depth=6,
+                random_state=42,
+                n_jobs=1
             )
 
     def fit(self, X: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]):

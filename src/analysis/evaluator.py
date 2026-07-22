@@ -30,15 +30,16 @@ class SensitivityEvaluator:
         
         macro_cols = [c for c in ['spy_return_1d', 'tsla_vs_spy_rel_strength', 'vix_change_1d'] if c in df.columns]
         news_cols = [c for c in ['news_sentiment', 'press_release_flag', 'news_volume', 'news_sentiment_3d_ma'] if c in df.columns]
+        news_event_cols = [c for c in ['news_catalyst_gate', 'news_lead_1d', 'news_lead_2d', 'tech_news_conviction'] if c in df.columns]
         pol_cols = [c for c in ['political_trade_signal', 'political_net_buy_10d', 'political_disclosure_flag'] if c in df.columns]
         soc_cols = [c for c in ['x_sentiment_score', 'x_post_volume_ratio', 'x_hype_spike', 'x_sentiment_5d_mom'] if c in df.columns]
 
         experiments = {
             "1. Technicals Only": tech_cols,
             "2. Technicals + Market Macro": tech_cols + macro_cols,
-            "3. Tech + Macro + News Sentiment": tech_cols + macro_cols + news_cols,
+            "3. Tech + Macro + Event News Catalyst": tech_cols + macro_cols + news_event_cols,
             "4. Tech + Macro + News + Political Trades": tech_cols + macro_cols + news_cols + pol_cols,
-            "5. Full Multi-Source (All Signals)": tech_cols + macro_cols + news_cols + pol_cols + soc_cols
+            "5. Full Multi-Source (Event Catalyst & Lead Signals)": tech_cols + macro_cols + news_event_cols + pol_cols + soc_cols
         }
 
         results_summary = []
