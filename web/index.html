@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TabFM Stock Swing Prediction Platform | Tesla (TSLA)</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-badge">TabFM</div>
+                <div>
+                    <h1>Tesla (TSLA) Swing Predictor</h1>
+                    <p class="subtitle">Multi-Source Zero-Shot Backward Testing Engine (2025–2026)</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <span class="status-chip live"><span class="pulse"></span> 2025+ Data Active</span>
+                <button id="run-pipeline-btn" class="btn primary btn-run">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">Berechnung neu starten</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Notification / Toast Container -->
+        <div id="toast-banner" class="toast-banner hidden"></div>
+
+        <!-- Top Metric Summary Cards -->
+        <section class="metrics-grid">
+            <div class="card metric-card">
+                <div class="metric-label">TabFM Total Return</div>
+                <div class="metric-value positive" id="metric-return">+0.0%</div>
+                <div class="metric-sub" id="metric-vs-buyhold">vs Buy & Hold: +0.0%</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Win Rate</div>
+                <div class="metric-value" id="metric-winrate">0.0%</div>
+                <div class="metric-sub" id="metric-trades">0 Trades executed</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Sharpe Ratio</div>
+                <div class="metric-value" id="metric-sharpe">0.00</div>
+                <div class="metric-sub">Annualized risk-adj return</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Profit Factor</div>
+                <div class="metric-value" id="metric-profit-factor">0.00</div>
+                <div class="metric-sub">Gross Win / Gross Loss</div>
+            </div>
+            <div class="card metric-card">
+                <div class="metric-label">Max Drawdown</div>
+                <div class="metric-value negative" id="metric-drawdown">-0.0%</div>
+                <div class="metric-sub">Peak-to-trough risk</div>
+            </div>
+        </section>
+
+        <!-- Main Workspace -->
+        <main class="dashboard-grid">
+            <!-- Left Panel: Charts -->
+            <section class="chart-panel card">
+                <div class="panel-header">
+                    <h2>TSLA Price & TabFM Prediction Equity Curve</h2>
+                    <div class="tab-controls">
+                        <button class="tab-btn active" data-tab="equity">Equity Curve</button>
+                        <button class="tab-btn" data-tab="price">Price & Swing Signals</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Right Panel: Multi-Source Feature Ablation Table -->
+            <section class="ablation-panel card">
+                <div class="panel-header">
+                    <h2>Multi-Source Feature Sensitivity</h2>
+                    <span class="badge info">Ablation Study</span>
+                </div>
+                <p class="panel-desc">Feature Channels: Technicals, Market Macro (SPY/QQQ/VIX), Press Releases/News, US Political Trades, Social (X) Sentiment.</p>
+                <div class="table-responsive">
+                    <table class="ablation-table">
+                        <thead>
+                            <tr>
+                                <th>Feature Strategy</th>
+                                <th>Features</th>
+                                <th>Sharpe</th>
+                                <th>Win Rate</th>
+                                <th>Return</th>
+                                <th>Max DD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ablation-table-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Section: Daily Signal Log Feed -->
+        <section class="signals-section card">
+            <div class="panel-header">
+                <h2>Daily Swing Prediction Log & Multi-Source Signals</h2>
+                <div class="filter-controls">
+                    <span class="filter-tag active" data-filter="all">Alle Tage</span>
+                    <span class="filter-tag" data-filter="signals">Nur Signale</span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="signals-table">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>TSLA Close</th>
+                            <th>Target</th>
+                            <th>TabFM Signal</th>
+                            <th>P(Up Swing)</th>
+                            <th>P(Down Swing)</th>
+                            <th>News Sentiment</th>
+                            <th>US Politic Trade</th>
+                            <th>X Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="signals-table-body">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
