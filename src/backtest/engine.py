@@ -43,8 +43,14 @@ class WalkForwardBacktester:
         # Select model instance
         if model_name.lower() == "tabfm":
             model = TabFMWrapper()
+        elif "logistic" in model_name.lower():
+            model = BaselineClassifier(model_type="logistic")
+        elif "tree" in model_name.lower():
+            model = BaselineClassifier(model_type="decision_tree")
+        elif "forest" in model_name.lower():
+            model = BaselineClassifier(model_type="random_forest")
         else:
-            model = BaselineClassifier(model_type="xgboost")
+            model = BaselineClassifier(model_type="gbm")
 
         # Import RETRAIN_EVERY_N_DAYS
         from config import RETRAIN_EVERY_N_DAYS
@@ -79,10 +85,20 @@ class WalkForwardBacktester:
         results_df['prob_up'] = probs_up
         results_df['prob_down'] = probs_down
 
-        # Calculate Trading Returns
+        # Calculate Trading Returns & IBKR Transaction Costs
         results_df['daily_return'] = results_df['close'].pct_change(1).fillna(0.0)
-        # Strategy Return (shifted by 1 day to represent execution at next day's close/open)
-        results_df['strategy_return'] = (results_df['signal'].shift(1) * results_df['daily_return']).fillna(0.0)
+        
+        # Detect Trade Execution Events (Entry, Reversal, Exit)
+        trade_executions = (results_df['signal'].diff() != 0) & (results_df['signal'] != 0)
+        
+        # Interactive Brokers Fee Structure (IBKR Pro Fixed/Tiered: $1.00 min order fee + 3 bps slippage = ~0.05% per order side)
+        ibkr_cost_per_order = 0.0005 
+        
+        gross_strategy_return = (results_df['signal'].shift(1) * results_df['daily_return']).fillna(0.0)
+        # Subtract transaction cost on execution days
+        net_strategy_return = gross_strategy_return - (trade_executions.astype(float) * ibkr_cost_per_order)
+        
+        results_df['strategy_return'] = net_strategy_return
         results_df['equity_curve'] = (1.0 + results_df['strategy_return']).cumprod().fillna(1.0)
         results_df['buy_hold_equity'] = (1.0 + results_df['daily_return']).cumprod().fillna(1.0)
 

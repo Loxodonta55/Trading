@@ -10,10 +10,12 @@ from src.data.news_fetcher import NewsFetcher
 from src.data.political_fetcher import PoliticalTradesFetcher
 from src.data.social_fetcher import SocialFetcher
 from src.data.sec_fetcher import SecFetcher
+from src.data.options_fetcher import OptionsFetcher
+from src.data.sec_text_processor import SecTextProcessor
 
 class FeatureBuilder:
     """
-    Compiles multi-source features (Technicals, Macro, News, SEC Filings, Political Trades, Social Sentiment)
+    Compiles multi-source features (Technicals, Macro, News, SEC Filings, SEC Unstructured Text, Options Chain, Social Sentiment)
     and constructs forward-looking swing labels for TabFM training & walk-forward backtesting.
     """
     def __init__(self):
@@ -22,6 +24,8 @@ class FeatureBuilder:
         self.pol_fetcher = PoliticalTradesFetcher()
         self.soc_fetcher = SocialFetcher()
         self.sec_fetcher = SecFetcher()
+        self.sec_text_processor = SecTextProcessor()
+        self.opt_fetcher = OptionsFetcher()
 
     def build_dataset(self) -> pd.DataFrame:
         print("[FeatureBuilder] Building dataset from multi-source data feeds...")
@@ -43,15 +47,23 @@ class FeatureBuilder:
         # 5. Event-Driven News Catalyst & Lead-Lag Transformations
         df = self._add_event_catalyst_features(df)
 
-        # 6. Official SEC EDGAR Filings & Disclosure Features
+        # 6. Official SEC EDGAR Filings & Structured Features
         sec_df = self.sec_fetcher.fetch_sec_features(df.index)
         df = df.join(sec_df, how='left')
 
-        # 7. Political Trade Features
+        # 7. Unstructured SEC Document NLP Text Features (Risk Drift & MD&A Sentiment)
+        sec_text_df = self.sec_text_processor.fetch_sec_text_features(df.index)
+        df = df.join(sec_text_df, how='left')
+
+        # 8. Institutional Options Market & Put/Call Sentiment Features
+        opt_df = self.opt_fetcher.fetch_options_features(df.index)
+        df = df.join(opt_df, how='left')
+
+        # 9. Political Trade Features
         pol_df = self.pol_fetcher.fetch_political_features(df.index)
         df = df.join(pol_df, how='left')
 
-        # 8. Social Media Features
+        # 10. Social Media Features
         soc_df = self.soc_fetcher.fetch_social_features(df.index)
         df = df.join(soc_df, how='left')
 
@@ -112,6 +124,28 @@ class FeatureBuilder:
 
         # Volume ratio
         df['volume_ratio_5d'] = df['volume'] / (df['volume'].rolling(5).mean() + 1e-9)
+
+        # 1. On-Balance Volume (OBV) & 10-day OBV Momentum
+        obv_direction = np.sign(df['close'].diff().fillna(0))
+        obv = (obv_direction * df['volume']).cumsum()
+        df['obv_10d_pct'] = obv.pct_change(10).fillna(0)
+
+        # 2. Money Flow Index (MFI 14)
+        typical_price = (df['high'] + df['low'] + df['close']) / 3.0
+        money_flow = typical_price * df['volume']
+        pos_flow = money_flow.where(typical_price > typical_price.shift(1), 0).rolling(14).sum()
+        neg_flow = money_flow.where(typical_price < typical_price.shift(1), 0).rolling(14).sum()
+        mfi = 100.0 - (100.0 / (1.0 + (pos_flow / (neg_flow + 1e-9))))
+        df['mfi_14'] = mfi.fillna(50.0)
+
+        # 3. 5-Day VWAP Ratio
+        vwap_5d = (df['close'] * df['volume']).rolling(5).sum() / (df['volume'].rolling(5).sum() + 1e-9)
+        df['vwap_ratio_5d'] = (df['close'] / vwap_5d) - 1.0
+
+        # 4. Multi-Timeframe Trend Alignment (+1 Bullish, -1 Bearish, 0 Neutral)
+        bullish_align = (df['ema_9_ratio'] > 0) & (df['ema_21_ratio'] > 0) & (df['return_10d'] > 0)
+        bearish_align = (df['ema_9_ratio'] < 0) & (df['ema_21_ratio'] < 0) & (df['return_10d'] < 0)
+        df['multi_timeframe_trend'] = np.where(bullish_align, 1, np.where(bearish_align, -1, 0))
 
         # Macro relative metrics
         if 'spy_close' in df.columns:

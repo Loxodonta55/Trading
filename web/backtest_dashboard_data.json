@@ -1,57 +1,57 @@
 {
   "summary": [
     {
-      "experiment": "1. Technicals Only",
-      "num_features": 14,
-      "sharpe_ratio": 0.24550136491152724,
-      "win_rate": 52.42290748898678,
-      "total_return": 1.4157102146397982,
-      "profit_factor": 1.048590600161388,
-      "max_drawdown": -41.696158776477006,
-      "n_trades": 227
+      "experiment": "1. Logistic Regression (Old School Linear)",
+      "num_features": 35,
+      "sharpe_ratio": 0.917667779365031,
+      "win_rate": 55.154639175257735,
+      "total_return": 42.721808036790065,
+      "profit_factor": 1.2147132010518205,
+      "max_drawdown": -30.25270373554867,
+      "n_trades": 194
     },
     {
-      "experiment": "2. Technicals + Market Macro",
-      "num_features": 17,
-      "sharpe_ratio": 0.3772948602300654,
-      "win_rate": 52.58620689655172,
-      "total_return": 8.974988935442575,
-      "profit_factor": 1.0752713563637795,
-      "max_drawdown": -36.48895588422427,
-      "n_trades": 232
+      "experiment": "2. Decision Tree (Old School Tree)",
+      "num_features": 35,
+      "sharpe_ratio": 1.5121425722574744,
+      "win_rate": 53.47826086956522,
+      "total_return": 97.81616192647627,
+      "profit_factor": 1.3436836083950643,
+      "max_drawdown": -24.423379345027165,
+      "n_trades": 230
     },
     {
-      "experiment": "3. Tech + Macro + Event News Catalyst",
-      "num_features": 21,
-      "sharpe_ratio": 0.10467888595642415,
-      "win_rate": 53.50877192982456,
-      "total_return": -6.231568664606946,
-      "profit_factor": 1.0204370215044625,
-      "max_drawdown": -42.30181668426705,
-      "n_trades": 228
+      "experiment": "3. Random Forest (Classic Ensemble)",
+      "num_features": 35,
+      "sharpe_ratio": 1.3196511809850433,
+      "win_rate": 56.060606060606055,
+      "total_return": 60.54156655706366,
+      "profit_factor": 1.3906734448368376,
+      "max_drawdown": -22.37099650540352,
+      "n_trades": 132
     },
     {
-      "experiment": "4. Tech + Macro + News + Political Trades",
-      "num_features": 24,
-      "sharpe_ratio": 0.8660222090700274,
-      "win_rate": 53.246753246753244,
-      "total_return": 42.694317619942844,
-      "profit_factor": 1.1803667646590827,
-      "max_drawdown": -40.491635685997736,
-      "n_trades": 231
+      "experiment": "4. Gradient Boosted Trees (XGBoost Baseline)",
+      "num_features": 35,
+      "sharpe_ratio": 1.2823240066670876,
+      "win_rate": 54.146341463414636,
+      "total_return": 75.9326794512688,
+      "profit_factor": 1.2972978721662056,
+      "max_drawdown": -29.908157505520595,
+      "n_trades": 205
     },
     {
-      "experiment": "5. Full Multi-Source (Event Catalyst & Lead Signals)",
-      "num_features": 28,
-      "sharpe_ratio": -0.08884443347773957,
-      "win_rate": 51.78571428571429,
-      "total_return": -15.253908366246073,
-      "profit_factor": 0.9828323169887896,
-      "max_drawdown": -47.4776108487779,
-      "n_trades": 224
+      "experiment": "5. Google TabFM (Tabular Foundation Model)",
+      "num_features": 35,
+      "sharpe_ratio": 1.5140728502874565,
+      "win_rate": 51.42857142857142,
+      "total_return": 76.32984964552875,
+      "profit_factor": 1.4681928032946712,
+      "max_drawdown": -24.923485864351626,
+      "n_trades": 140
     }
   ],
-  "best_experiment": "4. Tech + Macro + News + Political Trades",
+  "best_experiment": "5. Google TabFM (Tabular Foundation Model)",
   "tsla_chart_data": [
     {
       "date": "2025-01-23",
@@ -1145,9 +1145,9 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.52131199844601,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.7407495981218057,
-      "prob_down": 0.25925040187819426,
+      "signal": -1,
+      "prob_up": 0.3333333333333333,
+      "prob_down": 0.6666666666666666,
       "equity_curve": 1.0,
       "buy_hold_equity": 0.5516756324416104
     },
@@ -1164,9 +1164,9 @@
       "x_sentiment_score": -0.6178688101944737,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.1672460865600564,
-      "prob_down": 0.8327539134399435,
-      "equity_curve": 1.046021983387706,
+      "prob_up": 0.2,
+      "prob_down": 0.8,
+      "equity_curve": 0.953978016612294,
       "buy_hold_equity": 0.5770648392332405
     },
     {
@@ -1182,9 +1182,9 @@
       "x_sentiment_score": -0.335146159759116,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.09028219360042475,
-      "prob_down": 0.9097178063995752,
-      "equity_curve": 0.9898900964757898,
+      "prob_up": 0.2,
+      "prob_down": 0.8,
+      "equity_curve": 0.902785415505088,
       "buy_hold_equity": 0.6080314334455128
     },
     {
@@ -1200,9 +1200,9 @@
       "x_sentiment_score": -0.2509602852009693,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.07397577481485659,
-      "prob_down": 0.9260242251851434,
-      "equity_curve": 0.9552672194511018,
+      "prob_up": 0.2,
+      "prob_down": 0.8,
+      "equity_curve": 0.8712091541281978,
       "buy_hold_equity": 0.6292982363181524
     },
     {
@@ -1218,9 +1218,9 @@
       "x_sentiment_score": -0.6873837956706267,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.10115621360069839,
-      "prob_down": 0.8988437863993016,
-      "equity_curve": 0.8616215045248081,
+      "prob_up": 0.13333333333333333,
+      "prob_down": 0.8666666666666667,
+      "equity_curve": 0.7858037278480565,
       "buy_hold_equity": 0.6909889151584993
     },
     {
@@ -1235,10 +1235,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.5727569083245911,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.6336781208716822,
-      "prob_down": 0.36398010148081994,
-      "equity_curve": 0.8588094264262767,
+      "signal": -1,
+      "prob_up": 0.13333333333333333,
+      "prob_down": 0.6,
+      "equity_curve": 0.783239096578733,
       "buy_hold_equity": 0.6932440988841154
     },
     {
@@ -1254,9 +1254,9 @@
       "x_sentiment_score": -0.3585823167444061,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.06060494974562552,
-      "prob_down": 0.9360399338905998,
-      "equity_curve": 0.8772845650877927,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.6,
+      "equity_curve": 0.7663896647151031,
       "buy_hold_equity": 0.7081575132680937
     },
     {
@@ -1272,9 +1272,9 @@
       "x_sentiment_score": -0.425297674880655,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.044206295406091015,
-      "prob_down": 0.9544834031495125,
-      "equity_curve": 0.9069349243316881,
+      "prob_up": 0.1,
+      "prob_down": 0.8666666666666667,
+      "equity_curve": 0.792292011324082,
       "buy_hold_equity": 0.6842232899781157
     },
     {
@@ -1290,9 +1290,9 @@
       "x_sentiment_score": -0.6195977213983975,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.018330906894659604,
-      "prob_down": 0.9815172955607085,
-      "equity_curve": 0.9122063538106326,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.8333333333333334,
+      "equity_curve": 0.7968970952748448,
       "buy_hold_equity": 0.6802463400071694
     },
     {
@@ -1308,9 +1308,9 @@
       "x_sentiment_score": -0.4623205823676734,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.015098944710129373,
-      "prob_down": 0.9829785160573474,
-      "equity_curve": 0.8904515307211379,
+      "prob_up": 0.1,
+      "prob_down": 0.8333333333333334,
+      "equity_curve": 0.7778922338684141,
       "buy_hold_equity": 0.696469246942988
     },
     {
@@ -1325,10 +1325,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3491729268653996,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.07337617887484518,
-      "prob_down": 0.8520885777955004,
-      "equity_curve": 0.911998907267839,
+      "signal": 0,
+      "prob_up": 0.4360752688172043,
+      "prob_down": 0.3889247311827957,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.6796159038924972
     },
     {
@@ -1343,10 +1343,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.6315039693124906,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.16383512560374308,
-      "prob_down": 0.7995281248065379,
-      "equity_curve": 0.9279766344443621,
+      "signal": 0,
+      "prob_up": 0.5110752688172043,
+      "prob_down": 0.34725806451612906,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.6677094011426739
     },
     {
@@ -1361,10 +1361,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.41385894550991936,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.34970941881393086,
-      "prob_down": 0.530771828384306,
-      "equity_curve": 0.9250446020385695,
+      "signal": 0,
+      "prob_up": 0.4110752688172043,
+      "prob_down": 0.3805913978494624,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.6698190939184784
     },
     {
@@ -1379,10 +1379,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3285233810656818,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.25657198533274234,
-      "prob_down": 0.7254398047425822,
-      "equity_curve": 0.8962436854199377,
+      "signal": 0,
+      "prob_up": 0.4110752688172043,
+      "prob_down": 0.3139247311827957,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.6906736600993957
     },
     {
@@ -1397,10 +1397,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.4728914463825764,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.19432256647277468,
-      "prob_down": 0.7749858267895678,
-      "equity_curve": 0.8539520029173557,
+      "signal": 0,
+      "prob_up": 0.3110752688172043,
+      "prob_down": 0.3805913978494624,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.7232649649208445
     },
     {
@@ -1416,9 +1416,9 @@
       "x_sentiment_score": -0.5772987096780213,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.47491296639799563,
-      "prob_down": 0.3903896835870535,
-      "equity_curve": 0.79634619065137,
+      "prob_up": 0.5,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.7720549035186314
     },
     {
@@ -1433,10 +1433,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3876693058973229,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.429667212508356,
-      "prob_down": 0.5374399650544803,
-      "equity_curve": 0.79634619065137,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.36666666666666664,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.8101023409686235
     },
     {
@@ -1452,9 +1452,9 @@
       "x_sentiment_score": -0.5389963136324174,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.3727996988040381,
-      "prob_down": 0.4663084621418875,
-      "equity_curve": 0.7639031106025254,
+      "prob_up": 0.5,
+      "prob_down": 0.3,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.8431058454800271
     },
     {
@@ -1469,10 +1469,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.10355064366499611,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.4553825637048441,
-      "prob_down": 0.5307215007878662,
-      "equity_curve": 0.7639031106025254,
+      "signal": 1,
+      "prob_up": 0.5666666666666667,
+      "prob_down": 0.3,
+      "equity_curve": 0.796715871424905,
       "buy_hold_equity": 0.8313206345240701
     },
     {
@@ -1487,10 +1487,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.6062583198338546,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.49073962668851867,
-      "prob_down": 0.4545120722715489,
-      "equity_curve": 0.747948531078122,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.3,
+      "equity_curve": 0.8133557653493806,
       "buy_hold_equity": 0.8486832699024368
     },
     {
@@ -1505,10 +1505,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.39856292604040044,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.639094521510757,
-      "prob_down": 0.2144811170563566,
-      "equity_curve": 0.747948531078122,
+      "signal": 0,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.3111111111111111,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.8295503959633145
     },
     {
@@ -1523,10 +1523,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": -0.22843923248056142,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.7933643748794128,
-      "prob_down": 0.19495103617086565,
-      "equity_curve": 0.7517310420834864,
+      "signal": 0,
+      "prob_up": 0.26666666666666666,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.8337455823589782
     },
     {
@@ -1541,10 +1541,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.49582004891860354,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.8512976975730663,
-      "prob_down": 0.12903969768169532,
-      "equity_curve": 0.7316160557061789,
+      "signal": 0,
+      "prob_up": 0.5333333333333333,
+      "prob_down": 0.3,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.811436032676409
     },
     {
@@ -1559,10 +1559,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.6025076185229239,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.8525674310319603,
-      "prob_down": 0.12946419121379918,
-      "equity_curve": 0.7456528286728834,
+      "signal": 0,
+      "prob_up": 0.5333333333333333,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.8270042303380748
     },
     {
@@ -1577,10 +1577,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.5729853914072651,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.8474411314277224,
-      "prob_down": 0.13512616010212128,
-      "equity_curve": 0.7419359072584145,
+      "signal": 0,
+      "prob_up": 0.4,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.8228817894173169
     },
     {
@@ -1596,9 +1596,9 @@
       "x_sentiment_score": -0.5231378471347146,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.8410897772093241,
-      "prob_down": 0.07825218604539877,
-      "equity_curve": 0.7934258712760657,
+      "prob_up": 0.7803703703703703,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 0.7950193212624399,
       "buy_hold_equity": 0.8799893553315256
     },
     {
@@ -1614,9 +1614,9 @@
       "x_sentiment_score": -0.46566747466795844,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.8650725590277566,
-      "prob_down": 0.11470120457999972,
-      "equity_curve": 0.780329238020162,
+      "prob_up": 0.7970370370370369,
+      "prob_down": 0.1,
+      "equity_curve": 0.7818963858265359,
       "buy_hold_equity": 0.8654638674780217
     },
     {
@@ -1632,9 +1632,9 @@
       "x_sentiment_score": -0.358041705390615,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7314174730215649,
-      "prob_down": 0.17654344113868897,
-      "equity_curve": 0.7836744406036251,
+      "prob_up": 0.8637037037037036,
+      "prob_down": 0.1,
+      "equity_curve": 0.7852483066343524,
       "buy_hold_equity": 0.8691740347052899
     },
     {
@@ -1650,9 +1650,9 @@
       "x_sentiment_score": -0.34228205716377913,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.9591436232088087,
-      "prob_down": 0.03464833702592483,
-      "equity_curve": 0.757503126253979,
+      "prob_up": 0.9081481481481481,
+      "prob_down": 0.05555555555555555,
+      "equity_curve": 0.7590244320115874,
       "buy_hold_equity": 0.8401474061612976
     },
     {
@@ -1668,9 +1668,9 @@
       "x_sentiment_score": -0.24057082334984498,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.9445926333825923,
-      "prob_down": 0.04477596750183024,
-      "equity_curve": 0.7492603896199285,
+      "prob_up": 0.7766666666666667,
+      "prob_down": 0.18888888888888886,
+      "equity_curve": 0.7507651413564838,
       "buy_hold_equity": 0.8310053794649663
     },
     {
@@ -1685,10 +1685,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.2591563531477583,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.8976068344491651,
-      "prob_down": 0.0995290581189549,
-      "equity_curve": 0.7527148859469184,
+      "signal": 0,
+      "prob_up": 0.4375,
+      "prob_down": 0.4625,
+      "equity_curve": 0.7542265754042167,
       "buy_hold_equity": 0.8348367644825658
     },
     {
@@ -1703,10 +1703,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.5565088702172185,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.8859613097352343,
-      "prob_down": 0.10986165851186697,
-      "equity_curve": 0.7259969694318443,
+      "signal": -1,
+      "prob_up": 0.3375,
+      "prob_down": 0.6625,
+      "equity_curve": 0.7542265754042167,
       "buy_hold_equity": 0.8052038989798465
     },
     {
@@ -1722,9 +1722,9 @@
       "x_sentiment_score": -0.13042299994776455,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9266528174669344,
-      "prob_down": 0.0720086251901972,
-      "equity_curve": 0.6224705726789084,
+      "prob_up": 0.6,
+      "prob_down": 0.4,
+      "equity_curve": 0.8617784839858894,
       "buy_hold_equity": 0.6903826781997723
     },
     {
@@ -1740,9 +1740,9 @@
       "x_sentiment_score": -0.3896547605288695,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9440104897531122,
-      "prob_down": 0.05122355366625199,
-      "equity_curve": 0.6452966844450914,
+      "prob_up": 0.6819444444444446,
+      "prob_down": 0.31805555555555554,
+      "equity_curve": 0.8933800614042338,
       "buy_hold_equity": 0.7156991395164964
     },
     {
@@ -1758,9 +1758,9 @@
       "x_sentiment_score": -0.5125760464979536,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8442975951968595,
-      "prob_down": 0.15414763712831325,
-      "equity_curve": 0.6746819554725125,
+      "prob_up": 0.5708333333333333,
+      "prob_down": 0.42916666666666664,
+      "equity_curve": 0.9340624573744418,
       "buy_hold_equity": 0.7482903703344101
     },
     {
@@ -1775,10 +1775,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.19099460088963136,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.6040425997304445,
-      "prob_down": 0.3933065970140384,
-      "equity_curve": 0.7129659924907332,
+      "signal": 0,
+      "prob_up": 0.5453533026113672,
+      "prob_down": 0.4201228878648234,
+      "equity_curve": 0.9870647370491799,
       "buy_hold_equity": 0.7907512306047835
     },
     {
@@ -1794,9 +1794,9 @@
       "x_sentiment_score": -0.255992517791107,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.5559160772828817,
-      "prob_down": 0.4414427850571224,
-      "equity_curve": 0.7137093634288476,
+      "prob_up": 0.5655913978494624,
+      "prob_down": 0.3344086021505376,
+      "equity_curve": 0.9870647370491799,
       "buy_hold_equity": 0.7915757039882281
     },
     {
@@ -1812,9 +1812,9 @@
       "x_sentiment_score": -0.3099264318545916,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.45575294779424075,
-      "prob_down": 0.5291873289931213,
-      "equity_curve": 0.6977048360113819,
+      "prob_up": 0.3333333333333333,
+      "prob_down": 0.6,
+      "equity_curve": 0.9649303705179327,
       "buy_hold_equity": 0.7738250680758518
     },
     {
@@ -1830,9 +1830,9 @@
       "x_sentiment_score": -0.2750203116817316,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.7220028393138359,
-      "prob_down": 0.27066575435699514,
-      "equity_curve": 0.6841490756192099,
+      "prob_up": 0.65,
+      "prob_down": 0.2833333333333333,
+      "equity_curve": 0.9461826648654276,
       "buy_hold_equity": 0.7888597742536965
     },
     {
@@ -1847,10 +1847,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.04362073345658618,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.4455636180025047,
-      "prob_down": 0.5468752107124522,
-      "equity_curve": 0.6921828111309878,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.4666666666666667,
+      "equity_curve": 0.9572933738413597,
       "buy_hold_equity": 0.798123092743894
     },
     {
@@ -1866,9 +1866,9 @@
       "x_sentiment_score": -0.1663231804309816,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8524412320062523,
-      "prob_down": 0.1198137642459452,
-      "equity_curve": 0.7190600187695134,
+      "prob_up": 0.7597222222222222,
+      "prob_down": 0.20138888888888887,
+      "equity_curve": 0.9572933738413597,
       "buy_hold_equity": 0.767132262373909
     },
     {
@@ -1884,9 +1884,9 @@
       "x_sentiment_score": -0.17071316204674808,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.7535395503724448,
-      "prob_down": 0.12687904440739545,
-      "equity_curve": 0.732016013274103,
+      "prob_up": 0.6979411764705882,
+      "prob_down": 0.15029411764705883,
+      "equity_curve": 0.9745418473582056,
       "buy_hold_equity": 0.7809544206307645
     },
     {
@@ -1902,9 +1902,9 @@
       "x_sentiment_score": -0.09350420799761372,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.5603584187916006,
-      "prob_down": 0.3163627440792647,
-      "equity_curve": 0.732266078111792,
+      "prob_up": 0.5979411764705882,
+      "prob_down": 0.1669607843137255,
+      "equity_curve": 0.9748747617268282,
       "buy_hold_equity": 0.7812212033744426
     },
     {
@@ -1920,9 +1920,9 @@
       "x_sentiment_score": -0.30330248087280715,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.21323655975323205,
-      "prob_down": 0.39436723188363304,
-      "equity_curve": 0.7925457159496946,
+      "prob_up": 0.245,
+      "prob_down": 0.5455555555555556,
+      "equity_curve": 1.0551257788512802,
       "buy_hold_equity": 0.8455307933149349
     },
     {
@@ -1938,9 +1938,9 @@
       "x_sentiment_score": -0.07609739853915921,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.15510813489636546,
-      "prob_down": 0.5700854653018659,
-      "equity_curve": 0.7925457159496946,
+      "prob_up": 0.19777777777777777,
+      "prob_down": 0.5677777777777777,
+      "equity_curve": 1.0551257788512802,
       "buy_hold_equity": 0.8256219923113286
     },
     {
@@ -1956,9 +1956,9 @@
       "x_sentiment_score": -0.10624921693393866,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4367047176664544,
-      "prob_down": 0.2952764279563463,
-      "equity_curve": 0.8226209098153818,
+      "prob_up": 0.44166666666666665,
+      "prob_down": 0.49166666666666664,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7942916337227596
     },
     {
@@ -1973,10 +1973,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.07178644788194398,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.2694613625575031,
-      "prob_down": 0.6893658855030795,
-      "equity_curve": 0.8226209098153818,
+      "signal": 0,
+      "prob_up": 0.3,
+      "prob_down": 0.5,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7899995026962447
     },
     {
@@ -1991,10 +1991,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.014141943606377626,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.3197637722908461,
-      "prob_down": 0.6137772752758076,
-      "equity_curve": 0.828049818716636,
+      "signal": 0,
+      "prob_up": 0.5,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7847858796518992
     },
     {
@@ -2009,10 +2009,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.27294651033856543,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.7174742706150482,
-      "prob_down": 0.25569854988667934,
-      "equity_curve": 0.8433248499373394,
+      "signal": 0,
+      "prob_up": 0.5,
+      "prob_down": 0.3,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7703089381173559
     },
     {
@@ -2027,10 +2027,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.09667640180634461,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.742051672547597,
-      "prob_down": 0.25204555399919915,
-      "equity_curve": 0.7983259003178103,
+      "signal": 0,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.43333333333333335,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7292060427142483
     },
     {
@@ -2045,10 +2045,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.05502066234034587,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.8665772503114773,
-      "prob_down": 0.12948357281399858,
-      "equity_curve": 0.8379886692270624,
+      "signal": 0,
+      "prob_up": 0.425,
+      "prob_down": 0.5416666666666666,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7654347692880593
     },
     {
@@ -2063,10 +2063,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.04747253766229443,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5667940797932233,
-      "prob_down": 0.4227874919509862,
-      "equity_curve": 0.8371922606217238,
+      "signal": 0,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.5,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7647073145390009
     },
     {
@@ -2082,9 +2082,9 @@
       "x_sentiment_score": -0.10060108974890414,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9394560177577314,
-      "prob_down": 0.048754771273171106,
-      "equity_curve": 0.7803529106332003,
+      "prob_up": 0.825,
+      "prob_down": 0.14166666666666666,
+      "equity_curve": 1.095165251291821,
       "buy_hold_equity": 0.7127891725131926
     },
     {
@@ -2100,9 +2100,9 @@
       "x_sentiment_score": -0.05755518443885774,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9134442150105256,
-      "prob_down": 0.08287217863463363,
-      "equity_curve": 0.7906269867329156,
+      "prob_up": 0.725,
+      "prob_down": 0.20833333333333334,
+      "equity_curve": 1.1095841263677222,
       "buy_hold_equity": 0.7221737087937216
     },
     {
@@ -2117,10 +2117,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.37094026981831657,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5802286651741452,
-      "prob_down": 0.4081256833911898,
-      "equity_curve": 0.7855032356628419,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.36666666666666664,
+      "equity_curve": 1.1023933360832843,
       "buy_hold_equity": 0.7174935772331972
     },
     {
@@ -2136,9 +2136,9 @@
       "x_sentiment_score": 0.20621273581929273,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.34358794726645847,
-      "prob_down": 0.41329182567884704,
-      "equity_curve": 0.8226439089582394,
+      "prob_up": 0.3619047619047619,
+      "prob_down": 0.3714285714285714,
+      "equity_curve": 1.1023933360832843,
       "buy_hold_equity": 0.7514185737624315
     },
     {
@@ -2154,9 +2154,9 @@
       "x_sentiment_score": 0.08771678336478553,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.4513311008267407,
-      "prob_down": 0.42805494275394956,
-      "equity_curve": 0.8226439089582394,
+      "prob_up": 0.3619047619047619,
+      "prob_down": 0.4714285714285714,
+      "equity_curve": 1.1023933360832843,
       "buy_hold_equity": 0.7602454194031941
     },
     {
@@ -2172,9 +2172,9 @@
       "x_sentiment_score": 0.3525727629221815,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.20937090020398397,
-      "prob_down": 0.6431585732519522,
-      "equity_curve": 0.8226439089582394,
+      "prob_up": 0.3119047619047619,
+      "prob_down": 0.5714285714285714,
+      "equity_curve": 1.1023933360832843,
       "buy_hold_equity": 0.7684659540816947
     },
     {
@@ -2189,10 +2189,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.12915759423457818,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.605466765804356,
-      "prob_down": 0.369738392464221,
-      "equity_curve": 0.838530866367437,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.4,
+      "equity_curve": 1.1236828342340905,
       "buy_hold_equity": 0.7536252851726223
     },
     {
@@ -2207,10 +2207,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.06377883586506239,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.10502332770461836,
-      "prob_down": 0.6982144632997778,
-      "equity_curve": 0.8679137528265919,
+      "signal": 0,
+      "prob_up": 0.2887566137566137,
+      "prob_down": 0.5336792836792836,
+      "equity_curve": 1.1236828342340905,
       "buy_hold_equity": 0.7800330026164691
     },
     {
@@ -2225,10 +2225,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": 0.18363894115761326,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.4845775611121691,
-      "prob_down": 0.4008749055132239,
-      "equity_curve": 0.8740115968133736,
+      "signal": 1,
+      "prob_up": 0.5917877492877494,
+      "prob_down": 0.3748789173789174,
+      "equity_curve": 1.1236828342340905,
       "buy_hold_equity": 0.7745525968284455
     },
     {
@@ -2243,10 +2243,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": -0.15929703812595125,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.10026178379309658,
-      "prob_down": 0.8792578154040592,
-      "equity_curve": 0.8740115968133736,
+      "signal": 0,
+      "prob_up": 0.4270655270655271,
+      "prob_down": 0.472934472934473,
+      "equity_curve": 1.1597070699097651,
       "buy_hold_equity": 0.7993840389767741
     },
     {
@@ -2262,9 +2262,9 @@
       "x_sentiment_score": 0.4923805318034177,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.14384461258468553,
-      "prob_down": 0.7525088917528348,
-      "equity_curve": 0.8770871517103895,
+      "prob_up": 0.362962962962963,
+      "prob_down": 0.6037037037037039,
+      "equity_curve": 1.1597070699097651,
       "buy_hold_equity": 0.7965710906078565
     },
     {
@@ -2280,9 +2280,9 @@
       "x_sentiment_score": 0.48607182284574535,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.22142443048730182,
-      "prob_down": 0.7323340116500667,
-      "equity_curve": 0.8674215567122767,
+      "prob_up": 0.26296296296296295,
+      "prob_down": 0.637037037037037,
+      "equity_curve": 1.1469269729349811,
       "buy_hold_equity": 0.8053493899296585
     },
     {
@@ -2298,9 +2298,9 @@
       "x_sentiment_score": 0.20559530942838727,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.2579051818410323,
-      "prob_down": 0.6628485805183061,
-      "equity_curve": 0.8662461922053969,
+      "prob_up": 0.40623219373219377,
+      "prob_down": 0.5937678062678062,
+      "equity_curve": 1.1453728759154416,
       "buy_hold_equity": 0.8064406460567812
     },
     {
@@ -2315,10 +2315,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3038516802960261,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.38269013408267766,
-      "prob_down": 0.6093716125911701,
-      "equity_curve": 0.9372525664906688,
+      "signal": 0,
+      "prob_up": 0.525,
+      "prob_down": 0.34722222222222227,
+      "equity_curve": 1.2392593205027398,
       "buy_hold_equity": 0.7403365443960531
     },
     {
@@ -2334,9 +2334,9 @@
       "x_sentiment_score": 0.2839889595513245,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.17260876317758955,
-      "prob_down": 0.8257749418951832,
-      "equity_curve": 0.9042199848610375,
+      "prob_up": 0.2,
+      "prob_down": 0.7333333333333333,
+      "equity_curve": 1.2392593205027398,
       "buy_hold_equity": 0.7664290067807963
     },
     {
@@ -2351,10 +2351,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5229046637134565,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5854711027852882,
-      "prob_down": 0.4129978070577223,
-      "equity_curve": 0.8769554926174596,
+      "signal": -1,
+      "prob_up": 0.32345679012345674,
+      "prob_down": 0.6487654320987654,
+      "equity_curve": 1.201892555006154,
       "buy_hold_equity": 0.7895387566873299
     },
     {
@@ -2369,10 +2369,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.4748668970281462,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.17173995700559408,
-      "prob_down": 0.7928559394777298,
-      "equity_curve": 0.8651313556987523,
+      "signal": 0,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.5055555555555556,
+      "equity_curve": 1.2180978724385711,
       "buy_hold_equity": 0.7788932741739212
     },
     {
@@ -2388,9 +2388,9 @@
       "x_sentiment_score": 0.36362002470742927,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.19543104498428976,
-      "prob_down": 0.8007906698997109,
-      "equity_curve": 0.8709491851679194,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.7055555555555555,
+      "equity_curve": 1.2180978724385711,
       "buy_hold_equity": 0.7736553779700953
     },
     {
@@ -2405,10 +2405,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.7380284018325111,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.7911629280450553,
-      "prob_down": 0.20463375913023404,
-      "equity_curve": 0.9003503244725656,
+      "signal": 0,
+      "prob_up": 0.4888888888888889,
+      "prob_down": 0.4722222222222222,
+      "equity_curve": 1.2592179123262652,
       "buy_hold_equity": 0.7475386424258719
     },
     {
@@ -2424,9 +2424,9 @@
       "x_sentiment_score": 0.24021592195210673,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8531636551628751,
-      "prob_down": 0.14262920120135686,
-      "equity_curve": 0.8838778758943352,
+      "prob_up": 0.5666666666666667,
+      "prob_down": 0.4,
+      "equity_curve": 1.2592179123262652,
       "buy_hold_equity": 0.7338619751188279
     },
     {
@@ -2441,10 +2441,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.33601085712571965,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.06070307221106676,
-      "prob_down": 0.937731984364769,
-      "equity_curve": 0.9032418336593909,
+      "signal": 0,
+      "prob_up": 0.4222222222222223,
+      "prob_down": 0.5055555555555555,
+      "equity_curve": 1.286804803158458,
       "buy_hold_equity": 0.7499393911048347
     },
     {
@@ -2459,10 +2459,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.48362475350479367,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.8443914351359978,
-      "prob_down": 0.15144249325716447,
-      "equity_curve": 0.9048190123857209,
+      "signal": 0,
+      "prob_up": 0.4361111111111111,
+      "prob_down": 0.5305555555555556,
+      "equity_curve": 1.286804803158458,
       "buy_hold_equity": 0.7486298985529944
     },
     {
@@ -2478,9 +2478,9 @@
       "x_sentiment_score": 0.4727040573896912,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.041156867648781986,
-      "prob_down": 0.9349272770657665,
-      "equity_curve": 0.9376154846505312,
+      "prob_up": 0.10277777777777777,
+      "prob_down": 0.8638888888888888,
+      "equity_curve": 1.286804803158458,
       "buy_hold_equity": 0.7757650707458997
     },
     {
@@ -2495,10 +2495,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5308667736839069,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5152914994489198,
-      "prob_down": 0.4602735307924524,
-      "equity_curve": 0.9306986680963651,
+      "signal": -1,
+      "prob_up": 0.4355197132616488,
+      "prob_down": 0.5644802867383513,
+      "equity_curve": 1.2773120069001025,
       "buy_hold_equity": 0.7814879121145861
     },
     {
@@ -2514,9 +2514,9 @@
       "x_sentiment_score": 0.4290731306786564,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.25824550314027533,
-      "prob_down": 0.7140141662554012,
-      "equity_curve": 0.9520117315187456,
+      "prob_up": 0.44028161802355353,
+      "prob_down": 0.5597183819764465,
+      "equity_curve": 1.248061474212748,
       "buy_hold_equity": 0.7993840389767741
     },
     {
@@ -2532,9 +2532,9 @@
       "x_sentiment_score": 0.6100607246026184,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.3535846824868821,
-      "prob_down": 0.6135182502383673,
-      "equity_curve": 0.9249227739714121,
+      "prob_up": 0.288853046594982,
+      "prob_down": 0.6778136200716847,
+      "equity_curve": 1.2125485880033768,
       "buy_hold_equity": 0.8221300615087785
     },
     {
@@ -2549,10 +2549,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5984635570360164,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.0829405080422417,
-      "prob_down": 0.9054100433975065,
-      "equity_curve": 0.9199848393673837,
+      "signal": 0,
+      "prob_up": 0.4,
+      "prob_down": 0.5333333333333333,
+      "equity_curve": 1.206075090106835,
       "buy_hold_equity": 0.8265192111696795
     },
     {
@@ -2568,9 +2568,9 @@
       "x_sentiment_score": 0.606251893086968,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.1122168775995293,
-      "prob_down": 0.8791843843113638,
-      "equity_curve": 0.9239256034171118,
+      "prob_up": 0.1021863799283154,
+      "prob_down": 0.8978136200716846,
+      "equity_curve": 1.206075090106835,
       "buy_hold_equity": 0.8229788080517034
     },
     {
@@ -2585,10 +2585,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5088337332902227,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5947146795856173,
-      "prob_down": 0.34865313322475605,
-      "equity_curve": 0.9342707450284463,
+      "signal": -1,
+      "prob_up": 0.23278769841269842,
+      "prob_down": 0.631795634920635,
+      "equity_curve": 1.219579443222402,
       "buy_hold_equity": 0.8137639618769313
     },
     {
@@ -2603,10 +2603,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.641762242060167,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.5202375628631191,
-      "prob_down": 0.34662381527149105,
-      "equity_curve": 0.9202948553344765,
+      "signal": 0,
+      "prob_up": 0.29945436507936507,
+      "prob_down": 0.5317956349206349,
+      "equity_curve": 1.2378233065374096,
       "buy_hold_equity": 0.8015907503869649
     },
     {
@@ -2621,10 +2621,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.39168655074277725,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5363135644364353,
-      "prob_down": 0.45288302629195143,
-      "equity_curve": 0.9331014925042456,
+      "signal": 0,
+      "prob_up": 0.26612103174603174,
+      "prob_down": 0.4984623015873016,
+      "equity_curve": 1.2378233065374096,
       "buy_hold_equity": 0.8127455252282496
     },
     {
@@ -2639,10 +2639,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.7267264332167538,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5470915151167364,
-      "prob_down": 0.4375209606084458,
-      "equity_curve": 0.9168147955036915,
+      "signal": -1,
+      "prob_up": 0.26612103174603174,
+      "prob_down": 0.5984623015873017,
+      "equity_curve": 1.2378233065374096,
       "buy_hold_equity": 0.7985595655933297
     },
     {
@@ -2657,10 +2657,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": 0.5565839274213283,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.07206975097628572,
-      "prob_down": 0.925903211477005,
-      "equity_curve": 0.9017530863605656,
+      "signal": 0,
+      "prob_up": 0.330926724137931,
+      "prob_down": 0.46469109195402303,
+      "equity_curve": 1.2581586400257898,
       "buy_hold_equity": 0.7854405889260523
     },
     {
@@ -2676,9 +2676,9 @@
       "x_sentiment_score": 0.5916262021546945,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.5678149761658184,
-      "prob_down": 0.36963795262332266,
-      "equity_curve": 0.9123046515569777,
+      "prob_up": 0.5625553542673107,
+      "prob_down": 0.2263335346215781,
+      "equity_curve": 1.2581586400257898,
       "buy_hold_equity": 0.7762500159107605
     },
     {
@@ -2694,9 +2694,9 @@
       "x_sentiment_score": 0.2793814765818874,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.07953505082159444,
-      "prob_down": 0.8892265131528447,
-      "equity_curve": 0.969019173658211,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.6,
+      "equity_curve": 1.3363735936323742,
       "buy_hold_equity": 0.8245065370282613
     },
     {
@@ -2712,9 +2712,9 @@
       "x_sentiment_score": 0.2860801398943855,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.1525363603912355,
-      "prob_down": 0.7068318281640716,
-      "equity_curve": 0.9502378653956828,
+      "prob_up": 0.274074074074074,
+      "prob_down": 0.625925925925926,
+      "equity_curve": 1.3104723059198102,
       "buy_hold_equity": 0.840486934379882
     },
     {
@@ -2730,9 +2730,9 @@
       "x_sentiment_score": 0.3096143889808527,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.07434350109300959,
-      "prob_down": 0.8628866421266141,
-      "equity_curve": 0.9363379437209347,
+      "prob_up": 0.14907407407407408,
+      "prob_down": 0.750925925925926,
+      "equity_curve": 1.2913029346786138,
       "buy_hold_equity": 0.8527814376637147
     },
     {
@@ -2748,9 +2748,9 @@
       "x_sentiment_score": 0.7140175872605077,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.061066673909339404,
-      "prob_down": 0.8589580635229067,
-      "equity_curve": 0.9418494355383754,
+      "prob_up": 0.1097883597883598,
+      "prob_down": 0.8568783068783069,
+      "equity_curve": 1.2989038287853247,
       "buy_hold_equity": 0.8477617778846064
     },
     {
@@ -2766,9 +2766,9 @@
       "x_sentiment_score": 0.4446622350727123,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.04295336305627664,
-      "prob_down": 0.920435231905746,
-      "equity_curve": 0.9516019821580834,
+      "prob_up": 0.16111111111111112,
+      "prob_down": 0.6055555555555555,
+      "equity_curve": 1.3123535582927859,
       "buy_hold_equity": 0.8389834785628044
     },
     {
@@ -2784,9 +2784,9 @@
       "x_sentiment_score": 0.3663134913471575,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9149394894708484,
-      "prob_down": 0.04546635774206172,
-      "equity_curve": 0.9849100194408947,
+      "prob_up": 0.5666666666666667,
+      "prob_down": 0.23333333333333334,
+      "equity_curve": 1.3582886467724404,
       "buy_hold_equity": 0.8096173218002282
     },
     {
@@ -2802,9 +2802,9 @@
       "x_sentiment_score": 0.5240387589111511,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.9382062927100692,
-      "prob_down": 0.022896022982168498,
-      "equity_curve": 0.9716055779789382,
+      "prob_up": 0.7,
+      "prob_down": 0.13333333333333333,
+      "equity_curve": 1.339940501832578,
       "buy_hold_equity": 0.7986807833836611
     },
     {
@@ -2820,9 +2820,9 @@
       "x_sentiment_score": 0.11772582087310196,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8994560770069856,
-      "prob_down": 0.07825566407180543,
-      "equity_curve": 0.985559018781143,
+      "prob_up": 0.7133333333333333,
+      "prob_down": 0.17333333333333334,
+      "equity_curve": 1.359183681261096,
       "buy_hold_equity": 0.8101508132840495
     },
     {
@@ -2838,9 +2838,9 @@
       "x_sentiment_score": 0.8959576042983664,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.47871432932259833,
-      "prob_down": 0.27827956457562125,
-      "equity_curve": 0.998656939992506,
+      "prob_up": 0.5,
+      "prob_down": 0.3214285714285714,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8209175875913246
     },
     {
@@ -2856,9 +2856,9 @@
       "x_sentiment_score": 0.7329199717569905,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.1377613254878847,
-      "prob_down": 0.38953778492131497,
-      "equity_curve": 0.998656939992506,
+      "prob_up": 0.15,
+      "prob_down": 0.45,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8507686895187614
     },
     {
@@ -2873,10 +2873,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.473168457557838,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.11291588861934719,
-      "prob_down": 0.5107055995130454,
-      "equity_curve": 0.998656939992506,
+      "signal": 0,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.4962962962962963,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8400019152114863
     },
     {
@@ -2891,10 +2891,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.4428603856166531,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.1353672763454512,
-      "prob_down": 0.6995525951115806,
-      "equity_curve": 0.9970136323129228,
+      "signal": 0,
+      "prob_up": 0.3902173913043478,
+      "prob_down": 0.43941223832528187,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8413841532382325
     },
     {
@@ -2909,10 +2909,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5565213080236944,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.16274522366819782,
-      "prob_down": 0.709040785451004,
-      "equity_curve": 0.9946573522945747,
+      "signal": 0,
+      "prob_up": 0.37037037037037035,
+      "prob_down": 0.5259259259259259,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8433726282237056
     },
     {
@@ -2927,10 +2927,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5283112115181301,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.12165393929400833,
-      "prob_down": 0.530016197870685,
-      "equity_curve": 0.9345415177279834,
+      "signal": 0,
+      "prob_up": 0.06521739130434782,
+      "prob_down": 0.5310789049919484,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.8943450050722029
     },
     {
@@ -2945,10 +2945,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5062142153885248,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.2713436988660113,
-      "prob_down": 0.7175960436307846,
-      "equity_curve": 0.865795778439495,
+      "signal": 0,
+      "prob_up": 0.5,
+      "prob_down": 0.4666666666666667,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.9601338516738274
     },
     {
@@ -2964,9 +2964,9 @@
       "x_sentiment_score": 0.4341404671243402,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.18768471811148094,
-      "prob_down": 0.8046650533392491,
-      "equity_curve": 0.8349635167707551,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.5666666666666667,
+      "equity_curve": 1.3772470142829425,
       "buy_hold_equity": 0.9943256309467396
     },
     {
@@ -2982,9 +2982,9 @@
       "x_sentiment_score": 0.5341466577468078,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.12253631973007804,
-      "prob_down": 0.8724689696671936,
-      "equity_curve": 0.8113832170169623,
+      "prob_up": 0.26666666666666666,
+      "prob_down": 0.6333333333333333,
+      "equity_curve": 1.3383520245264924,
       "buy_hold_equity": 1.022406494313421
     },
     {
@@ -2999,10 +2999,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.464751386740699,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.06196775603535957,
-      "prob_down": 0.9326927641662399,
-      "equity_curve": 0.8032236018271478,
+      "signal": 0,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.4666666666666667,
+      "equity_curve": 1.3248929865779455,
       "buy_hold_equity": 1.0326882494523004
     },
     {
@@ -3018,9 +3018,9 @@
       "x_sentiment_score": 0.3616402718237712,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.0716492709251717,
-      "prob_down": 0.8512733401975799,
-      "equity_curve": 0.8202175158668283,
+      "prob_up": 0.2,
+      "prob_down": 0.7666666666666667,
+      "equity_curve": 1.3248929865779455,
       "buy_hold_equity": 1.0108395197821816
     },
     {
@@ -3035,10 +3035,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3217887202498287,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.3087035853395444,
-      "prob_down": 0.6637127299644787,
-      "equity_curve": 0.8020757229273885,
+      "signal": 1,
+      "prob_up": 0.6333333333333333,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.2955886450289706,
       "buy_hold_equity": 1.0331975417801764
     },
     {
@@ -3053,10 +3053,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5581082320681618,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.17627300541724975,
-      "prob_down": 0.7704374347474544,
-      "equity_curve": 0.7867522231641011,
+      "signal": 1,
+      "prob_up": 0.5694444444444444,
+      "prob_down": 0.23055555555555557,
+      "equity_curve": 1.3203406126149744,
       "buy_hold_equity": 1.0529365786744909
     },
     {
@@ -3071,10 +3071,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3954591735308544,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5277693606965265,
-      "prob_down": 0.40852894009802376,
-      "equity_curve": 0.8018998180845224,
+      "signal": 0,
+      "prob_up": 0.5444444444444444,
+      "prob_down": 0.2555555555555556,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0326640502963553
     },
     {
@@ -3090,9 +3090,9 @@
       "x_sentiment_score": 0.36158937351440573,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.42256657605717113,
-      "prob_down": 0.34956016766205766,
-      "equity_curve": 0.833798807591201,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0737426725399828
     },
     {
@@ -3107,10 +3107,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.2404715781562724,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6232521811668772,
-      "prob_down": 0.284683008233808,
-      "equity_curve": 0.833798807591201,
+      "signal": 0,
+      "prob_up": 0.4253968253968254,
+      "prob_down": 0.319047619047619,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.026698699343471
     },
     {
@@ -3126,9 +3126,9 @@
       "x_sentiment_score": 0.27421035495689927,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.34963321126386526,
-      "prob_down": 0.3752996594089612,
-      "equity_curve": 0.867297236754556,
+      "prob_up": 0.4233333333333333,
+      "prob_down": 0.23555555555555557,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0679470116928553
     },
     {
@@ -3143,10 +3143,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3030775595814993,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6482328238979401,
-      "prob_down": 0.20405246240849206,
-      "equity_curve": 0.867297236754556,
+      "signal": 0,
+      "prob_up": 0.4988888888888889,
+      "prob_down": 0.24555555555555558,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0747611091886644
     },
     {
@@ -3161,10 +3161,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": 0.27968307533095926,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.6633693728361322,
-      "prob_down": 0.20815325520694603,
-      "equity_curve": 0.8702521053776647,
+      "signal": 0,
+      "prob_up": 0.5222222222222223,
+      "prob_down": 0.28777777777777774,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0784228041005068
     },
     {
@@ -3179,10 +3179,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.35127515896786526,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.633118911163334,
-      "prob_down": 0.17147027687229985,
-      "equity_curve": 0.8990961139662172,
+      "signal": 0,
+      "prob_up": 0.4855555555555556,
+      "prob_down": 0.13444444444444445,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.1141665115059223
     },
     {
@@ -3198,9 +3198,9 @@
       "x_sentiment_score": 0.3095089414721135,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.9056070084357932,
-      "prob_down": 0.07045005028611835,
-      "equity_curve": 0.8531883362636539,
+      "prob_up": 0.8222222222222223,
+      "prob_down": 0.1388888888888889,
+      "equity_curve": 1.2949196679159711,
       "buy_hold_equity": 1.0572772560199661
     },
     {
@@ -3215,10 +3215,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.25420268772568927,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.9389056359217343,
-      "prob_down": 0.03916182704179014,
-      "equity_curve": 0.8411145209170183,
+      "signal": 0,
+      "prob_up": 0.49777777777777776,
+      "prob_down": 0.10222222222222221,
+      "equity_curve": 1.2765947327350562,
       "buy_hold_equity": 1.0423152953170272
     },
     {
@@ -3233,10 +3233,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.2133793712231568,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.7671480769010096,
-      "prob_down": 0.10276791738703994,
-      "equity_curve": 0.8869440674575715,
+      "signal": 0,
+      "prob_up": 0.44299999999999995,
+      "prob_down": 0.24866666666666667,
+      "equity_curve": 1.2765947327350562,
       "buy_hold_equity": 1.099107606172132
     },
     {
@@ -3252,9 +3252,9 @@
       "x_sentiment_score": 0.20771325499455015,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.9632141425431068,
-      "prob_down": 0.008168215348303969,
-      "equity_curve": 0.8474938840090754,
+      "prob_up": 0.6977777777777778,
+      "prob_down": 0.035555555555555556,
+      "equity_curve": 1.2765947327350562,
       "buy_hold_equity": 1.050220648939959
     },
     {
@@ -3269,10 +3269,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3739126954831765,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.7464877855886567,
-      "prob_down": 0.09168962978248552,
-      "equity_curve": 0.8584522782533983,
+      "signal": 0,
+      "prob_up": 0.512047619047619,
+      "prob_down": 0.1450952380952381,
+      "equity_curve": 1.2931015520000633,
       "buy_hold_equity": 1.0638003716161517
     },
     {
@@ -3288,9 +3288,9 @@
       "x_sentiment_score": 0.18702960175705047,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.9624867542120584,
-      "prob_down": 0.01193665593635188,
-      "equity_curve": 0.8522882001529806,
+      "prob_up": 0.7166666666666667,
+      "prob_down": 0.11666666666666667,
+      "equity_curve": 1.2931015520000633,
       "buy_hold_equity": 1.056161800736898
     },
     {
@@ -3306,9 +3306,9 @@
       "x_sentiment_score": 0.45920820270315565,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8835002612825013,
-      "prob_down": 0.01981569560366533,
-      "equity_curve": 0.8091395340131672,
+      "prob_up": 0.6311111111111111,
+      "prob_down": 0.13444444444444445,
+      "equity_curve": 1.2276358947938386,
       "buy_hold_equity": 1.0026916565750517
     },
     {
@@ -3323,10 +3323,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3304338913599396,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.5472319518294014,
-      "prob_down": 0.3527032234264478,
-      "equity_curve": 0.8529926389217394,
+      "signal": 0,
+      "prob_up": 0.265679012345679,
+      "prob_down": 0.3998765432098766,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0570347464357681
     },
     {
@@ -3341,10 +3341,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.006591617258347948,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.7752809747385135,
-      "prob_down": 0.05149026716258719,
-      "equity_curve": 0.8399599842337006,
+      "signal": 0,
+      "prob_up": 0.46567901234567904,
+      "prob_down": 0.29987654320987656,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0408845849748554
     },
     {
@@ -3359,10 +3359,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.02819940704740495,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.7071756382117362,
-      "prob_down": 0.24306365697912696,
-      "equity_curve": 0.8515249984350473,
+      "signal": 0,
+      "prob_up": 0.3890123456790124,
+      "prob_down": 0.4065432098765432,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0552160355595868
     },
     {
@@ -3377,10 +3377,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.4389128770121356,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.7737366600177952,
-      "prob_down": 0.04171660473465076,
-      "equity_curve": 0.8390011448922972,
+      "signal": 0,
+      "prob_up": 0.5223456790123457,
+      "prob_down": 0.23987654320987653,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0396963842168814
     },
     {
@@ -3396,9 +3396,9 @@
       "x_sentiment_score": -0.06337983173446884,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.44110419258984124,
-      "prob_down": 0.11976933605439011,
-      "equity_curve": 0.8596655181674459,
+      "prob_up": 0.3307539682539683,
+      "prob_down": 0.09365079365079364,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.065303827433229
     },
     {
@@ -3414,9 +3414,9 @@
       "x_sentiment_score": -0.27089519296160003,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.31526127110210245,
-      "prob_down": 0.11979494816020457,
-      "equity_curve": 0.8596655181674459,
+      "prob_up": 0.19583333333333333,
+      "prob_down": 0.3,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.084994392012118
     },
     {
@@ -3432,9 +3432,9 @@
       "x_sentiment_score": 0.21151296425740446,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.21471784162064353,
-      "prob_down": 0.21079333506831954,
-      "equity_curve": 0.8596655181674459,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.073281926531067
     },
     {
@@ -3449,10 +3449,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.34739468904283854,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5504160545559236,
-      "prob_down": 0.061730675839060896,
-      "equity_curve": 0.8596655181674459,
+      "signal": 0,
+      "prob_up": 0.2,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0644793540497846
     },
     {
@@ -3468,9 +3468,9 @@
       "x_sentiment_score": -0.028544421294960088,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.4563579451725801,
-      "prob_down": 0.2491789332919694,
-      "equity_curve": 0.8792688172723903,
+      "prob_up": 0.2,
+      "prob_down": 0.3416666666666667,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0887531055583466
     },
     {
@@ -3485,10 +3485,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": 0.040871446896670986,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5450379794790822,
-      "prob_down": 0.028545496328339158,
-      "equity_curve": 0.8792688172723903,
+      "signal": 0,
+      "prob_up": 0.49333333333333335,
+      "prob_down": 0.14,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0517483779165167
     },
     {
@@ -3504,9 +3504,9 @@
       "x_sentiment_score": -0.09042149205622182,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.2572263735501861,
-      "prob_down": 0.30039185659607415,
-      "equity_curve": 0.9171788457930459,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.4666666666666667,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.0970949320307137
     },
     {
@@ -3521,10 +3521,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.10368171954011175,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.4266036563108083,
-      "prob_down": 0.32314191207524134,
-      "equity_curve": 0.9171788457930459,
+      "signal": -1,
+      "prob_up": 0.1,
+      "prob_down": 0.7,
+      "equity_curve": 1.294170334678279,
       "buy_hold_equity": 1.1168096957655478
     },
     {
@@ -3539,10 +3539,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.09832981489142681,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.47995543891648595,
-      "prob_down": 0.294345262948483,
-      "equity_curve": 0.9171788457930459,
+      "signal": -1,
+      "prob_up": 0.24583333333333332,
+      "prob_down": 0.5527777777777778,
+      "equity_curve": 1.2914726210954277,
       "buy_hold_equity": 1.119137698969605
     },
     {
@@ -3557,10 +3557,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.5838282572828926,
       "swing_target": 2,
-      "signal": 0,
-      "prob_up": 0.12236070286655482,
-      "prob_down": 0.08961596812019215,
-      "equity_curve": 0.9171788457930459,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.13333333333333333,
+      "equity_curve": 1.3513855871461733,
       "buy_hold_equity": 1.0672195569437966
     },
     {
@@ -3576,9 +3576,9 @@
       "x_sentiment_score": -0.025990964855539214,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.04919444482537242,
-      "prob_down": 0.06892650743976823,
-      "equity_curve": 0.9171788457930459,
+      "prob_up": 0.13305555555555557,
+      "prob_down": 0.22575396825396823,
+      "equity_curve": 1.4019281795307545,
       "buy_hold_equity": 1.1071341775853953
     },
     {
@@ -3594,9 +3594,9 @@
       "x_sentiment_score": -0.27048059332583263,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4493661011034338,
-      "prob_down": 0.15214876081065135,
-      "equity_curve": 0.9171788457930459,
+      "prob_up": 0.10638888888888888,
+      "prob_down": 0.23908730158730157,
+      "equity_curve": 1.4019281795307545,
       "buy_hold_equity": 1.1357728055953782
     },
     {
@@ -3612,9 +3612,9 @@
       "x_sentiment_score": 0.02697290091750021,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.7523099333882612,
-      "prob_down": 0.013570977130772842,
-      "equity_curve": 0.9171788457930459,
+      "prob_up": 0.7666666666666667,
+      "prob_down": 0.0015873015873015873,
+      "equity_curve": 1.4019281795307545,
       "buy_hold_equity": 1.0773073488174387
     },
     {
@@ -3630,9 +3630,9 @@
       "x_sentiment_score": -0.34658814161579055,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.12858202825127876,
-      "prob_down": 0.29497988179952955,
-      "equity_curve": 0.9539477483395201,
+      "prob_up": 0.12165032679738562,
+      "prob_down": 0.24104808590102705,
+      "equity_curve": 1.4581302614330596,
       "buy_hold_equity": 1.1204956638368706
     },
     {
@@ -3648,9 +3648,9 @@
       "x_sentiment_score": -0.13265316193794435,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7328019552200132,
-      "prob_down": 0.013845261292238493,
-      "equity_curve": 0.9539477483395201,
+      "prob_up": 0.7666666666666667,
+      "prob_down": 0.06666666666666667,
+      "equity_curve": 1.4581302614330596,
       "buy_hold_equity": 1.0813084979443301
     },
     {
@@ -3666,9 +3666,9 @@
       "x_sentiment_score": -0.2230595390926265,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7221935759588073,
-      "prob_down": 0.10929074218620835,
-      "equity_curve": 0.9188841313748368,
+      "prob_up": 0.7,
+      "prob_down": 0.2,
+      "equity_curve": 1.404534746311297,
       "buy_hold_equity": 1.0415635674084882
     },
     {
@@ -3683,10 +3683,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": -0.32004497797148335,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.20070616880922856,
-      "prob_down": 0.5705299986852008,
-      "equity_curve": 0.9524930209805876,
+      "signal": 0,
+      "prob_up": 0.42175438596491227,
+      "prob_down": 0.32473684210526316,
+      "equity_curve": 1.4559066784455363,
       "buy_hold_equity": 1.0796595511774407
     },
     {
@@ -3701,10 +3701,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.43806139224678875,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5558195028427163,
-      "prob_down": 0.18617613567496194,
-      "equity_curve": 0.9644946849095514,
+      "signal": 0,
+      "prob_up": 0.5017543859649123,
+      "prob_down": 0.3649122807017544,
+      "equity_curve": 1.4559066784455363,
       "buy_hold_equity": 1.0660555553417677
     },
     {
@@ -3719,10 +3719,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.4523604483585404,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.5484785519001716,
-      "prob_down": 0.17177529422241544,
-      "equity_curve": 0.9447054770521836,
+      "signal": 0,
+      "prob_up": 0.5017543859649123,
+      "prob_down": 0.2649122807017544,
+      "equity_curve": 1.4559066784455363,
       "buy_hold_equity": 1.0441825525121684
     },
     {
@@ -3738,9 +3738,9 @@
       "x_sentiment_score": -0.3362463199185419,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.6965392123682557,
-      "prob_down": 0.22444666425261436,
-      "equity_curve": 0.8819371577140052,
+      "prob_up": 0.6,
+      "prob_down": 0.3,
+      "equity_curve": 1.4559066784455363,
       "buy_hold_equity": 0.9748047564736072
     },
     {
@@ -3755,10 +3755,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.37807747876661385,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.4382177924736236,
-      "prob_down": 0.5222007020811243,
-      "equity_curve": 0.887114862976209,
+      "signal": 0,
+      "prob_up": 0.5083333333333333,
+      "prob_down": 0.325,
+      "equity_curve": 1.4644540625809372,
       "buy_hold_equity": 0.9805276718458287
     },
     {
@@ -3774,9 +3774,9 @@
       "x_sentiment_score": -0.015889101976779507,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.551877760442764,
-      "prob_down": 0.40123485622323485,
-      "equity_curve": 0.8770885952377916,
+      "prob_up": 0.7,
+      "prob_down": 0.21666666666666667,
+      "equity_curve": 1.4644540625809372,
       "buy_hold_equity": 0.9916097012122074
     },
     {
@@ -3791,10 +3791,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.33662108521532397,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.35862507262564347,
-      "prob_down": 0.5945930815431458,
-      "equity_curve": 0.8606372573675911,
+      "signal": 1,
+      "prob_up": 0.5666666666666667,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 1.4369856532210197,
       "buy_hold_equity": 0.9730103187569062
     },
     {
@@ -3809,10 +3809,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.23025002915168197,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.11505720114659557,
-      "prob_down": 0.8377923194241458,
-      "equity_curve": 0.8547602787245344,
+      "signal": 0,
+      "prob_up": 0.3888888888888889,
+      "prob_down": 0.4777777777777778,
+      "equity_curve": 1.446798305325101,
       "buy_hold_equity": 0.9796546521434235
     },
     {
@@ -3828,9 +3828,9 @@
       "x_sentiment_score": -0.4943705221858852,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.6070264507403875,
-      "prob_down": 0.3554983986267411,
-      "equity_curve": 0.8732946050313266,
+      "prob_up": 0.7,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 1.446798305325101,
       "buy_hold_equity": 0.9584121594320317
     },
     {
@@ -3846,9 +3846,9 @@
       "x_sentiment_score": -0.5010952599774603,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.5908520788315479,
-      "prob_down": 0.3937960873767167,
-      "equity_curve": 0.86414688760924,
+      "prob_up": 0.9,
+      "prob_down": 0.1,
+      "equity_curve": 1.4316431652525328,
       "buy_hold_equity": 0.948372839873815
     },
     {
@@ -3863,10 +3863,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.48427238628480695,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.1038457454549861,
-      "prob_down": 0.889557456714099,
-      "equity_curve": 0.9231207369942739,
+      "signal": 0,
+      "prob_up": 0.5333333333333333,
+      "prob_down": 0.33,
+      "equity_curve": 1.529345893355043,
       "buy_hold_equity": 1.013094703507797
     },
     {
@@ -3881,10 +3881,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.3333209398947496,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.1427696989169996,
-      "prob_down": 0.8493124651890569,
-      "equity_curve": 0.9195412188486595,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 1.529345893355043,
       "buy_hold_equity": 1.0170231071597828
     },
     {
@@ -3899,10 +3899,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.46921083057484136,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.06449090926601764,
-      "prob_down": 0.9305016951653154,
-      "equity_curve": 0.9037989696533916,
+      "signal": 0,
+      "prob_up": 0.5333333333333333,
+      "prob_down": 0.43,
+      "equity_curve": 1.5555278019693182,
       "buy_hold_equity": 1.034434214853575
     },
     {
@@ -3917,10 +3917,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.5335290640808475,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.14324920435633573,
-      "prob_down": 0.8521649608505549,
-      "equity_curve": 0.8961927464944648,
+      "signal": 1,
+      "prob_up": 0.5666666666666667,
+      "prob_down": 0.39666666666666667,
+      "equity_curve": 1.5555278019693182,
       "buy_hold_equity": 1.0431398427040062
     },
     {
@@ -3936,9 +3936,9 @@
       "x_sentiment_score": -0.36205139813831066,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8894466733568679,
-      "prob_down": 0.09696225551463902,
-      "equity_curve": 0.8962552443152574,
+      "prob_up": 0.8916666666666667,
+      "prob_down": 0.06666666666666667,
+      "equity_curve": 1.5554193240797285,
       "buy_hold_equity": 1.0430670972291003
     },
     {
@@ -3954,9 +3954,9 @@
       "x_sentiment_score": -0.5264082304232526,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.6787857934719187,
-      "prob_down": 0.314629032199826,
-      "equity_curve": 0.8943799209934442,
+      "prob_up": 0.8126518218623482,
+      "prob_down": 0.18174763832658572,
+      "equity_curve": 1.5521647666842244,
       "buy_hold_equity": 1.040884584974855
     },
     {
@@ -3972,9 +3972,9 @@
       "x_sentiment_score": -0.5302171253861634,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.5441958315072213,
-      "prob_down": 0.4361343935218045,
-      "equity_curve": 0.9308435520005159,
+      "prob_up": 0.5692307692307692,
+      "prob_down": 0.16025641025641024,
+      "equity_curve": 1.615446110536046,
       "buy_hold_equity": 1.083321172085748
     },
     {
@@ -3990,9 +3990,9 @@
       "x_sentiment_score": -0.6475651678582652,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.5816143970688102,
-      "prob_down": 0.3979849532581813,
-      "equity_curve": 0.947075094693314,
+      "prob_up": 0.6025641025641025,
+      "prob_down": 0.22692307692307692,
+      "equity_curve": 1.643615379641179,
       "buy_hold_equity": 1.1022115364406724
     },
     {
@@ -4008,9 +4008,9 @@
       "x_sentiment_score": -0.5390595941200707,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.8134261356258412,
-      "prob_down": 0.18016230160818214,
-      "equity_curve": 0.9480544061838622,
+      "prob_up": 0.7664529914529914,
+      "prob_down": 0.11858974358974358,
+      "equity_curve": 1.6453149401473557,
       "buy_hold_equity": 1.1033512648832207
     },
     {
@@ -4026,9 +4026,9 @@
       "x_sentiment_score": -0.5772580819859896,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8956873444174959,
-      "prob_down": 0.04508853169409302,
-      "equity_curve": 0.9159247101979767,
+      "prob_up": 0.593939393939394,
+      "prob_down": 0.36969696969696975,
+      "equity_curve": 1.5895549874662036,
       "buy_hold_equity": 1.0659585367073812
     },
     {
@@ -4044,9 +4044,9 @@
       "x_sentiment_score": -0.6175517663110572,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.4020479439694629,
-      "prob_down": 0.27884832485578925,
-      "equity_curve": 0.9275722917166872,
+      "prob_up": 0.1685185185185185,
+      "prob_down": 0.43148148148148147,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.0795140602276285
     },
     {
@@ -4061,10 +4061,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.42867525375451,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5474031889156654,
-      "prob_down": 0.10122848431695693,
-      "equity_curve": 0.9275722917166872,
+      "signal": 0,
+      "prob_up": 0.1962962962962963,
+      "prob_down": 0.34148148148148144,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.0947427296707104
     },
     {
@@ -4079,10 +4079,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.5357685123772348,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.592900588877571,
-      "prob_down": 0.30819629545902655,
-      "equity_curve": 0.9182030874387448,
+      "signal": 0,
+      "prob_up": 0.5444444444444445,
+      "prob_down": 0.3722222222222222,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.0836849734638119
     },
     {
@@ -4097,10 +4097,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.4474620686967059,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5036456015775156,
-      "prob_down": 0.06468544592680553,
-      "equity_curve": 0.9430026792978068,
+      "signal": 0,
+      "prob_up": 0.26666666666666666,
+      "prob_down": 0.23333333333333334,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.112954037588467
     },
     {
@@ -4116,9 +4116,9 @@
       "x_sentiment_score": -0.30084019004322793,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.29433985098064347,
-      "prob_down": 0.4130031557155202,
-      "equity_curve": 0.9765962383208264,
+      "prob_up": 0.3,
+      "prob_down": 0.30833333333333335,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.1526019494899227
     },
     {
@@ -4133,10 +4133,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3395376581631576,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.14880033821295896,
-      "prob_down": 0.5308127323891064,
-      "equity_curve": 0.9765962383208264,
+      "signal": 0,
+      "prob_up": 0.3333333333333333,
+      "prob_down": 0.2,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.1879334572053832
     },
     {
@@ -4151,10 +4151,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.7680058314115246,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.8720516243879024,
-      "prob_down": 0.046034642176212,
-      "equity_curve": 1.0216901427915044,
+      "signal": 0,
+      "prob_up": 0.5,
+      "prob_down": 0.18875,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.1330811490203259
     },
     {
@@ -4170,9 +4170,9 @@
       "x_sentiment_score": -0.48124416128687203,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.11505821297084128,
-      "prob_down": 0.2891873279842057,
-      "equity_curve": 1.056915526710969,
+      "prob_up": 0.3,
+      "prob_down": 0.42962962962962964,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.1721470231189999
     },
     {
@@ -4187,10 +4187,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.6163122126818662,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.4811015688558602,
-      "prob_down": 0.16170533754785824,
-      "equity_curve": 1.056915526710969,
+      "signal": 1,
+      "prob_up": 0.6025641025641025,
+      "prob_down": 0.1870655270655271,
+      "equity_curve": 1.6097689538423083,
       "buy_hold_equity": 1.1668849277592288
     },
     {
@@ -4206,9 +4206,9 @@
       "x_sentiment_score": -0.5236601345887245,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.31510978806274154,
-      "prob_down": 0.16945607339816252,
-      "equity_curve": 1.056915526710969,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.125,
+      "equity_curve": 1.6349592238960993,
       "buy_hold_equity": 1.185144781995946
     },
     {
@@ -4224,9 +4224,9 @@
       "x_sentiment_score": -0.35205516301770484,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4418020230823539,
-      "prob_down": 0.2404509679403684,
-      "equity_curve": 1.056915526710969,
+      "prob_up": 0.4,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 1.6349592238960993,
       "buy_hold_equity": 1.1774576647977315
     },
     {
@@ -4242,9 +4242,9 @@
       "x_sentiment_score": -0.45099434988890436,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4159947935137976,
-      "prob_down": 0.15757388803192723,
-      "equity_curve": 1.056915526710969,
+      "prob_up": 0.4166666666666667,
+      "prob_down": 0.2833333333333333,
+      "equity_curve": 1.6349592238960993,
       "buy_hold_equity": 1.177069664263722
     },
     {
@@ -4260,9 +4260,9 @@
       "x_sentiment_score": -0.5213762791105633,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.6882511377990141,
-      "prob_down": 0.1847967433856313,
-      "equity_curve": 1.056915526710969,
+      "prob_up": 0.55,
+      "prob_down": 0.25,
+      "equity_curve": 1.6349592238960993,
       "buy_hold_equity": 1.1523109675902992
     },
     {
@@ -4278,9 +4278,9 @@
       "x_sentiment_score": -0.5223779550438833,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7798191150835272,
-      "prob_down": 0.16956939398221788,
-      "equity_curve": 1.0223293118198398,
+      "prob_up": 0.7333333333333333,
+      "prob_down": 0.09166666666666666,
+      "equity_curve": 1.5814572650102514,
       "buy_hold_equity": 1.114603058358891
     },
     {
@@ -4296,9 +4296,9 @@
       "x_sentiment_score": -0.4903745230098924,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4896704174016874,
-      "prob_down": 0.4820377112573672,
-      "equity_curve": 1.0107412037175767,
+      "prob_up": 0.40518518518518515,
+      "prob_down": 0.5314814814814814,
+      "equity_curve": 1.5635314386310526,
       "buy_hold_equity": 1.1019690268564744
     },
     {
@@ -4313,10 +4313,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.7071933969574219,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.503493624757085,
-      "prob_down": 0.44872685608400115,
-      "equity_curve": 1.0107412037175767,
+      "signal": 0,
+      "prob_up": 0.38137566137566137,
+      "prob_down": 0.4886243386243386,
+      "equity_curve": 1.5635314386310526,
       "buy_hold_equity": 1.0905475432750467
     },
     {
@@ -4331,10 +4331,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": -0.5054188496623961,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.5667320764947168,
-      "prob_down": 0.41165292678362697,
-      "equity_curve": 0.9845579589824681,
+      "signal": 0,
+      "prob_up": 0.4162241462241462,
+      "prob_down": 0.4871091871091871,
+      "equity_curve": 1.5635314386310526,
       "buy_hold_equity": 1.0622969157990734
     },
     {
@@ -4349,10 +4349,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.30712966449637247,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.23624460034794728,
-      "prob_down": 0.6969053413945705,
-      "equity_curve": 1.0151238366448398,
+      "signal": 0,
+      "prob_up": 0.24804232804232804,
+      "prob_down": 0.4886243386243386,
+      "equity_curve": 1.5635314386310526,
       "buy_hold_equity": 1.0952762211545315
     },
     {
@@ -4368,9 +4368,9 @@
       "x_sentiment_score": -0.5876084765198413,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.5550684212828305,
-      "prob_down": 0.4237614304161757,
-      "equity_curve": 1.0571744238521992,
+      "prob_up": 0.5813756613756614,
+      "prob_down": 0.32195767195767194,
+      "equity_curve": 1.5635314386310526,
       "buy_hold_equity": 1.0499053938808542
     },
     {
@@ -4385,10 +4385,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.4649056583759278,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.15800836031488744,
-      "prob_down": 0.7374329354016254,
-      "equity_curve": 1.0533897613329148,
+      "signal": 0,
+      "prob_up": 0.4147385620915032,
+      "prob_down": 0.2544117647058824,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0461467543381606
     },
     {
@@ -4403,10 +4403,10 @@
       "political_trade_signal": 1,
       "x_sentiment_score": -0.28065150473118483,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.038081590698821034,
-      "prob_down": 0.8424671727775265,
-      "equity_curve": 1.042670574720165,
+      "signal": 0,
+      "prob_up": 0.3914052287581699,
+      "prob_down": 0.33552287581699347,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0567922368515692
     },
     {
@@ -4421,10 +4421,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.15422392574708743,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.04276377266642174,
-      "prob_down": 0.6695892723425688,
-      "equity_curve": 1.0206351934158937,
+      "signal": 0,
+      "prob_up": 0.32473856209150326,
+      "prob_down": 0.45218954248366017,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0791260596936185
     },
     {
@@ -4439,10 +4439,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.7576267422606655,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.09670834784324413,
-      "prob_down": 0.6318548993549383,
-      "equity_curve": 1.0115758683734581,
+      "signal": 0,
+      "prob_up": 0.43968253968253973,
+      "prob_down": 0.36666666666666664,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.088704559239385
     },
     {
@@ -4457,10 +4457,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.48668488828616324,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.2720417170577537,
-      "prob_down": 0.5092087439364991,
-      "equity_curve": 1.0155413721378184,
+      "signal": 0,
+      "prob_up": 0.48134920634920636,
+      "prob_down": 0.35833333333333334,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0844367013723504
     },
     {
@@ -4476,9 +4476,9 @@
       "x_sentiment_score": -0.5658288973994494,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.3467032997308902,
-      "prob_down": 0.4823339932305411,
-      "equity_curve": 1.0337084802669243,
+      "prob_up": 0.3975308641975309,
+      "prob_down": 0.3633487654320987,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.065037118693085
     },
     {
@@ -4494,9 +4494,9 @@
       "x_sentiment_score": -0.5134525647308309,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.17343386025937052,
-      "prob_down": 0.4117167781914658,
-      "equity_curve": 1.0337084802669243,
+      "prob_up": 0.3308641975308642,
+      "prob_down": 0.4300154320987654,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.063509389716527
     },
     {
@@ -4512,9 +4512,9 @@
       "x_sentiment_score": -0.20310513632351,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.36146661881471476,
-      "prob_down": 0.4195982449346183,
-      "equity_curve": 1.0337084802669243,
+      "prob_up": 0.36790123456790125,
+      "prob_down": 0.3966820987654321,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.060914677772327
     },
     {
@@ -4529,10 +4529,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3824388313508292,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5072839515788218,
-      "prob_down": 0.2515280324502142,
-      "equity_curve": 1.0337084802669243,
+      "signal": 0,
+      "prob_up": 0.48888888888888893,
+      "prob_down": 0.26666666666666666,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0166593797852528
     },
     {
@@ -4548,9 +4548,9 @@
       "x_sentiment_score": -0.3849457558902171,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.12353139017948102,
-      "prob_down": 0.09419335158148441,
-      "equity_curve": 1.0637643154443988,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.29791666666666666,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0462194998130663
     },
     {
@@ -4566,9 +4566,9 @@
       "x_sentiment_score": -0.4995151230417976,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.029458452566252336,
-      "prob_down": 0.04371431779543536,
-      "equity_curve": 1.0637643154443988,
+      "prob_up": 0.3422222222222222,
+      "prob_down": 0.1738095238095238,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.089674523572641
     },
     {
@@ -4583,10 +4583,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.1570428343364927,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.20987627355105973,
-      "prob_down": 0.5034453134936961,
-      "equity_curve": 1.0637643154443988,
+      "signal": 0,
+      "prob_up": 0.29888888888888887,
+      "prob_down": 0.3877777777777778,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0889470688235825
     },
     {
@@ -4601,10 +4601,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.42751097836380136,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.18472267966549677,
-      "prob_down": 0.5858690031855842,
-      "equity_curve": 1.096596805333794,
+      "signal": 0,
+      "prob_up": 0.23333333333333334,
+      "prob_down": 0.4,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0553373273534519
     },
     {
@@ -4620,9 +4620,9 @@
       "x_sentiment_score": -0.3562024505973794,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.1157805453054999,
-      "prob_down": 0.2191367891521851,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.16,
+      "prob_down": 0.43777777777777777,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0449100072612256
     },
     {
@@ -4638,9 +4638,9 @@
       "x_sentiment_score": -0.24314612452113726,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.13672729716133597,
-      "prob_down": 0.25878251661653345,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.16,
+      "prob_down": 0.40444444444444444,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0462679721284915
     },
     {
@@ -4656,9 +4656,9 @@
       "x_sentiment_score": -0.3427068176145246,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.39118688462808976,
-      "prob_down": 0.25582958983768267,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.4555555555555556,
+      "prob_down": 0.23333333333333334,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0101362641890668
     },
     {
@@ -4674,9 +4674,9 @@
       "x_sentiment_score": -0.2435112803198737,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.21520332745536783,
-      "prob_down": 0.28766605763399145,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.13333333333333333,
+      "prob_down": 0.4388888888888889,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.043721806503252
     },
     {
@@ -4692,9 +4692,9 @@
       "x_sentiment_score": -0.2818923887774783,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.08476110543713897,
-      "prob_down": 0.2886368643183023,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.137037037037037,
+      "prob_down": 0.1985185185185185,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0228672403223347
     },
     {
@@ -4710,9 +4710,9 @@
       "x_sentiment_score": -0.26887524878701186,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.23877660037497148,
-      "prob_down": 0.39874485048322506,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.23703703703703702,
+      "prob_down": 0.25407407407407406,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 1.0232309676968638
     },
     {
@@ -4728,9 +4728,9 @@
       "x_sentiment_score": -0.4097174737640217,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.4127009339488493,
-      "prob_down": 0.38219345328228227,
-      "equity_curve": 1.107431792029473,
+      "prob_up": 0.5,
+      "prob_down": 0.2,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 0.9845530941321995
     },
     {
@@ -4745,10 +4745,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.24021059534824504,
       "swing_target": 2,
-      "signal": 0,
-      "prob_up": 0.4151973096572681,
-      "prob_down": 0.4761897663049912,
-      "equity_curve": 1.107431792029473,
+      "signal": 1,
+      "prob_up": 0.7,
+      "prob_down": 0.1986111111111111,
+      "equity_curve": 1.5579340284970207,
       "buy_hold_equity": 0.9632135087828865
     },
     {
@@ -4763,10 +4763,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.17983220607651745,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.14104235844933474,
-      "prob_down": 0.5193125333220991,
-      "equity_curve": 1.107431792029473,
+      "signal": 0,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.5486111111111112,
+      "equity_curve": 1.6124524795760211,
       "buy_hold_equity": 0.996920268887403
     },
     {
@@ -4782,9 +4782,9 @@
       "x_sentiment_score": -0.22952162479018445,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.10000970250266346,
-      "prob_down": 0.6591562203883258,
-      "equity_curve": 1.0907034808554203,
+      "prob_up": 0.09722222222222222,
+      "prob_down": 0.6569444444444446,
+      "equity_curve": 1.6124524795760211,
       "buy_hold_equity": 1.011979248224728
     },
     {
@@ -4800,9 +4800,9 @@
       "x_sentiment_score": -0.2223875301631008,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.18778810718469768,
-      "prob_down": 0.6191701993744505,
-      "equity_curve": 1.0700822956632696,
+      "prob_up": 0.09722222222222222,
+      "prob_down": 0.7583333333333333,
+      "equity_curve": 1.581966942692246,
       "buy_hold_equity": 1.0311120481603155
     },
     {
@@ -4817,10 +4817,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.10466236429450651,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.07191891128077338,
-      "prob_down": 0.21911297079720962,
-      "equity_curve": 1.0623815142187445,
+      "signal": -1,
+      "prob_up": 0.14166666666666666,
+      "prob_down": 0.7472222222222222,
+      "equity_curve": 1.5705824148596594,
       "buy_hold_equity": 1.0385323826148516
     },
     {
@@ -4836,9 +4836,9 @@
       "x_sentiment_score": -0.09999194427309792,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.49665231497402534,
-      "prob_down": 0.3296680361100401,
-      "equity_curve": 1.0623815142187445,
+      "prob_up": 0.19444444444444445,
+      "prob_down": 0.5166666666666666,
+      "equity_curve": 1.611655790859498,
       "buy_hold_equity": 1.011373011266001
     },
     {
@@ -4854,9 +4854,9 @@
       "x_sentiment_score": -0.237691616239189,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.213094536669181,
-      "prob_down": 0.45235908961489385,
-      "equity_curve": 1.0623815142187445,
+      "prob_up": 0.1277777777777778,
+      "prob_down": 0.5227777777777778,
+      "equity_curve": 1.611655790859498,
       "buy_hold_equity": 1.0122702301243516
     },
     {
@@ -4872,9 +4872,9 @@
       "x_sentiment_score": -0.17026656403789037,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.3298375692916456,
-      "prob_down": 0.26484269245188563,
-      "equity_curve": 1.0623815142187445,
+      "prob_up": 0.32907647907647913,
+      "prob_down": 0.41691919191919186,
+      "equity_curve": 1.611655790859498,
       "buy_hold_equity": 0.9957563412889097
     },
     {
@@ -4890,9 +4890,9 @@
       "x_sentiment_score": -0.17207278139024806,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.3961167579567183,
-      "prob_down": 0.37910761987529745,
-      "equity_curve": 1.0623815142187445,
+      "prob_up": 0.23463203463203464,
+      "prob_down": 0.3646969696969697,
+      "equity_curve": 1.611655790859498,
       "buy_hold_equity": 0.997429561215279
     },
     {
@@ -4907,10 +4907,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.04260273368873599,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.5506277904838411,
-      "prob_down": 0.39601464782213475,
-      "equity_curve": 1.0623815142187445,
+      "signal": -1,
+      "prob_up": 0.16717171717171717,
+      "prob_down": 0.5730303030303029,
+      "equity_curve": 1.611655790859498,
       "buy_hold_equity": 0.9983752523890551
     },
     {
@@ -4926,9 +4926,9 @@
       "x_sentiment_score": -0.24195966659840074,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.07172596056008478,
-      "prob_down": 0.35057564608480724,
-      "equity_curve": 1.0626654005175262,
+      "prob_up": 0.007407407407407407,
+      "prob_down": 0.2721693121693122,
+      "equity_curve": 1.6112251291892281,
       "buy_hold_equity": 0.9986420351327331
     },
     {
@@ -4944,9 +4944,9 @@
       "x_sentiment_score": 0.05699552284458893,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.3295548876976451,
-      "prob_down": 0.4898702400707647,
-      "equity_curve": 1.0626654005175262,
+      "prob_up": 0.2,
+      "prob_down": 0.3439285714285714,
+      "equity_curve": 1.6112251291892281,
       "buy_hold_equity": 0.9695668602697803
     },
     {
@@ -4962,9 +4962,9 @@
       "x_sentiment_score": -0.037848238796124464,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.032088400789503126,
-      "prob_down": 0.35977889709870337,
-      "equity_curve": 1.0626654005175262,
+      "prob_up": 0.08333333333333333,
+      "prob_down": 0.22825396825396826,
+      "equity_curve": 1.6112251291892281,
       "buy_hold_equity": 0.9927251564952744
     },
     {
@@ -4980,9 +4980,9 @@
       "x_sentiment_score": 0.056279116144431554,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.013626136905028608,
-      "prob_down": 0.739118312501763,
-      "equity_curve": 1.0626654005175262,
+      "prob_up": 0.041666666666666664,
+      "prob_down": 0.5988888888888889,
+      "equity_curve": 1.6112251291892281,
       "buy_hold_equity": 1.0121732114899653
     },
     {
@@ -4997,10 +4997,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.04076214603124877,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.10375066799061476,
-      "prob_down": 0.6760642198108429,
-      "equity_curve": 1.0851203999253194,
+      "signal": 0,
+      "prob_up": 0.0047619047619047615,
+      "prob_down": 0.47333333333333333,
+      "equity_curve": 1.6452716496689066,
       "buy_hold_equity": 0.9907851538252268
     },
     {
@@ -5016,9 +5016,9 @@
       "x_sentiment_score": 0.0885098022332521,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.37873274787149763,
-      "prob_down": 0.37970084301695806,
-      "equity_curve": 1.1012412474372528,
+      "prob_up": 0.16794871794871793,
+      "prob_down": 0.48269230769230764,
+      "equity_curve": 1.6452716496689066,
       "buy_hold_equity": 0.9760657767100207
     },
     {
@@ -5033,10 +5033,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.09995527082498094,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.3378214705248735,
-      "prob_down": 0.4298039364739482,
-      "equity_curve": 1.1012412474372528,
+      "signal": -1,
+      "prob_up": 0.1346153846153846,
+      "prob_down": 0.6191208791208791,
+      "equity_curve": 1.6452716496689066,
       "buy_hold_equity": 0.9780299785360135
     },
     {
@@ -5051,10 +5051,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.24387639406147982,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.4253544305557317,
-      "prob_down": 0.38157122445613395,
-      "equity_curve": 1.1012412474372528,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.06666666666666667,
+      "equity_curve": 1.6896955117143875,
       "buy_hold_equity": 0.9516222610921666
     },
     {
@@ -5070,9 +5070,9 @@
       "x_sentiment_score": 0.17840621558827005,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.05064518305846044,
-      "prob_down": 0.7976962461949411,
-      "equity_curve": 1.1012412474372528,
+      "prob_up": 0.06666666666666667,
+      "prob_down": 0.6938888888888889,
+      "equity_curve": 1.747865894432953,
       "buy_hold_equity": 0.9843833300229072
     },
     {
@@ -5088,9 +5088,9 @@
       "x_sentiment_score": -0.0003194540983065819,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.07520096864733793,
-      "prob_down": 0.8891635124417785,
-      "equity_curve": 1.1022992861015406,
+      "prob_up": 0.10128205128205128,
+      "prob_down": 0.6443589743589744,
+      "equity_curve": 1.7495451901373265,
       "buy_hold_equity": 0.9834375648455963
     },
     {
@@ -5106,9 +5106,9 @@
       "x_sentiment_score": 0.04738974344666114,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.19220634940307393,
-      "prob_down": 0.3141997075421992,
-      "equity_curve": 1.1262722966551875,
+      "prob_up": 0.12222222222222222,
+      "prob_down": 0.3777777777777777,
+      "equity_curve": 1.7875946253824297,
       "buy_hold_equity": 0.9620495811843928
     },
     {
@@ -5124,9 +5124,9 @@
       "x_sentiment_score": -0.1583073190033686,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.045782180840795245,
-      "prob_down": 0.2572938232141197,
-      "equity_curve": 1.1262722966551875,
+      "prob_up": 0.03888888888888889,
+      "prob_down": 0.4222222222222223,
+      "equity_curve": 1.7875946253824297,
       "buy_hold_equity": 0.9667781850603427
     },
     {
@@ -5142,9 +5142,9 @@
       "x_sentiment_score": 0.1681463077721493,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.03527786477401629,
-      "prob_down": 0.18544836294104425,
-      "equity_curve": 1.1262722966551875,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.4095959595959596,
+      "equity_curve": 1.7875946253824297,
       "buy_hold_equity": 0.9681361499276085
     },
     {
@@ -5160,9 +5160,9 @@
       "x_sentiment_score": 0.18806354554162036,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.03691283764282074,
-      "prob_down": 0.7486672394804796,
-      "equity_curve": 1.1262722966551875,
+      "prob_up": 0.0,
+      "prob_down": 0.7666666666666667,
+      "equity_curve": 1.7875946253824297,
       "buy_hold_equity": 0.9889422437931003
     },
     {
@@ -5178,9 +5178,9 @@
       "x_sentiment_score": 0.30595456706598273,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.3141077271698603,
-      "prob_down": 0.18258251377471896,
-      "equity_curve": 1.1616495344349778,
+      "prob_up": 0.12222222222222222,
+      "prob_down": 0.42626262626262623,
+      "equity_curve": 1.8437445993308619,
       "buy_hold_equity": 0.9578786679482093
     },
     {
@@ -5196,9 +5196,9 @@
       "x_sentiment_score": -0.2497180285018435,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.020047660519352247,
-      "prob_down": 0.18336033306812316,
-      "equity_curve": 1.1616495344349778,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.20138888888888887,
+      "equity_curve": 1.8437445993308619,
       "buy_hold_equity": 0.948639622617492
     },
     {
@@ -5214,9 +5214,9 @@
       "x_sentiment_score": -0.16004547270279307,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.009564122049620661,
-      "prob_down": 0.3225110243946025,
-      "equity_curve": 1.1616495344349778,
+      "prob_up": 0.0,
+      "prob_down": 0.25472222222222224,
+      "equity_curve": 1.8437445993308619,
       "buy_hold_equity": 0.9592123596559949
     },
     {
@@ -5232,9 +5232,9 @@
       "x_sentiment_score": 0.4351533164871602,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.002636718328108588,
-      "prob_down": 0.7962774600315946,
-      "equity_curve": 1.1616495344349778,
+      "prob_up": 0.0,
+      "prob_down": 0.6333333333333333,
+      "equity_curve": 1.8437445993308619,
       "buy_hold_equity": 0.9682088954025144
     },
     {
@@ -5249,10 +5249,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.44256711145434435,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.09205567022910492,
-      "prob_down": 0.5705285257238104,
-      "equity_curve": 1.1805317302966636,
+      "signal": 0,
+      "prob_up": 0.11111111111111112,
+      "prob_down": 0.3555555555555555,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.9524710076350915
     },
     {
@@ -5268,9 +5268,9 @@
       "x_sentiment_score": 0.347726361861265,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.03298858030592262,
-      "prob_down": 0.2177830044006864,
-      "equity_curve": 1.2180414024021666,
+      "prob_up": 0.3,
+      "prob_down": 0.1736111111111111,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.9222076320141649
     },
     {
@@ -5285,10 +5285,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.10911911807369526,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6618123368865428,
-      "prob_down": 0.03740466015755327,
-      "equity_curve": 1.2180414024021666,
+      "signal": 0,
+      "prob_up": 0.4041666666666667,
+      "prob_down": 0.10666666666666667,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.8922837846118222
     },
     {
@@ -5304,9 +5304,9 @@
       "x_sentiment_score": 0.325722018716625,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.3157155631496817,
-      "prob_down": 0.09253059240071779,
-      "equity_curve": 1.260710637873339,
+      "prob_up": 0.33999999999999997,
+      "prob_down": 0.21166666666666664,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.9235413977254854
     },
     {
@@ -5322,9 +5322,9 @@
       "x_sentiment_score": 0.6433772907483668,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.33395711252851124,
-      "prob_down": 0.059735947602958556,
-      "equity_curve": 1.260710637873339,
+      "prob_up": 0.10555555555555556,
+      "prob_down": 0.32973856209150326,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.9288277662447368
     },
     {
@@ -5340,9 +5340,9 @@
       "x_sentiment_score": 0.4056117577463926,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.04026164575161392,
-      "prob_down": 0.1983455539548385,
-      "equity_curve": 1.260710637873339,
+      "prob_up": 0.07333333333333333,
+      "prob_down": 0.4533333333333333,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.935908646484224
     },
     {
@@ -5357,10 +5357,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3378742666419546,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.6315213707564683,
-      "prob_down": 0.21461473472711273,
-      "equity_curve": 1.260710637873339,
+      "signal": 0,
+      "prob_up": 0.3388888888888889,
+      "prob_down": 0.09444444444444446,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.902347303325984
     },
     {
@@ -5375,10 +5375,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.31534053873771994,
       "swing_target": 2,
-      "signal": 0,
-      "prob_up": 0.4562714965960685,
-      "prob_down": 0.12926798656839508,
-      "equity_curve": 1.2258819465493476,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.8737140054309762,
       "buy_hold_equity": 0.8774188425432694
     },
     {
@@ -5393,10 +5393,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.16790758079585053,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6253261321088596,
-      "prob_down": 0.04358738545822002,
-      "equity_curve": 1.2258819465493476,
+      "signal": 0,
+      "prob_up": 0.48333333333333334,
+      "prob_down": 0.13333333333333333,
+      "equity_curve": 1.8397953023976765,
       "buy_hold_equity": 0.8615354638260349
     },
     {
@@ -5411,10 +5411,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.460254906705951,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.11750087029884679,
-      "prob_down": 0.22589361774185276,
-      "equity_curve": 1.282711143873929,
+      "signal": -1,
+      "prob_up": 0.1,
+      "prob_down": 0.5840421607378128,
+      "equity_curve": 1.8397953023976765,
       "buy_hold_equity": 0.9014743576271139
     },
     {
@@ -5430,9 +5430,9 @@
       "x_sentiment_score": 0.7995650085678068,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.0036539938904902865,
-      "prob_down": 0.77011346497574,
-      "equity_curve": 1.282711143873929,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.6507088274044794,
+      "equity_curve": 1.79273014760937,
       "buy_hold_equity": 0.9245356352182219
     },
     {
@@ -5448,9 +5448,9 @@
       "x_sentiment_score": 0.3370339379764889,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.07254071504631926,
-      "prob_down": 0.058560282737922346,
-      "equity_curve": 1.352253335262104,
+      "prob_up": 0.21666666666666667,
+      "prob_down": 0.23333333333333334,
+      "equity_curve": 1.889923021958215,
       "buy_hold_equity": 0.8744119309091145
     },
     {
@@ -5466,9 +5466,9 @@
       "x_sentiment_score": 0.40292220740195744,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.57954339222615,
-      "prob_down": 0.14571258331951636,
-      "equity_curve": 1.352253335262104,
+      "prob_up": 0.7555555555555554,
+      "prob_down": 0.07777777777777777,
+      "equity_curve": 1.889923021958215,
       "buy_hold_equity": 0.8555701128731505
     },
     {
@@ -5484,9 +5484,9 @@
       "x_sentiment_score": 0.54557966239785,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.7935926527411903,
-      "prob_down": 0.07831700871484637,
-      "equity_curve": 1.328605523167937,
+      "prob_up": 0.7222222222222221,
+      "prob_down": 0.13333333333333333,
+      "equity_curve": 1.8568725991341177,
       "buy_hold_equity": 0.8406081521702117
     },
     {
@@ -5502,9 +5502,9 @@
       "x_sentiment_score": 0.24059825695306197,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.768090767249151,
-      "prob_down": 0.07130259776175721,
-      "equity_curve": 1.315574365662839,
+      "prob_up": 0.7888888888888889,
+      "prob_down": 0.1,
+      "equity_curve": 1.838660120799298,
       "buy_hold_equity": 0.8323633443322309
     },
     {
@@ -5519,10 +5519,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5689073936651823,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6428676239102693,
-      "prob_down": 0.24919054406828392,
-      "equity_curve": 1.3246578465744718,
+      "signal": 0,
+      "prob_up": 0.43333333333333335,
+      "prob_down": 0.36333333333333334,
+      "equity_curve": 1.851355286155341,
       "buy_hold_equity": 0.8381104588603977
     },
     {
@@ -5538,9 +5538,9 @@
       "x_sentiment_score": 0.4814686605863864,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.08289194613010173,
-      "prob_down": 0.8059978904635923,
-      "equity_curve": 1.3374208039542754,
+      "prob_up": 0.1,
+      "prob_down": 0.5633333333333332,
+      "equity_curve": 1.851355286155341,
       "buy_hold_equity": 0.8461855765926215
     },
     {
@@ -5555,10 +5555,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.29306663787234544,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.1204094709581573,
-      "prob_down": 0.7041877267174984,
-      "equity_curve": 1.324121329359153,
+      "signal": 0,
+      "prob_up": 0.3333333333333333,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 1.8329451847706684,
       "buy_hold_equity": 0.8546001485398943
     },
     {
@@ -5573,10 +5573,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": 0.4954772740839876,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.006361712224079117,
-      "prob_down": 0.5634331828614886,
-      "equity_curve": 1.2798612219612222,
+      "signal": 0,
+      "prob_up": 0.1,
+      "prob_down": 0.5333333333333333,
+      "equity_curve": 1.8329451847706684,
       "buy_hold_equity": 0.8831660310749712
     },
     {
@@ -5591,10 +5591,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.7614306652431901,
       "swing_target": 1,
-      "signal": -1,
-      "prob_up": 0.005545708983511259,
-      "prob_down": 0.5845993015065741,
-      "equity_curve": 1.182342969025979,
+      "signal": 0,
+      "prob_up": 0.0,
+      "prob_down": 0.5,
+      "equity_curve": 1.8329451847706684,
       "buy_hold_equity": 0.9504583334936731
     },
     {
@@ -5610,9 +5610,9 @@
       "x_sentiment_score": 0.4202969235066657,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.0050540233389610376,
-      "prob_down": 0.23067130347221312,
-      "equity_curve": 1.1915435496933189,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.5,
+      "equity_curve": 1.8329451847706684,
       "buy_hold_equity": 0.9430621981950822
     },
     {
@@ -5628,9 +5628,9 @@
       "x_sentiment_score": 0.27202078063766294,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.005433969320092457,
-      "prob_down": 0.6776010067689718,
-      "equity_curve": 1.1915435496933189,
+      "prob_up": 0.0,
+      "prob_down": 0.6333333333333333,
+      "equity_curve": 1.8329451847706684,
       "buy_hold_equity": 0.9714825897803475
     },
     {
@@ -5646,9 +5646,9 @@
       "x_sentiment_score": 0.6131528835242326,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.02071444320957445,
-      "prob_down": 0.5011005020482203,
-      "equity_curve": 1.2156944356284949,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.6686827956989247,
+      "equity_curve": 1.870096365769651,
       "buy_hold_equity": 0.9517920252014588
     },
     {
@@ -5664,9 +5664,9 @@
       "x_sentiment_score": 0.3578138639501748,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.01359934651680441,
-      "prob_down": 0.7226099732097557,
-      "equity_curve": 1.2345260428758815,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.6166666666666667,
+      "equity_curve": 1.8990649282988796,
       "buy_hold_equity": 0.9370483749267725
     },
     {
@@ -5682,9 +5682,9 @@
       "x_sentiment_score": 0.6594665183858502,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.009287173923083368,
-      "prob_down": 0.719471929419781,
-      "equity_curve": 1.2310437468792819,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.5785714285714286,
+      "equity_curve": 1.893708130655557,
       "buy_hold_equity": 0.9396915591863984
     },
     {
@@ -5700,9 +5700,9 @@
       "x_sentiment_score": 0.4498824364094093,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.03851199523547091,
-      "prob_down": 0.13068733139265906,
-      "equity_curve": 1.2748519153415765,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.44814814814814813,
+      "equity_curve": 1.961098006130316,
       "buy_hold_equity": 0.9062515078220248
     },
     {
@@ -5717,10 +5717,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.6904296096439773,
       "swing_target": 2,
-      "signal": 0,
-      "prob_up": 0.03904512181348025,
-      "prob_down": 0.4790308716100556,
-      "equity_curve": 1.2748519153415765,
+      "signal": -1,
+      "prob_up": 0.03333333333333333,
+      "prob_down": 0.6250553447185326,
+      "equity_curve": 1.961098006130316,
       "buy_hold_equity": 0.9125078406745326
     },
     {
@@ -5736,9 +5736,9 @@
       "x_sentiment_score": 0.4709388375792483,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.251286699998884,
-      "prob_down": 0.35434881600638424,
-      "equity_curve": 1.2748519153415765,
+      "prob_up": 0.2049206349206349,
+      "prob_down": 0.4286507936507936,
+      "equity_curve": 1.9487465506490742,
       "buy_hold_equity": 0.9182550292062345
     },
     {
@@ -5754,9 +5754,9 @@
       "x_sentiment_score": 0.37726405056525303,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.029454758358397504,
-      "prob_down": 0.7109314382040078,
-      "equity_curve": 1.2748519153415765,
+      "prob_up": 0.13825396825396824,
+      "prob_down": 0.7015674603174602,
+      "equity_curve": 1.9487465506490742,
       "buy_hold_equity": 0.9118288582408998
     },
     {
@@ -5771,10 +5771,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5283289734769185,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.06314074384423576,
-      "prob_down": 0.8371362833730437,
-      "equity_curve": 1.2857689539128063,
+      "signal": 0,
+      "prob_up": 0.4015873015873016,
+      "prob_down": 0.3714285714285714,
+      "equity_curve": 1.965434403569848,
       "buy_hold_equity": 0.9040205232523539
     },
     {
@@ -5790,9 +5790,9 @@
       "x_sentiment_score": 0.4476263617091012,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.022139286614084576,
-      "prob_down": 0.9461737510819661,
-      "equity_curve": 1.2553146561435007,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.8222222222222223,
+      "equity_curve": 1.965434403569848,
       "buy_hold_equity": 0.9254328540765727
     },
     {
@@ -5808,9 +5808,9 @@
       "x_sentiment_score": 0.30166535449730036,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.038515682757773236,
-      "prob_down": 0.6608480681798474,
-      "equity_curve": 1.2250855216229215,
+      "prob_up": 0.16666666666666666,
+      "prob_down": 0.6333333333333333,
+      "equity_curve": 1.9181049306873972,
       "buy_hold_equity": 0.9477181305996616
     },
     {
@@ -5825,10 +5825,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.44954836917532476,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.29674353333296744,
-      "prob_down": 0.6636433805597806,
-      "equity_curve": 1.2197879486131635,
+      "signal": 1,
+      "prob_up": 0.6444444444444445,
+      "prob_down": 0.2555555555555556,
+      "equity_curve": 1.9098105702273762,
       "buy_hold_equity": 0.9518162983609393
     },
     {
@@ -5843,10 +5843,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.27809455525829013,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.04692325613171043,
-      "prob_down": 0.860301161476578,
-      "equity_curve": 1.2295460488687977,
+      "signal": 0,
+      "prob_up": 0.412962962962963,
+      "prob_down": 0.47222222222222227,
+      "equity_curve": 1.8945324040225562,
       "buy_hold_equity": 0.9442019266376308
     },
     {
@@ -5861,10 +5861,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.21447324114694655,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.08131848571333374,
-      "prob_down": 0.8865017341803954,
-      "equity_curve": 1.1999891475318383,
+      "signal": 0,
+      "prob_up": 0.38333333333333336,
+      "prob_down": 0.4850678733031674,
+      "equity_curve": 1.8945324040225562,
       "buy_hold_equity": 0.9668994768542095
     },
     {
@@ -5879,10 +5879,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.47053935995950386,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.14103822489214032,
-      "prob_down": 0.7452001400484412,
-      "equity_curve": 1.1606847187070861,
+      "signal": 0,
+      "prob_up": 0.4,
+      "prob_down": 0.4448717948717949,
+      "equity_curve": 1.8945324040225562,
       "buy_hold_equity": 0.9985692896578274
     },
     {
@@ -5897,10 +5897,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.44610790200317135,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.07823283843822787,
-      "prob_down": 0.8528632369007806,
-      "equity_curve": 1.1140081706868843,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.31666666666666665,
+      "equity_curve": 1.8945324040225562,
       "buy_hold_equity": 1.038726419883624
     },
     {
@@ -5916,9 +5916,9 @@
       "x_sentiment_score": 0.6617621917143501,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.8013323393869282,
-      "prob_down": 0.14045628609605817,
-      "equity_curve": 1.0707065972579628,
+      "prob_up": 0.7,
+      "prob_down": 0.2,
+      "equity_curve": 1.8945324040225562,
       "buy_hold_equity": 1.0791017865341381
     },
     {
@@ -5933,10 +5933,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.2579796669860891,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.6995936713507542,
-      "prob_down": 0.2694671035977901,
-      "equity_curve": 1.0429163767451974,
+      "signal": 0,
+      "prob_up": 0.5333333333333333,
+      "prob_down": 0.36666666666666664,
+      "equity_curve": 1.84535976101167,
       "buy_hold_equity": 1.0510936686423626
     },
     {
@@ -5952,9 +5952,9 @@
       "x_sentiment_score": 0.4085162576425584,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.8013323393869282,
-      "prob_down": 0.14045628609605817,
-      "equity_curve": 1.0713562130290317,
+      "prob_up": 0.8,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.84535976101167,
       "buy_hold_equity": 1.0797564958082908
     },
     {
@@ -5970,9 +5970,9 @@
       "x_sentiment_score": 0.24658380950363498,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7096875375419915,
-      "prob_down": 0.27832183193905685,
-      "equity_curve": 1.066616228077092,
+      "prob_up": 0.7666666666666667,
+      "prob_down": 0.16666666666666666,
+      "equity_curve": 1.8371953639682443,
       "buy_hold_equity": 1.0749793456133803
     },
     {
@@ -5987,10 +5987,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5137806014766604,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.4513410410698775,
-      "prob_down": 0.50621788145953,
-      "equity_curve": 1.0159441419552429,
+      "signal": 1,
+      "prob_up": 0.6333333333333333,
+      "prob_down": 0.3,
+      "equity_curve": 1.7499151227201875,
       "buy_hold_equity": 1.023909950130497
     },
     {
@@ -6005,10 +6005,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.49148973752123276,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.5962711454808777,
-      "prob_down": 0.3636459017216592,
-      "equity_curve": 1.0454186494078497,
+      "signal": 0,
+      "prob_up": 0.43636363636363634,
+      "prob_down": 0.43030303030303035,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 0.9942043391528718
     },
     {
@@ -6023,10 +6023,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": 0.408250341951221,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6095945020716647,
-      "prob_down": 0.3495891816163075,
-      "equity_curve": 1.0304254375989774,
+      "signal": 0,
+      "prob_up": 0.503030303030303,
+      "prob_down": 0.3386363636363637,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 0.979945634043046
     },
     {
@@ -6041,10 +6041,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.6401482908113991,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.31251612214132585,
-      "prob_down": 0.6843918107891345,
-      "equity_curve": 1.0639562093009176,
+      "signal": 0,
+      "prob_up": 0.43636363636363634,
+      "prob_down": 0.49696969696969695,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.0118337572749165
     },
     {
@@ -6059,10 +6059,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.5392299972082005,
       "swing_target": 2,
-      "signal": -1,
-      "prob_up": 0.28249084188540946,
-      "prob_down": 0.7123811613729454,
-      "equity_curve": 1.0624517989752884,
+      "signal": 0,
+      "prob_up": 0.5,
+      "prob_down": 0.4666666666666667,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.013264467617088
     },
     {
@@ -6077,10 +6077,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.24066687757170588,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.5124274930100288,
-      "prob_down": 0.4507369246826685,
-      "equity_curve": 1.0417036586287132,
+      "signal": 0,
+      "prob_up": 0.4666666666666667,
+      "prob_down": 0.44166666666666665,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.033052050830363
     },
     {
@@ -6096,9 +6096,9 @@
       "x_sentiment_score": 0.39824536653774784,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.49518097161430474,
-      "prob_down": 0.21468805938722613,
-      "equity_curve": 1.0602386685197478,
+      "prob_up": 0.4633333333333333,
+      "prob_down": 0.1,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.0514331228574114
     },
     {
@@ -6113,10 +6113,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.23737566599888726,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.651427453777768,
-      "prob_down": 0.17944257397799565,
-      "equity_curve": 1.0602386685197478,
+      "signal": 0,
+      "prob_up": 0.41333333333333333,
+      "prob_down": 0.2,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.0678499930584673
     },
     {
@@ -6131,10 +6131,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.2819111632878686,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.7501109374931453,
-      "prob_down": 0.24560716569024718,
-      "equity_curve": 1.0644280529929413,
+      "signal": 0,
+      "prob_up": 0.53,
+      "prob_down": 0.2916666666666667,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.0720694526136114
     },
     {
@@ -6150,9 +6150,9 @@
       "x_sentiment_score": 0.09463459755258727,
       "swing_target": 0,
       "signal": 1,
-      "prob_up": 0.7006662555845647,
-      "prob_down": 0.1499600863315982,
-      "equity_curve": 1.0492357021154082,
+      "prob_up": 0.5866666666666667,
+      "prob_down": 0.09833333333333334,
+      "equity_curve": 1.6991466954060823,
       "buy_hold_equity": 1.0567680376956237
     },
     {
@@ -6167,10 +6167,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.23096249400989521,
       "swing_target": 0,
-      "signal": 1,
-      "prob_up": 0.8165210186005707,
-      "prob_down": 0.08554677824692157,
-      "equity_curve": 1.0012991127904598,
+      "signal": 0,
+      "prob_up": 0.5388888888888889,
+      "prob_down": 0.2733333333333333,
+      "equity_curve": 1.6215175247856897,
       "buy_hold_equity": 1.0084873174221778
     },
     {
@@ -6185,10 +6185,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.4722909363032765,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.10817518229665143,
-      "prob_down": 0.8836403519070732,
-      "equity_curve": 1.0202233127199158,
+      "signal": 1,
+      "prob_up": 0.6272222222222222,
+      "prob_down": 0.2982125603864734,
+      "equity_curve": 1.6215175247856897,
       "buy_hold_equity": 1.0275473718828592
     },
     {
@@ -6204,9 +6204,9 @@
       "x_sentiment_score": 0.09152985280508301,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.4198547863172267,
-      "prob_down": 0.38374655033996086,
-      "equity_curve": 1.0203195663576008,
+      "prob_up": 0.5077777777777778,
+      "prob_down": 0.3011111111111111,
+      "equity_curve": 1.6213645416511302,
       "buy_hold_equity": 1.027450427252008
     },
     {
@@ -6221,10 +6221,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.060381956717546315,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.10268857161960807,
-      "prob_down": 0.8936488981607988,
-      "equity_curve": 1.0203195663576008,
+      "signal": 0,
+      "prob_up": 0.3938888888888889,
+      "prob_down": 0.43444444444444447,
+      "equity_curve": 1.6213645416511302,
       "buy_hold_equity": 1.01471945111874
     },
     {
@@ -6240,9 +6240,9 @@
       "x_sentiment_score": 0.10544395958256485,
       "swing_target": 2,
       "signal": 0,
-      "prob_up": 0.43134671111615824,
-      "prob_down": 0.44726694146218826,
-      "equity_curve": 1.0872517774570043,
+      "prob_up": 0.45111111111111113,
+      "prob_down": 0.32,
+      "equity_curve": 1.6213645416511302,
       "buy_hold_equity": 0.9481546034490966
     },
     {
@@ -6257,10 +6257,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.1355400934237085,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.15622983899995016,
-      "prob_down": 0.7584092675987185,
-      "equity_curve": 1.0872517774570043,
+      "signal": 0,
+      "prob_up": 0.4272222222222222,
+      "prob_down": 0.3648792270531401,
+      "equity_curve": 1.6213645416511302,
       "buy_hold_equity": 0.9916824466871123
     },
     {
@@ -6275,10 +6275,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.14337992711196487,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.38626336552636775,
-      "prob_down": 0.24637674580589758,
-      "equity_curve": 1.1198733696970602,
+      "signal": 1,
+      "prob_up": 0.6,
+      "prob_down": 0.1814814814814815,
+      "equity_curve": 1.6213645416511302,
       "buy_hold_equity": 0.9619282893905265
     },
     {
@@ -6294,9 +6294,9 @@
       "x_sentiment_score": 0.009552268606233066,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8558501722884595,
-      "prob_down": 0.1069067816239669,
-      "equity_curve": 1.1198733696970602,
+      "prob_up": 0.7152777777777778,
+      "prob_down": 0.18287037037037038,
+      "equity_curve": 1.559686651544133,
       "buy_hold_equity": 0.9253358354421863
     },
     {
@@ -6311,10 +6311,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.014046825807919633,
       "swing_target": 1,
-      "signal": 1,
-      "prob_up": 0.713874226618555,
-      "prob_down": 0.266596430091799,
-      "equity_curve": 1.1714076704558294,
+      "signal": 0,
+      "prob_up": 0.4486111111111111,
+      "prob_down": 0.5066798941798942,
+      "equity_curve": 1.6314602673520133,
       "buy_hold_equity": 0.967917913502891
     },
     {
@@ -6329,10 +6329,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.3346327482206388,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.07662801767948162,
-      "prob_down": 0.7296895130194412,
-      "equity_curve": 1.1927726874704332,
+      "signal": 0,
+      "prob_up": 0.3597222222222223,
+      "prob_down": 0.5474206349206351,
+      "equity_curve": 1.6314602673520133,
       "buy_hold_equity": 0.9855715307808811
     },
     {
@@ -6347,10 +6347,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.14393937693753117,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.04814542662242178,
-      "prob_down": 0.9438931861084602,
-      "equity_curve": 1.178920637566791,
+      "signal": 0,
+      "prob_up": 0.3152777777777778,
+      "prob_down": 0.549537037037037,
+      "equity_curve": 1.6314602673520133,
       "buy_hold_equity": 0.9970172875217891
     },
     {
@@ -6366,9 +6366,9 @@
       "x_sentiment_score": 0.03796981817587003,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.12156600950921967,
-      "prob_down": 0.7961292110123618,
-      "equity_curve": 1.1975298642200645,
+      "prob_up": 0.23591269841269838,
+      "prob_down": 0.5981746031746032,
+      "equity_curve": 1.6314602673520133,
       "buy_hold_equity": 0.9812793997543663
     },
     {
@@ -6383,10 +6383,10 @@
       "political_trade_signal": -1,
       "x_sentiment_score": -0.044719367565532124,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.2602313302310009,
-      "prob_down": 0.5635822313516581,
-      "equity_curve": 1.2220332639239628,
+      "signal": 0,
+      "prob_up": 0.46388888888888885,
+      "prob_down": 0.46805555555555556,
+      "equity_curve": 1.664842585594232,
       "buy_hold_equity": 0.961200834641468
     },
     {
@@ -6402,9 +6402,9 @@
       "x_sentiment_score": -0.28228019604016896,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.15655107161746148,
-      "prob_down": 0.5471440879916143,
-      "equity_curve": 1.2093622443165672,
+      "prob_up": 0.320016339869281,
+      "prob_down": 0.5619281045751634,
+      "equity_curve": 1.664842585594232,
       "buy_hold_equity": 0.9711673347212438
     },
     {
@@ -6420,9 +6420,9 @@
       "x_sentiment_score": 0.27395603147256026,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.0974130409905704,
-      "prob_down": 0.251083630517062,
-      "equity_curve": 1.1955923898482654,
+      "prob_up": 0.32341269841269843,
+      "prob_down": 0.5240079365079365,
+      "equity_curve": 1.6458866108860757,
       "buy_hold_equity": 0.9822250909281423
     },
     {
@@ -6438,9 +6438,9 @@
       "x_sentiment_score": -0.14237608753008696,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.7121932440085738,
-      "prob_down": 0.029689010962433857,
-      "equity_curve": 1.1955923898482654,
+      "prob_up": 0.55,
+      "prob_down": 0.3,
+      "equity_curve": 1.6458866108860757,
       "buy_hold_equity": 0.9253843077576118
     },
     {
@@ -6456,9 +6456,9 @@
       "x_sentiment_score": -0.13247651583449338,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8662891743261012,
-      "prob_down": 0.10628273465212149,
-      "equity_curve": 1.1765436595864416,
+      "prob_up": 0.8333333333333334,
+      "prob_down": 0.13333333333333333,
+      "equity_curve": 1.6196635850801862,
       "buy_hold_equity": 0.9106406574829254
     },
     {
@@ -6474,9 +6474,9 @@
       "x_sentiment_score": 0.17947120262364044,
       "swing_target": 2,
       "signal": 1,
-      "prob_up": 0.8961415808558435,
-      "prob_down": 0.05591172072122521,
-      "equity_curve": 1.1752591091893227,
+      "prob_up": 0.5641025641025641,
+      "prob_down": 0.2958974358974359,
+      "equity_curve": 1.6178952363372716,
       "buy_hold_equity": 0.9096464199901889
     },
     {
@@ -6491,10 +6491,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": 0.015186406111282275,
       "swing_target": 2,
-      "signal": 1,
-      "prob_up": 0.6997226962359864,
-      "prob_down": 0.08429774444813887,
-      "equity_curve": 1.1896396676172103,
+      "signal": 0,
+      "prob_up": 0.41965811965811967,
+      "prob_down": 0.47367521367521365,
+      "equity_curve": 1.6376919235481435,
       "buy_hold_equity": 0.9207769216719932
     },
     {
@@ -6509,10 +6509,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.044180357949064566,
       "swing_target": 0,
-      "signal": -1,
-      "prob_up": 0.0240335180432337,
-      "prob_down": 0.6870746285004455,
-      "equity_curve": 1.2903036722246592,
+      "signal": 0,
+      "prob_up": 0.20303030303030303,
+      "prob_down": 0.4903030303030303,
+      "equity_curve": 1.6376919235481435,
       "buy_hold_equity": 0.9986905074481585
     },
     {
@@ -6528,9 +6528,9 @@
       "x_sentiment_score": -0.3708712657623832,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.07012755202741935,
-      "prob_down": 0.7979810541890564,
-      "equity_curve": 1.2628583709673324,
+      "prob_up": 0.10117845117845119,
+      "prob_down": 0.5988215488215488,
+      "equity_curve": 1.6376919235481435,
       "buy_hold_equity": 1.0199330741630852
     },
     {
@@ -6546,9 +6546,9 @@
       "x_sentiment_score": -0.10422464942884704,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.11250651254679889,
-      "prob_down": 0.874301809629408,
-      "equity_curve": 1.24874659937012,
+      "prob_up": 0.07453703703703704,
+      "prob_down": 0.7532407407407408,
+      "equity_curve": 1.6193915860732384,
       "buy_hold_equity": 1.0313302845850325
     },
     {
@@ -6564,9 +6564,9 @@
       "x_sentiment_score": -0.28268291301533727,
       "swing_target": 2,
       "signal": -1,
-      "prob_up": 0.2516585210904265,
-      "prob_down": 0.5937391422884442,
-      "equity_curve": 1.3422630579746793,
+      "prob_up": 0.2,
+      "prob_down": 0.65,
+      "equity_curve": 1.7406650023932326,
       "buy_hold_equity": 0.9540957552460351
     },
     {
@@ -6582,9 +6582,9 @@
       "x_sentiment_score": 0.1320635715682574,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.057672280593421756,
-      "prob_down": 0.802525774409011,
-      "equity_curve": 1.2524718991025974,
+      "prob_up": 0.2375,
+      "prob_down": 0.6291666666666667,
+      "equity_curve": 1.6242226054693416,
       "buy_hold_equity": 1.0179203260181315
     },
     {
@@ -6600,9 +6600,9 @@
       "x_sentiment_score": -0.19216617363642746,
       "swing_target": 1,
       "signal": -1,
-      "prob_up": 0.053579170615235025,
-      "prob_down": 0.8738424498077549,
-      "equity_curve": 1.30280707163821,
+      "prob_up": 0.03703703703703704,
+      "prob_down": 0.8962962962962963,
+      "equity_curve": 1.689497942298152,
       "buy_hold_equity": 0.9770114678837962
     },
     {
@@ -6617,10 +6617,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.1035613410432627,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.4677546497837279,
-      "prob_down": 0.16838745294452873,
-      "equity_curve": 1.3313918567380547,
+      "signal": -1,
+      "prob_up": 0.362962962962963,
+      "prob_down": 0.6037037037037037,
+      "equity_curve": 1.726567080667577,
       "buy_hold_equity": 0.9555749379036322
     },
     {
@@ -6635,10 +6635,10 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.23786950153902842,
       "swing_target": 0,
-      "signal": 0,
-      "prob_up": 0.26314211953211686,
-      "prob_down": 0.3317879657780657,
-      "equity_curve": 1.3313918567380547,
+      "signal": -1,
+      "prob_up": 0.1308610400682012,
+      "prob_down": 0.6163161883110732,
+      "equity_curve": 1.6718424039428736,
       "buy_hold_equity": 0.9858625126805042
     },
     {
@@ -6654,9 +6654,9 @@
       "x_sentiment_score": -0.05810005001101823,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.026906065695846845,
-      "prob_down": 0.9369186121299595,
-      "equity_curve": 1.3313918567380547,
+      "prob_up": 0.13756038647342997,
+      "prob_down": 0.7177050771999621,
+      "equity_curve": 1.6668664696068,
       "buy_hold_equity": 0.9887967528432883
     },
     {
@@ -6672,9 +6672,9 @@
       "x_sentiment_score": -0.24049742172930674,
       "swing_target": 0,
       "signal": 0,
-      "prob_up": 0.2784287222938116,
-      "prob_down": 0.06816326073409498,
-      "equity_curve": 1.3738386237654128,
+      "prob_up": 0.24166666666666667,
+      "prob_down": 0.4503119429590018,
+      "equity_curve": 1.720008669886184,
       "buy_hold_equity": 0.957272430989482
     },
     {
@@ -6690,9 +6690,9 @@
       "x_sentiment_score": -0.48483199528011756,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.24168434919615236,
-      "prob_down": 0.6198564168845142,
-      "equity_curve": 1.3738386237654128,
+      "prob_up": 0.1708937198067633,
+      "prob_down": 0.6445148415097265,
+      "equity_curve": 1.720008669886184,
       "buy_hold_equity": 0.9607158154730719
     },
     {
@@ -6708,9 +6708,9 @@
       "x_sentiment_score": -0.6508715192379704,
       "swing_target": 0,
       "signal": -1,
-      "prob_up": 0.20868064202096404,
-      "prob_down": 0.5352106392759918,
-      "equity_curve": 1.379803094848281,
+      "prob_up": 0.20756038647342995,
+      "prob_down": 0.5817281510759772,
+      "equity_curve": 1.7274760258014668,
       "buy_hold_equity": 0.9565449022368885
     },
     {
@@ -6726,9 +6726,9 @@
       "x_sentiment_score": -0.30282108096600496,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.4537518761857939,
-      "prob_down": 0.358517281664667,
-      "equity_curve": 1.3916961187352639,
+      "prob_up": 0.4083333333333333,
+      "prob_down": 0.525,
+      "equity_curve": 1.7423657689218839,
       "buy_hold_equity": 0.9483000943989077
     },
     {
@@ -6744,9 +6744,9 @@
       "x_sentiment_score": -0.4688164362910877,
       "swing_target": 1,
       "signal": 0,
-      "prob_up": 0.2933424065114907,
-      "prob_down": 0.23177495829550904,
-      "equity_curve": 1.3916961187352639,
+      "prob_up": 0.5416666666666666,
+      "prob_down": 0.2916666666666667,
+      "equity_curve": 1.7423657689218839,
       "buy_hold_equity": 0.9235171245660048
     },
     {
@@ -6762,9 +6762,9 @@
       "x_sentiment_score": -0.046791466745734145,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.5303351190471346,
-      "prob_down": 0.2671429360918275,
-      "equity_curve": 1.3916961187352639,
+      "prob_up": 0.775,
+      "prob_down": 0.14166666666666666,
+      "equity_curve": 1.7423657689218839,
       "buy_hold_equity": 0.8961879891078622
     },
     {
@@ -6779,28 +6779,28 @@
       "political_trade_signal": 0,
       "x_sentiment_score": -0.20409100665877725,
       "swing_target": 1,
-      "signal": 0,
-      "prob_up": 0.4250965681388811,
-      "prob_down": 0.3214659291932615,
-      "equity_curve": 1.4269431761994285,
+      "signal": 1,
+      "prob_up": 0.6333333333333333,
+      "prob_down": 0.3333333333333333,
+      "equity_curve": 1.7864941282339684,
       "buy_hold_equity": 0.918885465320906
     },
     {
       "date": "2026-07-22",
-      "open": 375.3710021972656,
+      "open": 375.5299987792969,
       "high": 380.1700134277344,
       "low": 372.8999938964844,
       "close": 374.010009765625,
       "volume": 23755045,
       "rsi_14": 33.226498111888404,
-      "news_sentiment": 0.36666666666666664,
+      "news_sentiment": 0.3,
       "political_trade_signal": 0,
       "x_sentiment_score": -0.3543036788195406,
       "swing_target": 1,
       "signal": 1,
-      "prob_up": 0.807388875283669,
-      "prob_down": 0.15901212802012188,
-      "equity_curve": 1.4269431761994285,
+      "prob_up": 0.675,
+      "prob_down": 0.175,
+      "equity_curve": 1.7632984964552876,
       "buy_hold_equity": 0.9069547634151374
     }
   ]
