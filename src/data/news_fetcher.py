@@ -70,6 +70,8 @@ class NewsFetcher:
                 is_catalyst = 1 if any(kw in full_text.lower() for kw in ['earnings', 'q1', 'q2', 'q3', 'q4', 'press release', 'sec filing', 'guidance']) else 0
                 
                 pub_date = pd.to_datetime(pub_date_str) if pub_date_str else pd.Timestamp.now()
+                if hasattr(pub_date, 'tz') and pub_date.tz is not None:
+                    pub_date = pub_date.tz_localize(None)
                 parsed_news.append({
                     'date': pub_date.floor('D'),
                     'title': title,
@@ -93,6 +95,61 @@ class NewsFetcher:
             print(f"[NewsFetcher] Warning: Could not fetch live yfinance news: {e}")
             return pd.DataFrame()
 
+    def fetch_google_news_rss(self) -> pd.DataFrame:
+        """Fetches live news headlines from Google News RSS feed (Free, no API key)."""
+        import urllib.request
+        import urllib.parse
+        import xml.etree.ElementTree as ET
+        
+        print(f"[NewsFetcher] Fetching live news articles for {self.ticker} via Google News RSS...")
+        try:
+            query = urllib.parse.quote(f"{self.ticker} stock")
+            url = f"https://news.google.com/rss/search?q={query}+when:3d&hl=en-US&gl=US&ceid=US:en"
+            
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req) as response:
+                xml_data = response.read()
+                
+            root = ET.fromstring(xml_data)
+            parsed_news = []
+            
+            for item in root.findall('.//item'):
+                title = item.find('title').text if item.find('title') is not None else ''
+                pub_date_str = item.find('pubDate').text if item.find('pubDate') is not None else ''
+                
+                sentiment_score = self.analyze_text_sentiment(title)
+                is_catalyst = 1 if any(kw in title.lower() for kw in ['earnings', 'q1', 'q2', 'q3', 'q4', 'press release', 'sec filing', 'guidance']) else 0
+                
+                try:
+                    pub_date = pd.to_datetime(pub_date_str)
+                    if hasattr(pub_date, 'tz') and pub_date.tz is not None:
+                        pub_date = pub_date.tz_localize(None)
+                except:
+                    pub_date = pd.Timestamp.now()
+                    
+                parsed_news.append({
+                    'date': pub_date.floor('D'),
+                    'title': title,
+                    'sentiment': sentiment_score,
+                    'is_catalyst': is_catalyst
+                })
+                
+            news_df = pd.DataFrame(parsed_news)
+            if news_df.empty:
+                return pd.DataFrame()
+                
+            daily_news = news_df.groupby('date').agg(
+                news_sentiment=('sentiment', 'mean'),
+                news_volume=('title', 'count'),
+                press_release_flag=('is_catalyst', 'max')
+            )
+            print(f"[NewsFetcher] Processed {len(parsed_news)} live Google news headlines across {len(daily_news)} dates.")
+            return daily_news
+            
+        except Exception as e:
+            print(f"[NewsFetcher] Warning: Could not fetch Google News RSS: {e}")
+            return pd.DataFrame()
+
     def fetch_news_features(self, dates_index: pd.DatetimeIndex) -> pd.DataFrame:
         """
         Builds aligned daily news features for dates in dates_index.
@@ -102,6 +159,18 @@ class NewsFetcher:
         
         # 1. Fetch Live News
         live_news_df = self.fetch_live_news()
+        google_news_df = self.fetch_google_news_rss()
+        
+        if not google_news_df.empty:
+            if live_news_df.empty:
+                live_news_df = google_news_df
+            else:
+                combined = pd.concat([live_news_df, google_news_df])
+                live_news_df = combined.groupby(combined.index).agg({
+                    'news_sentiment': 'mean',
+                    'news_volume': 'sum',
+                    'press_release_flag': 'max'
+                })
         
         # 2. Base historical sentiment signal
         np.random.seed(42)

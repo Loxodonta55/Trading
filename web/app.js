@@ -1,7 +1,15 @@
 let mainChartInstance = null;
 let rawData = null;
+let currentTicker = 'TSLA';
 let currentTab = 'equity';
 let currentFilter = 'all';
+
+const TICKER_NAMES = {
+    'TSLA': 'Tesla (TSLA)',
+    'GOOGL': 'Alphabet (GOOGL)',
+    'SPCX': 'SpaceX (SPCX)',
+    'NVDA': 'NVIDIA (NVDA)'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchDashboardData();
@@ -9,6 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
+    document.querySelectorAll('.ticker-tab').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const targetBtn = e.target.closest('.ticker-tab');
+            if (!targetBtn) return;
+            document.querySelectorAll('.ticker-tab').forEach(b => b.classList.remove('active'));
+            targetBtn.classList.add('active');
+            currentTicker = targetBtn.dataset.ticker;
+            
+            updateHeaderTitle();
+            renderDashboardForCurrentTicker();
+        });
+    });
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -36,7 +57,7 @@ function setupEventListeners() {
             runBtn.disabled = true;
             if (btnIcon) btnIcon.classList.add('spinning');
             if (btnText) btnText.innerText = "Berechnung läuft...";
-            showToast("⏳ Pipeline-Neuberechnung gestartet... Daten & TabFM Modell werden verarbeitet.", "info", 0);
+            showToast("⏳ Pipeline-Neuberechnung gestartet... Daten & TabFM Modelle (TSLA & GOOGL) werden verarbeitet.", "info", 0);
 
             try {
                 const res = await fetch('/api/run-analysis', { method: 'POST' });
@@ -55,6 +76,29 @@ function setupEventListeners() {
             }
         });
     }
+}
+
+function updateHeaderTitle() {
+    const titleElem = document.getElementById('app-title');
+    if (titleElem) {
+        const name = TICKER_NAMES[currentTicker] || `${currentTicker} Stock`;
+        titleElem.innerText = `${name} Swing Predictor`;
+    }
+}
+
+function getTickerData() {
+    if (!rawData) return null;
+    if (rawData.data && rawData.data[currentTicker]) {
+        return rawData.data[currentTicker];
+    }
+    return rawData;
+}
+
+function renderDashboardForCurrentTicker() {
+    renderSummaryMetrics();
+    renderAblationTable();
+    renderChart();
+    renderSignalsTable();
 }
 
 function showToast(message, type = 'info', durationMs = 4000) {
@@ -96,23 +140,21 @@ async function fetchDashboardData() {
         }
     }
 
-    if (!rawData || !rawData.summary || !rawData.tsla_chart_data) {
+    if (!rawData) {
         console.error("Failed to load dashboard data from all endpoints", lastError);
-        showToast("❌ Fehler: Dashboard-Daten konnten nicht geladen werden. Bitte starten Sie 'python web/server.py' oder 'python run_analysis.py'.", "error", 0);
+        showToast("❌ Fehler: Dashboard-Daten konnten nicht geladen werden.", "error", 0);
         return;
     }
 
-    renderSummaryMetrics();
-    renderAblationTable();
-    renderChart();
-    renderSignalsTable();
+    renderDashboardForCurrentTicker();
 }
 
 function renderSummaryMetrics() {
-    if (!rawData || !rawData.summary || rawData.summary.length === 0) return;
+    const tData = getTickerData();
+    if (!tData || !tData.summary || tData.summary.length === 0) return;
 
-    const bestExpName = rawData.best_experiment;
-    const bestSummary = rawData.summary.find(s => s.experiment === bestExpName) || rawData.summary[0];
+    const bestExpName = tData.best_experiment;
+    const bestSummary = tData.summary.find(s => s.experiment === bestExpName) || tData.summary[0];
 
     const retElem = document.getElementById('metric-return');
     if (retElem) {
@@ -125,6 +167,18 @@ function renderSummaryMetrics() {
     if (vsBh) {
         const bhVal = bestSummary.buy_hold_return || 0;
         vsBh.innerText = `vs Buy & Hold: ${bhVal >= 0 ? '+' : ''}${bhVal.toFixed(1)}%`;
+    }
+
+    const bhLabel = document.getElementById('metric-buyhold-label');
+    if (bhLabel) {
+        bhLabel.innerText = `${currentTicker} Buy & Hold Return`;
+    }
+
+    const bhReturn = document.getElementById('metric-buyhold-return');
+    if (bhReturn) {
+        const bhVal = bestSummary.buy_hold_return || 0;
+        bhReturn.innerText = `${bhVal >= 0 ? '+' : ''}${bhVal.toFixed(1)}%`;
+        bhReturn.className = `metric-value ${bhVal >= 0 ? 'positive' : 'negative'}`;
     }
 
     const wrElem = document.getElementById('metric-winrate');
@@ -144,12 +198,13 @@ function renderSummaryMetrics() {
 }
 
 function renderAblationTable() {
+    const tData = getTickerData();
     const tbody = document.getElementById('ablation-table-body');
-    if (!tbody || !rawData || !rawData.summary) return;
+    if (!tbody || !tData || !tData.summary) return;
     tbody.innerHTML = '';
 
-    rawData.summary.forEach(item => {
-        const isBest = item.experiment === rawData.best_experiment;
+    tData.summary.forEach(item => {
+        const isBest = item.experiment === tData.best_experiment;
         const tr = document.createElement('tr');
         if (isBest) tr.className = 'highlight-row';
 
@@ -167,12 +222,13 @@ function renderAblationTable() {
 }
 
 function renderChart() {
+    const tData = getTickerData();
     const canvas = document.getElementById('mainChart');
-    if (!canvas || !rawData || !rawData.tsla_chart_data) return;
+    if (!canvas || !tData || !tData.tsla_chart_data) return;
     const ctx = canvas.getContext('2d');
     if (mainChartInstance) mainChartInstance.destroy();
 
-    const chartData = rawData.tsla_chart_data;
+    const chartData = tData.tsla_chart_data;
     const labels = chartData.map(d => d.date);
 
     if (currentTab === 'equity') {
@@ -185,7 +241,7 @@ function renderChart() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'TabFM Multi-Source Strategy',
+                        label: `TabFM ${currentTicker} Strategy`,
                         data: tabfmEquity,
                         borderColor: '#2962FF',
                         backgroundColor: 'rgba(41, 98, 255, 0.1)',
@@ -194,7 +250,7 @@ function renderChart() {
                         fill: true
                     },
                     {
-                        label: 'TSLA Buy & Hold Benchmark',
+                        label: `${currentTicker} Buy & Hold Benchmark`,
                         data: buyHoldEquity,
                         borderColor: 'rgba(255, 255, 255, 0.35)',
                         borderWidth: 1.5,
@@ -203,7 +259,7 @@ function renderChart() {
                     }
                 ]
             },
-            options: getChartOptions('Portfolio Performance (Base 100)')
+            options: getChartOptions(`${currentTicker} Portfolio Performance (Base 100)`)
         });
     } else {
         const closes = chartData.map(d => d.close);
@@ -216,7 +272,7 @@ function renderChart() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'TSLA Price ($)',
+                        label: `${currentTicker} Price ($)`,
                         data: closes,
                         borderColor: '#F0F4F8',
                         borderWidth: 2,
@@ -241,7 +297,7 @@ function renderChart() {
                     }
                 ]
             },
-            options: getChartOptions('TSLA Daily Price & TabFM Signals')
+            options: getChartOptions(`${currentTicker} Daily Price & TabFM Signals`)
         });
     }
 }
@@ -261,11 +317,12 @@ function getChartOptions(titleText) {
 }
 
 function renderSignalsTable() {
+    const tData = getTickerData();
     const tbody = document.getElementById('signals-table-body');
-    if (!tbody || !rawData || !rawData.tsla_chart_data) return;
+    if (!tbody || !tData || !tData.tsla_chart_data) return;
     tbody.innerHTML = '';
 
-    let rows = rawData.tsla_chart_data.slice().reverse();
+    let rows = tData.tsla_chart_data.slice().reverse();
     if (currentFilter === 'signals') {
         rows = rows.filter(r => r.signal !== 0);
     }
@@ -281,9 +338,10 @@ function renderSignalsTable() {
         if (item.swing_target === 2) targetPill = '<span style="color:#00E676; font-weight:600">Up (+5%)</span>';
         if (item.swing_target === 0) targetPill = '<span style="color:#FF1744; font-weight:600">Down (-5%)</span>';
 
-        const newsVal = item.news_sentiment || 0;
+        const newsVal = item.news_sentiment_3d_ma || item.news_sentiment || 0;
         const xVal = item.x_sentiment_score || 0;
-        const polSignal = item.political_trade_signal || 0;
+        const optIvSkew = item.options_iv_skew || 0;
+        const relStr = item.rel_strength_spy || 0;
 
         tr.innerHTML = `
             <td><strong>${item.date}</strong></td>
@@ -299,10 +357,10 @@ function renderSignalsTable() {
                 <div class="prob-bar-container"><div class="prob-bar down" style="width: ${(item.prob_down || 0) * 100}%"></div></div>
             </td>
             <td>${newsVal > 0 ? '+' : ''}${newsVal.toFixed(2)}</td>
-            <td>${polSignal > 0 ? '<span style="color:#00E676; font-weight:600">BUY</span>' : (polSignal < 0 ? '<span style="color:#FF1744; font-weight:600">SELL</span>' : 'None')}</td>
+            <td><span style="color:${optIvSkew > 0 ? '#00E676' : '#FF1744'}; font-weight:500">${optIvSkew > 0 ? '+' : ''}${optIvSkew.toFixed(4)}</span></td>
             <td>${xVal > 0 ? '+' : ''}${xVal.toFixed(2)}</td>
+            <td><span style="color:${relStr >= 0 ? '#00E676' : '#FF1744'}; font-weight:500">${relStr >= 0 ? '+' : ''}${(relStr * 100).toFixed(2)}%</span></td>
         `;
         tbody.appendChild(tr);
     });
 }
-

@@ -29,6 +29,11 @@ class BaselineClassifier:
             )
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
+        self._single_class = None
+        if len(y.unique()) <= 1:
+            self._single_class = y.iloc[0] if len(y) > 0 else 0
+            return self
+
         X_clean = X.fillna(0.0)
         if self.scaler:
             X_clean = self.scaler.fit_transform(X_clean)
@@ -37,13 +42,22 @@ class BaselineClassifier:
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
         X_clean = X.fillna(0.0)
+        n_samples = len(X)
+
+        if getattr(self, '_single_class', None) is not None:
+            full_probs = np.zeros((n_samples, 3))
+            c = int(self._single_class)
+            if c in [0, 1, 2]:
+                full_probs[:, c] = 1.0
+            return full_probs
+
         if self.scaler:
             X_clean = self.scaler.transform(X_clean)
             
         raw_probs = self.model.predict_proba(X_clean)
         classes = self.model.classes_
         
-        full_probs = np.zeros((len(X), 3))
+        full_probs = np.zeros((n_samples, 3))
         for i, c in enumerate(classes):
             if c in [0, 1, 2]:
                 full_probs[:, int(c)] = raw_probs[:, i]

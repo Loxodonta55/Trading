@@ -18,8 +18,9 @@ class FeatureBuilder:
     Compiles multi-source features (Technicals, Macro, News, SEC Filings, SEC Unstructured Text, Options Chain, Social Sentiment)
     and constructs forward-looking swing labels for TabFM training & walk-forward backtesting.
     """
-    def __init__(self):
-        self.market_fetcher = MarketDataFetcher()
+    def __init__(self, ticker: str = "TSLA"):
+        self.ticker = ticker
+        self.market_fetcher = MarketDataFetcher(ticker=ticker)
         self.news_fetcher = NewsFetcher()
         self.pol_fetcher = PoliticalTradesFetcher()
         self.soc_fetcher = SocialFetcher()
@@ -28,8 +29,8 @@ class FeatureBuilder:
         self.opt_fetcher = OptionsFetcher()
 
     def build_dataset(self) -> pd.DataFrame:
-        print("[FeatureBuilder] Building dataset from multi-source data feeds...")
-        # 1. Primary Stock Data (TSLA)
+        print(f"[FeatureBuilder] Building dataset for {self.ticker} from multi-source data feeds...")
+        # 1. Primary Stock Data (TSLA / GOOGL)
         df = self.market_fetcher.fetch_primary_data()
         
         # 2. Market Macro Benchmarks (SPY, QQQ, VIX)
@@ -182,9 +183,9 @@ class FeatureBuilder:
     def _add_swing_targets(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Constructs target labels for predicting upcoming swings within SWING_HORIZON_DAYS.
-        Label mapping:
-          2 -> Swing Up (Forward max price movement >= +5%)
-          0 -> Swing Down (Forward min price movement <= -5%)
+        Label mapping (for both 5% and 8% thresholds):
+          2 -> Swing Up (Forward max price movement >= threshold)
+          0 -> Swing Down (Forward min price movement <= -threshold)
           1 -> Neutral (No strong swing)
         """
         # Forward maximum return over next N days
@@ -198,19 +199,28 @@ class FeatureBuilder:
         df['forward_max_return'] = forward_max_return
         df['forward_min_return'] = forward_min_return
 
-        # Assign Swing Target Class
-        targets = np.full(len(df), 1) # default 1 = Neutral
-        
-        up_mask = forward_max_return >= SWING_UP_THRESHOLD
-        down_mask = forward_min_return <= SWING_DOWN_THRESHOLD
-        
-        # When both thresholds met, prioritize stronger move magnitude
-        both_mask = up_mask & down_mask
-        targets[up_mask] = 2
-        targets[down_mask] = 0
-        targets[both_mask] = np.where(forward_max_return[both_mask] > abs(forward_min_return[both_mask]), 2, 0)
+        # 1. Standard 5% Swing Target
+        targets_5 = np.full(len(df), 1) # default 1 = Neutral
+        up_mask_5 = forward_max_return >= SWING_UP_THRESHOLD
+        down_mask_5 = forward_min_return <= SWING_DOWN_THRESHOLD
+        both_mask_5 = up_mask_5 & down_mask_5
+        targets_5[up_mask_5] = 2
+        targets_5[down_mask_5] = 0
+        targets_5[both_mask_5] = np.where(forward_max_return[both_mask_5] > abs(forward_min_return[both_mask_5]), 2, 0)
 
-        df['swing_target'] = targets
+        df['swing_target'] = targets_5
+        df['swing_target_5pct'] = targets_5
+
+        # 2. Strong 8% Swing Target
+        targets_8 = np.full(len(df), 1)
+        up_mask_8 = forward_max_return >= 0.08
+        down_mask_8 = forward_min_return <= -0.08
+        both_mask_8 = up_mask_8 & down_mask_8
+        targets_8[up_mask_8] = 2
+        targets_8[down_mask_8] = 0
+        targets_8[both_mask_8] = np.where(forward_max_return[both_mask_8] > abs(forward_min_return[both_mask_8]), 2, 0)
+
+        df['swing_target_8pct'] = targets_8
         return df
 
 if __name__ == "__main__":

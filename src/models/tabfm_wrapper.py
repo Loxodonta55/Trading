@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 from typing import Optional, Union, Dict
+from sklearn.base import BaseEstimator, ClassifierMixin
 
-class TabFMWrapper:
+class TabFMWrapper(BaseEstimator, ClassifierMixin):
     """
     Wrapper for Google's Tabular Foundation Model (TabFM).
     Supports zero-shot and in-context classification for tabular stock features.

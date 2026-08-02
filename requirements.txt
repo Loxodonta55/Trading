@@ -9,3 +9,5 @@ transformers>=4.35.0
 requests>=2.31.0
 fastapi>=0.104.0
 uvicorn>=0.24.0
+safetensors>=0.4.0
+tabfm @ git+https://github.com/google-research/tabfm.git#egg=tabfm[pytorch]

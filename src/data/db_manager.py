@@ -12,6 +12,7 @@ class DatabaseManager:
     """
     SQLite-backed database manager for local, zero-cost, high-performance 
     storage of structured market features, model predictions, and backtest metrics.
+    Supports incremental delta updates (UPSERT).
     """
     def __init__(self, db_path: Path = None):
         if db_path is None:
@@ -27,11 +28,11 @@ class DatabaseManager:
         """Initialize relational database schema if not already existing."""
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            
+
             # 1. Table for Market Features (Inputs)
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS market_features (
-                date TEXT PRIMARY KEY,
+                date TEXT NOT NULL,
                 ticker TEXT NOT NULL,
                 open REAL,
                 high REAL,
@@ -69,7 +70,8 @@ class DatabaseManager:
                 political_trade_signal INTEGER,
                 x_sentiment_score REAL,
                 swing_target INTEGER,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (date, ticker)
             );
             """)
 
@@ -106,10 +108,9 @@ class DatabaseManager:
             );
             """)
             conn.commit()
-            print(f"[DatabaseManager] Database initialized at: {self.db_path}")
 
     def save_features(self, df: pd.DataFrame, ticker: str = "TSLA"):
-        """Save/update feature dataset to SQLite database."""
+        """Save/update feature dataset to SQLite database using UPSERT (INSERT OR REPLACE)."""
         save_df = df.copy()
         if 'date' not in save_df.columns:
             save_df = save_df.reset_index()
@@ -121,13 +122,18 @@ class DatabaseManager:
             existing_cols = [c[1] for c in conn.execute("PRAGMA table_info(market_features)").fetchall()]
             valid_cols = [c for c in save_df.columns if c in existing_cols]
             
-            # Clear existing rows for ticker to allow idempotent updates
-            conn.execute("DELETE FROM market_features WHERE ticker = ?", (ticker,))
-            save_df[valid_cols].to_sql('market_features', conn, if_exists='append', index=False, method='multi')
-            print(f"[DatabaseManager] Saved {len(save_df)} feature rows to DB.")
+            # Upsert rows into market_features table without wiping historical data
+            col_names = ", ".join(valid_cols)
+            placeholders = ", ".join(["?"] * len(valid_cols))
+            sql = f"INSERT OR REPLACE INTO market_features ({col_names}) VALUES ({placeholders})"
+            
+            records = save_df[valid_cols].values.tolist()
+            conn.executemany(sql, records)
+            conn.commit()
+            print(f"[DatabaseManager] Delta/Upsert: Saved {len(save_df)} feature rows for {ticker} to DB.")
 
     def save_predictions(self, results_df: pd.DataFrame, model_name: str = "TabFM", ticker: str = "TSLA"):
-        """Save model predictions (Outputs) to SQLite database."""
+        """Save model predictions to SQLite database with UPSERT (ON CONFLICT REPLACE)."""
         records = []
         for idx, row in results_df.iterrows():
             date_str = str(idx.date()) if hasattr(idx, 'date') else str(idx)
@@ -144,8 +150,12 @@ class DatabaseManager:
         
         pred_df = pd.DataFrame(records)
         with self._get_connection() as conn:
-            pred_df.to_sql('swing_predictions', conn, if_exists='append', index=False)
-            print(f"[DatabaseManager] Saved {len(pred_df)} prediction records for {model_name} to DB.")
+            cols = ['date', 'ticker', 'model_name', 'swing_target', 'predicted_signal', 'prob_down', 'prob_neutral', 'prob_up']
+            col_names = ", ".join(cols)
+            placeholders = ", ".join(["?"] * len(cols))
+            sql = f"INSERT OR REPLACE INTO swing_predictions ({col_names}) VALUES ({placeholders})"
+            conn.executemany(sql, pred_df[cols].values.tolist())
+            conn.commit()
 
     def save_backtest_run(self, summary_records: list):
         """Save summary ablation results for a pipeline run."""
@@ -154,7 +164,6 @@ class DatabaseManager:
             summary_df.rename(columns={'experiment': 'experiment_name'}, inplace=True)
         with self._get_connection() as conn:
             summary_df.to_sql('backtest_runs', conn, if_exists='replace', index=False)
-            print(f"[DatabaseManager] Saved {len(summary_df)} backtest run summaries to DB.")
 
     def load_features(self, ticker: str = "TSLA") -> pd.DataFrame:
         """Load stored market features from database."""
@@ -176,4 +185,4 @@ class DatabaseManager:
 
 if __name__ == "__main__":
     db = DatabaseManager()
-    print("Database manager ready.")
+    print("Database manager ready with UPSERT support.")

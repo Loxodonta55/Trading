@@ -11,23 +11,35 @@ from src.models.baseline_models import BaselineClassifier
 
 class WalkForwardBacktester:
     """
-    Simulates real-world zero-shot walk-forward trading without lookahead bias.
-    Trains TabFM / Baseline model on rolling historical window and evaluates swing predictions on upcoming test days.
+    Simulates real-world zero-shot walk-forward trading with explicit Risk Management:
+    - Signal-based Entry (Long/Short)
+    - Take-Profit Targets (+5.0%)
+    - Stop-Loss Protection (-2.5%)
+    - Time & Signal Inversion Exits
+    - Interactive Brokers Commission & Slippage Deductions
     """
-    def __init__(self, confidence_threshold: float = 0.50):
+    def __init__(
+        self, 
+        confidence_threshold: float = 0.55,
+        stop_loss_pct: float = 0.025,   # -2.5% Stop-Loss
+        take_profit_pct: float = 0.05   # +5.0% Take-Profit
+    ):
         self.confidence_threshold = confidence_threshold
+        self.stop_loss_pct = stop_loss_pct
+        self.take_profit_pct = take_profit_pct
 
     def run_backtest(
         self, 
         df: pd.DataFrame, 
         feature_cols: List[str], 
-        model_name: str = "TabFM"
+        model_name: str = "TabFM",
+        target_col: str = "swing_target",
+        use_news_filter: bool = True
     ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
-        print(f"[WalkForwardBacktester] Starting walk-forward backtest for {model_name}...")
-        print(f"Features included ({len(feature_cols)}): {feature_cols}")
+        print(f"[WalkForwardBacktester] Starting walk-forward backtest for {model_name} with Stop-Loss (-{self.stop_loss_pct*100:.1f}%) and Take-Profit (+{self.take_profit_pct*100:.1f}%)...")
 
         X = df[feature_cols]
-        y = df['swing_target']
+        y = df[target_col]
         dates = df.index
         closes = df['close'].values
         highs = df['high'].values
@@ -36,7 +48,7 @@ class WalkForwardBacktester:
         n_samples = len(df)
         min_train_size = min(TRAIN_WINDOW_DAYS, int(n_samples * 0.3))
 
-        signals = np.zeros(n_samples) # 0: Cash, 1: Long, -1: Short
+        signals = np.zeros(n_samples) # 0: Cash/Exit, 1: Long, -1: Short
         probs_up = np.zeros(n_samples)
         probs_down = np.zeros(n_samples)
 
@@ -52,12 +64,16 @@ class WalkForwardBacktester:
         else:
             model = BaselineClassifier(model_type="gbm")
 
-        # Import RETRAIN_EVERY_N_DAYS
         from config import RETRAIN_EVERY_N_DAYS
+
+        # Position tracking state
+        in_position = 0          # 0: None, 1: Long, -1: Short
+        entry_price = 0.0
+        days_in_trade = 0
 
         # Walk-Forward Simulation Loop
         for i in range(min_train_size, n_samples):
-            # Retrain model only every N days or on first iteration
+            # Retrain model periodically
             if (i - min_train_size) % RETRAIN_EVERY_N_DAYS == 0 or i == min_train_size:
                 X_train = X.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
                 y_train = y.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
@@ -71,13 +87,64 @@ class WalkForwardBacktester:
             probs_down[i] = p_down
             probs_up[i] = p_up
 
-            # Signal Generation
-            if p_up >= self.confidence_threshold and p_up > p_down:
-                signals[i] = 1 # Buy / Long Signal
-            elif p_down >= self.confidence_threshold and p_down > p_up:
-                signals[i] = -1 # Short / Sell Signal
-            else:
-                signals[i] = 0
+            current_close = closes[i]
+            current_high = highs[i]
+            current_low = lows[i]
+
+            # --- EXIT RULE CHECK (Stop-Loss / Take-Profit / Time Exit) ---
+            exit_signal = False
+            if in_position == 1: # Active Long Position
+                days_in_trade += 1
+                # 1. Stop-Loss Trigger (Price fell below entry * (1 - stop_loss_pct))
+                if current_low <= entry_price * (1.0 - self.stop_loss_pct):
+                    exit_signal = True
+                # 2. Take-Profit Trigger (Price reached entry * (1 + take_profit_pct))
+                elif current_high >= entry_price * (1.0 + self.take_profit_pct):
+                    exit_signal = True
+                # 3. Maximum Hold Duration (5 days) or Model Conviction Loss
+                elif days_in_trade >= SWING_HORIZON_DAYS or p_up < self.confidence_threshold:
+                    exit_signal = True
+
+            elif in_position == -1: # Active Short Position
+                days_in_trade += 1
+                # 1. Stop-Loss Trigger (Price rose above entry * (1 + stop_loss_pct))
+                if current_high >= entry_price * (1.0 + self.stop_loss_pct):
+                    exit_signal = True
+                # 2. Take-Profit Trigger (Price fell below entry * (1 - take_profit_pct))
+                elif current_low <= entry_price * (1.0 - self.take_profit_pct):
+                    exit_signal = True
+                # 3. Maximum Hold Duration (5 days) or Model Conviction Loss
+                elif days_in_trade >= SWING_HORIZON_DAYS or p_down < self.confidence_threshold:
+                    exit_signal = True
+
+            if exit_signal:
+                in_position = 0
+                days_in_trade = 0
+
+            # --- ENTRY RULE CHECK (New Trades) ---
+            if in_position == 0:
+                if p_up >= self.confidence_threshold and p_up > p_down:
+                    # TabFM is LONG. Check News Sentiment Validation (3-day MA)
+                    news_score = df['news_sentiment_3d_ma'].iloc[i] if 'news_sentiment_3d_ma' in df.columns else 0.0
+                    if pd.isna(news_score):
+                        news_score = 0.0
+                    
+                    if not use_news_filter or news_score >= 0.0:
+                        in_position = 1
+                        entry_price = current_close
+                        days_in_trade = 0
+                elif p_down >= self.confidence_threshold and p_down > p_up:
+                    # TabFM is SHORT. Check News Sentiment Validation (3-day MA)
+                    news_score = df['news_sentiment_3d_ma'].iloc[i] if 'news_sentiment_3d_ma' in df.columns else 0.0
+                    if pd.isna(news_score):
+                        news_score = 0.0
+                        
+                    if not use_news_filter or news_score <= 0.0:
+                        in_position = -1
+                        entry_price = current_close
+                        days_in_trade = 0
+
+            signals[i] = in_position
 
         # Construct Backtest Performance Dataframe
         results_df = df.copy()
@@ -91,7 +158,7 @@ class WalkForwardBacktester:
         # Detect Trade Execution Events (Entry, Reversal, Exit)
         trade_executions = (results_df['signal'].diff() != 0) & (results_df['signal'] != 0)
         
-        # Interactive Brokers Fee Structure (IBKR Pro Fixed/Tiered: $1.00 min order fee + 3 bps slippage = ~0.05% per order side)
+        # Interactive Brokers Fee Structure ($1.00 min order fee + 3 bps slippage = ~0.05% per order side)
         ibkr_cost_per_order = 0.0005 
         
         gross_strategy_return = (results_df['signal'].shift(1) * results_df['daily_return']).fillna(0.0)
@@ -146,3 +213,10 @@ class WalkForwardBacktester:
             "max_drawdown": max_dd,
             "buy_hold_return": (df['buy_hold_equity'].iloc[-1] - 1.0) * 100.0
         }
+
+if __name__ == "__main__":
+    from src.features.builder import FeatureBuilder
+    df = FeatureBuilder().build_dataset()
+    bt = WalkForwardBacktester()
+    res, m = bt.run_backtest(df, ['rsi_14', 'macd'], "TabFM")
+    print(m)

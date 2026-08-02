@@ -6,57 +6,52 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 from src.features.builder import FeatureBuilder
+from src.features.calibrator import FeatureCalibrator
 from src.backtest.engine import WalkForwardBacktester
+
+from config import DEFAULT_CONFIDENCE_THRESHOLD
 
 class SensitivityEvaluator:
     """
-    Evaluates multi-source feature subsets and compares TabFM performance against 
-    traditional Old School ML models (Logistic Regression, Decision Trees, Random Forests, XGBoost).
+    Evaluates multi-source feature subsets, calibrates top features per asset ticker,
+    and compares TabFM performance against traditional ML models.
     """
-    def __init__(self, confidence_threshold: float = 0.55):
-        self.builder = FeatureBuilder()
+    def __init__(self, confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD, top_k: int = 15):
+        self.confidence_threshold = confidence_threshold
+        self.top_k = top_k
+        self.calibrator = FeatureCalibrator(top_k=top_k)
         self.backtester = WalkForwardBacktester(confidence_threshold=confidence_threshold)
 
-    def run_ablation_experiments(self) -> Tuple[pd.DataFrame, Dict[str, pd.DataFrame]]:
-        df = self.builder.build_dataset()
-        
-        # Feature Group Definitions
-        tech_cols = [
-            'return_1d', 'return_3d', 'return_5d', 'return_10d',
-            'ema_9_ratio', 'ema_21_ratio', 'ema_50_ratio',
-            'rsi_14', 'macd', 'macd_hist', 'atr_ratio',
-            'bollinger_pos', 'bollinger_width', 'volume_ratio_5d'
+    def run_ablation_experiments(self, df: pd.DataFrame = None, ticker: str = "TSLA") -> Tuple[pd.DataFrame, Dict[str, pd.DataFrame]]:
+        # Run Automated Stock Feature Calibration
+        df, calibrated_features, importances = self.calibrator.calibrate_features_for_ticker(ticker=ticker, df=df)
+        best_features = calibrated_features
+
+        # 1. Compare Model Architectures & Target Thresholds (5% vs 8%)
+        models_to_test = [
+            ("1. TabFM (Standard 5% Swing Target)", "TabFM", "swing_target_5pct"),
+            ("2. TabFM (Strong 8% Swing Target)", "TabFM", "swing_target_8pct"),
+            ("3. XGBoost (Standard 5% Swing Target)", "gbm", "swing_target_5pct"),
+            ("4. XGBoost (Strong 8% Swing Target)", "gbm", "swing_target_8pct"),
+            ("5. Random Forest (Strong 8% Swing Target)", "random_forest", "swing_target_8pct"),
+            ("6. Logistic Regression (Strong 8% Swing Target)", "logistic", "swing_target_8pct")
         ]
-        
-        inst_cols = [c for c in ['obv_10d_pct', 'mfi_14', 'vwap_ratio_5d', 'multi_timeframe_trend'] if c in df.columns]
-        opt_cols = [c for c in ['put_call_oi_ratio', 'put_call_vol_ratio', 'options_iv_skew', 'options_smart_money_bullish'] if c in df.columns]
-        macro_cols = [c for c in ['spy_return_1d', 'tsla_vs_spy_rel_strength', 'vix_change_1d'] if c in df.columns]
-        news_cols = [c for c in ['news_sentiment', 'press_release_flag', 'news_volume', 'news_sentiment_3d_ma'] if c in df.columns]
-        sec_cols = [c for c in ['sec_filing_flag', 'sec_8k_flag', 'sec_form4_insider_flag', 'sec_10k_10q_flag', 'sec_filing_count_30d', 'days_since_last_sec_filing'] if c in df.columns]
-        pol_cols = [c for c in ['political_trade_signal', 'political_net_buy_10d', 'political_disclosure_flag'] if c in df.columns]
-        soc_cols = [c for c in ['x_sentiment_score', 'x_post_volume_ratio', 'x_hype_spike', 'x_sentiment_5d_mom'] if c in df.columns]
-
-        best_features = tech_cols + macro_cols + sec_cols + opt_cols + inst_cols + news_cols
-
-        # 1. Compare Model Architectures on the Best Feature Set
-        models_to_test = {
-            "1. Logistic Regression (Old School Linear)": "logistic",
-            "2. Decision Tree (Old School Tree)": "decision_tree",
-            "3. Random Forest (Classic Ensemble)": "random_forest",
-            "4. Gradient Boosted Trees (XGBoost Baseline)": "gbm",
-            "5. Google TabFM (Tabular Foundation Model)": "TabFM"
-        }
 
         results_summary = []
         experiment_dfs = {}
 
         print("\n==================================================")
-        print("OLD SCHOOL vs TABFM MODEL COMPARISON EXPERIMENT")
+        print("TARGET THRESHOLD COMPARISON (5% vs 8% SWING LABELS)")
         print("==================================================")
 
-        for exp_name, model_key in models_to_test.items():
-            print(f"\n[Evaluator] Running Backtest for Architecture: {exp_name}")
-            res_df, metrics = self.backtester.run_backtest(df, feature_cols=best_features, model_name=model_key)
+        for exp_name, model_key, target_col in models_to_test:
+            print(f"\n[Evaluator] Running Backtest for: {exp_name} (Target: {target_col})")
+            res_df, metrics = self.backtester.run_backtest(
+                df, 
+                feature_cols=best_features, 
+                model_name=model_key, 
+                target_col=target_col
+            )
             
             metrics['experiment'] = exp_name
             metrics['num_features'] = len(best_features)
@@ -68,7 +63,7 @@ class SensitivityEvaluator:
         summary_df = summary_df[cols_order]
 
         print("\n==================================================")
-        print("MODEL ARCHITECTURE BENCHMARK SUMMARY (OLD SCHOOL vs TABFM)")
+        print("SWING TARGET THRESHOLD BENCHMARK SUMMARY (5% vs 8%)")
         print("==================================================")
         print(summary_df.to_string(index=False))
 

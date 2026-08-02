@@ -92,12 +92,26 @@ body {
     border: 1px solid rgba(0, 230, 118, 0.3);
 }
 
+.status-chip.fee-badge {
+    background: rgba(255, 214, 0, 0.1);
+    color: var(--gold);
+    border: 1px solid rgba(255, 214, 0, 0.3);
+}
+
 .pulse {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--green-up);
     box-shadow: 0 0 8px var(--green-up);
+}
+
+.pulse-fee {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
 }
 
 .btn {
@@ -361,3 +375,59 @@ tr.highlight-row {
     background: var(--accent-blue);
     color: white;
 }
+
+/* Ticker Switcher Navigation */
+.ticker-nav-bar {
+    padding: 12px 16px;
+}
+
+.ticker-tabs {
+    display: flex;
+    gap: 12px;
+}
+
+.ticker-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ticker-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.ticker-tab.active {
+    background: linear-gradient(135deg, #2962FF, #1E53E5);
+    color: white;
+    border-color: rgba(41, 98, 255, 0.5);
+    box-shadow: 0 4px 14px rgba(41, 98, 255, 0.3);
+}
+
+.ticker-icon {
+    font-size: 16px;
+}
+
+.ticker-name {
+    font-weight: 600;
+}
+
+.ticker-symbol {
+    font-size: 12px;
+    opacity: 0.75;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+

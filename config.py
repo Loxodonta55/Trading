@@ -31,3 +31,4 @@ FEATURE_CHANNELS = {
 TRAIN_WINDOW_DAYS = 60      # Rolling training context window for TabFM
 RETRAIN_EVERY_N_DAYS = 5    # Retrain/update model every 5 trading days
 TEST_HORIZON = 1
+DEFAULT_CONFIDENCE_THRESHOLD = 0.62 # High-conviction threshold for signal generation
