@@ -1,13 +1,17 @@
+import logging
 import requests
 import pandas as pd
 import numpy as np
 import re
 from pathlib import Path
 from datetime import datetime
-import sys
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 from config import DATA_DIR, PRIMARY_TICKER
+
+logger = logging.getLogger(__name__)
+
+SEC_USER_AGENT: str = 'TradingBot boris@example.com'
+SEC_REQUEST_TIMEOUT: int = 10
 
 # Financial Text Lexicons for SEC Filing Analysis
 UNCERTAINTY_KEYWORDS = {
@@ -28,7 +32,7 @@ class SecTextProcessor:
     Stage 1: Downloads raw SEC EDGAR 10-K, 10-Q, and 8-K full-text HTML/XBRL documents into data_store/raw_sec_docs/
     Stage 2: Parses raw document text using NLP techniques to extract Risk Factors & MD&A Sentiment Scores.
     """
-    def __init__(self, ticker: str = PRIMARY_TICKER, cik: str = "0001318605"):
+    def __init__(self, ticker: str = PRIMARY_TICKER, cik: str = "0001318605") -> None:
         self.ticker = ticker
         self.cik = cik
         self.raw_docs_dir = DATA_DIR / "raw_sec_docs"
@@ -46,14 +50,14 @@ class SecTextProcessor:
         Stage 1 & 2: Ingests raw full-text documents from SEC EDGAR API,
         saves raw files to disk, and runs NLP structuring on text content.
         """
-        print(f"[SecTextProcessor] Starting Unstructured Document Collector for {self.ticker}...")
+        logger.info(f"[SecTextProcessor] Starting Unstructured Document Collector for {self.ticker}...")
         url = f"https://data.sec.gov/submissions/CIK{self.cik}.json"
-        headers = {'User-Agent': 'TradingBot boris@example.com'}
+        headers = {'User-Agent': SEC_USER_AGENT}
 
         try:
-            r = requests.get(url, headers=headers, timeout=10)
+            r = requests.get(url, headers=headers, timeout=SEC_REQUEST_TIMEOUT)
             if r.status_code != 200:
-                print(f"[SecTextProcessor] SEC API returned status {r.status_code}")
+                logger.warning(f"[SecTextProcessor] SEC API returned status {r.status_code}")
                 return self._load_cache_or_fallback()
 
             data = r.json()
@@ -85,19 +89,21 @@ class SecTextProcessor:
                 if not raw_file_path.exists():
                     doc_url = f"https://www.sec.gov/Archives/edgar/data/{int(self.cik)}/{acc_num}/{doc_name}"
                     try:
-                        doc_res = requests.get(doc_url, headers=headers, timeout=10)
+                        doc_res = requests.get(doc_url, headers=headers, timeout=SEC_REQUEST_TIMEOUT)
                         if doc_res.status_code == 200:
                             raw_text = doc_res.text
                             with open(raw_file_path, "w", encoding="utf-8") as f:
                                 f.write(raw_text)
-                    except Exception:
-                        pass
+                        else:
+                            logger.debug(f"Failed to download doc: {doc_url}, status: {doc_res.status_code}")
+                    except Exception as ex:
+                        logger.debug(f"Error fetching document {doc_url}: {ex}")
                 else:
                     try:
                         with open(raw_file_path, "r", encoding="utf-8") as f:
                             raw_text = f.read()
-                    except Exception:
-                        pass
+                    except Exception as ex:
+                        logger.debug(f"Error reading cached document {raw_file_path}: {ex}")
 
                 # Stage 2: Parse and Structure raw text
                 clean_text = self._clean_html_text(raw_text)
@@ -132,11 +138,11 @@ class SecTextProcessor:
             df_structured = pd.DataFrame(records)
             daily_sec_text = df_structured.groupby('date').mean()
             daily_sec_text.to_csv(self.processed_cache)
-            print(f"[SecTextProcessor] Successfully processed & structured {len(records)} raw SEC documents.")
+            logger.info(f"[SecTextProcessor] Successfully processed & structured {len(records)} raw SEC documents.")
             return daily_sec_text
 
         except Exception as e:
-            print(f"[SecTextProcessor] Could not process SEC raw text: {e}")
+            logger.error(f"[SecTextProcessor] Could not process SEC raw text: {e}")
             return self._load_cache_or_fallback()
 
     def _load_cache_or_fallback(self) -> pd.DataFrame:
@@ -171,5 +177,5 @@ if __name__ == "__main__":
     dates = pd.date_range(start="2025-01-01", periods=30, freq="B")
     processor = SecTextProcessor()
     text_df = processor.fetch_sec_text_features(dates)
-    print("\nSample Structured SEC Text Features:")
-    print(text_df.head(10))
+    logger.info("\nSample Structured SEC Text Features:")
+    logger.info(f"\n{text_df.head(10)}")

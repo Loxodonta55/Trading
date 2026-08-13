@@ -1,17 +1,21 @@
 import React from 'react';
-import { TrendingUp, BarChart2, ShieldAlert, Award, Layers } from 'lucide-react';
+import { BarChart2 } from 'lucide-react';
 
 export function BacktestPerformanceOverview({ bestExperimentData, ticker }) {
   if (!bestExperimentData) return null;
 
-  const returnPct = (bestExperimentData.total_return || 0) * 100;
-  const buyHoldPct = (bestExperimentData.buy_hold_return || 0) * 100;
+  const rawReturn = bestExperimentData.total_return || 0;
+  const returnPct = Math.abs(rawReturn) > 1 ? rawReturn : rawReturn * 100;
+  const rawBuyHold = bestExperimentData.buy_hold_return || 0;
+  const buyHoldPct = Math.abs(rawBuyHold) > 1 ? rawBuyHold : rawBuyHold * 100;
   const outperformance = returnPct - buyHoldPct;
-  const winRatePct = (bestExperimentData.win_rate || 0) * 100;
-  const trades = bestExperimentData.num_trades || 0;
+  const rawWinRate = bestExperimentData.win_rate || 0;
+  const winRatePct = rawWinRate > 1 ? rawWinRate : rawWinRate * 100;
+  const trades = bestExperimentData.n_trades || bestExperimentData.num_trades || 0;
   const sharpe = (bestExperimentData.sharpe_ratio || 0).toFixed(2);
   const profitFactor = (bestExperimentData.profit_factor || 0).toFixed(2);
-  const maxDdPct = (bestExperimentData.max_drawdown || 0) * 100;
+  const rawMaxDd = bestExperimentData.max_drawdown || 0;
+  const maxDdPct = Math.abs(rawMaxDd) > 1 ? rawMaxDd : rawMaxDd * 100;
 
   return (
     <section className="backtest-overview-section card">

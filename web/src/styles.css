@@ -181,44 +181,144 @@ body {
 }
 
 .ticker-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
 }
 
 .ticker-tab {
-  flex: 1;
+  position: relative;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 12px 20px;
+  padding: 14px 18px;
   color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   transition: all 0.2s ease;
+  overflow: hidden;
 }
 
 .ticker-tab:hover {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .ticker-tab.active {
   background: rgba(16, 185, 129, 0.1);
   border-color: var(--accent-green);
-  color: var(--accent-green);
-  box-shadow: 0 4px 15px var(--accent-green-glow);
+  color: var(--text-main);
+  box-shadow: 0 4px 18px var(--accent-green-glow);
+}
+
+.ticker-tab.has-jump-star {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.ticker-tab.has-jump-star.active {
+  border-color: #F59E0B;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+}
+
+.tab-jump-star-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #04111D;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 8px 3px 6px;
+  border-bottom-left-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+.star-pulse {
+  animation: starPulse 1.8s infinite;
+}
+
+@keyframes starPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #F59E0B); }
+  50% { transform: scale(1.25); filter: drop-shadow(0 0 6px #F59E0B); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 2px #F59E0B); }
+}
+
+.tab-main-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.tab-icon {
+  flex-shrink: 0;
+}
+
+.tab-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tab-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ticker-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.star-inline-icon {
+  font-size: 13px;
+  animation: starPulse 2s infinite;
+}
+
+.tab-etf-subtag {
+  font-size: 11px;
+  color: #10B981;
+  font-family: var(--font-mono);
+  opacity: 0.9;
+}
+
+.tab-symbol-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
 }
 
 .ticker-symbol {
-  margin-left: auto;
   font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 4px;
+  color: var(--text-main);
+}
+
+.tab-prob-sub {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.tab-prob-sub.text-positive {
+  color: #10B981;
+  font-weight: 600;
 }
 
 /* Metrics Grid */
@@ -798,4 +898,525 @@ tr:hover td {
 .backtest-overview-section {
   margin-top: 8px;
 }
+
+/* ==========================================================================
+   Jump Radar Banner (Startseite Kurssprung-Alarm)
+   ========================================================================== */
+.jump-radar-banner {
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.jump-radar-banner.has-jump-alert {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(16, 185, 129, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.15);
+}
+
+.jump-radar-banner.radar-neutral {
+  background: rgba(17, 24, 39, 0.75);
+  border: 1px solid var(--border-color);
+}
+
+.radar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.radar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.star-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.star-icon-container.star-pulsing {
+  animation: starPulse 1.8s infinite;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+.radar-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.radar-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 800px;
+  line-height: 1.4;
+}
+
+.radar-status-badge {
+  display: flex;
+  align-items: center;
+}
+
+.badge-alert {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #04111D;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+.badge-watching {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.jump-stocks-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.jump-stock-chip {
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 280px;
+}
+
+.jump-stock-chip:hover {
+  background: rgba(31, 41, 55, 0.95);
+  border-color: #F59E0B;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
+}
+
+.jump-stock-chip.selected {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.chip-star {
+  animation: starPulse 1.8s infinite;
+}
+
+.chip-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.chip-prob {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chip-prob strong {
+  color: #10B981;
+  font-family: var(--font-mono);
+}
+
+.chip-etf-tag {
+  font-size: 12px;
+  color: #F59E0B;
+  font-family: var(--font-mono);
+  background: rgba(245, 158, 11, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.chip-action-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.jump-stock-chip:hover .chip-action-btn {
+  background: var(--accent-green);
+  color: #04111D;
+}
+
+.radar-stocks-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.radar-ticker-pill {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radar-ticker-pill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.radar-ticker-pill.pill-active {
+  border-color: var(--accent-green);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.pill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.pill-sym {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.pill-prob {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pill-bottom {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: #10B981;
+}
+
+/* ==========================================================================
+   Interactive Brokers (IBKR) Leveraged ETF Order-Card
+   ========================================================================== */
+.ibkr-etf-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.95), rgba(11, 15, 25, 0.95));
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.6);
+}
+
+.ibkr-etf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ibkr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10B981;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.ibkr-subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.ibkr-hint-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.ibkr-signal-action-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ibkr-signal-action-box.action-buy {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.1));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #F9FAFB;
+}
+
+.ibkr-signal-action-box.action-sell {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #F9FAFB;
+}
+
+.ibkr-signal-action-box.action-neutral {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.action-icon {
+  flex-shrink: 0;
+}
+
+.action-buy .action-icon {
+  color: #10B981;
+}
+
+.action-sell .action-icon {
+  color: #EF4444;
+}
+
+.ibkr-etf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.ibkr-etf-item {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.ibkr-etf-item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.ibkr-etf-item.highlight-bull {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08), rgba(17, 24, 39, 0.7));
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.ibkr-etf-item.highlight-bull:hover {
+  border-color: #10B981;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+}
+
+.etf-type-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-family: var(--font-mono);
+}
+
+.etf-type-tag.bull {
+  color: #10B981;
+}
+
+.etf-type-tag.bear {
+  color: #EF4444;
+}
+
+.etf-main-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.etf-ticker-large {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.etf-leverage-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.highlight-bull .etf-leverage-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.copy-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.copy-btn.copied {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border-color: #10B981;
+}
+
+.etf-name {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.etf-details-row {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etf-details-row strong {
+  color: var(--text-muted);
+}
+
+.ibkr-special-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.special-badge {
+  background: #06B6D4;
+  color: #04111D;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.special-text {
+  flex: 1;
+  color: var(--text-main);
+}
+
+.star-jump-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #04111D;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-left: 10px;
+  letter-spacing: 0.5px;
+  animation: starPulse 1.8s infinite;
+}
+
+.etf-quick-hint {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 12px;
+  color: #10B981;
+  font-family: var(--font-mono);
+}
+
+.ibkr-factor-chip {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.1);
+  color: #F9FAFB;
+}
+
 

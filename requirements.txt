@@ -11,3 +11,12 @@ fastapi>=0.104.0
 uvicorn>=0.24.0
 safetensors>=0.4.0
 tabfm @ git+https://github.com/google-research/tabfm.git#egg=tabfm[pytorch]
+
+# Broker Integration
+ib_insync>=0.9.86
+nest_asyncio>=1.5.8
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+

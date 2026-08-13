@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { CheckCircle2, XCircle, Target, Award, Filter, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { CheckCircle2, XCircle, Award } from 'lucide-react';
 
 export function SignalsLog({ chartData }) {
-  const [filter, setFilter] = useState('signals'); // default to 'signals' to highlight decision accuracy
+  const [filter, setFilter] = useState('all'); // default to 'all' so every single day up to today is visible
 
   if (!chartData || chartData.length === 0) return null;
 
@@ -25,7 +25,7 @@ export function SignalsLog({ chartData }) {
     }
     return {
       isCorrect: null,
-      statusLabel: '-',
+      statusLabel: 'HOLD (Kein Signal)',
       badgeClass: 'outcome-neutral'
     };
   };
@@ -48,6 +48,7 @@ export function SignalsLog({ chartData }) {
 
   // Display recent signals first
   const displayData = [...filteredData].reverse();
+  const latestDay = chartData[chartData.length - 1]?.date;
 
   return (
     <section className="signals-section card">
@@ -55,16 +56,22 @@ export function SignalsLog({ chartData }) {
         <div>
           <h2>Tägliches Swing Prediction Log & KI-Treffergenauigkeit</h2>
           <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Day2Day Auswertung aller prognostizierten Handelssignale im Zeitverlauf
+            Lückenlose Day2Day Historie aller {chartData.length} Handelstage bis zum aktuellen Datum ({latestDay})
           </p>
         </div>
 
         <div className="tab-controls">
           <button
+            className={`tab-btn ${filter === 'all' ? 'active' : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            📅 Alle {chartData.length} Tage (Lückenlos)
+          </button>
+          <button
             className={`tab-btn ${filter === 'signals' ? 'active' : ''}`}
             onClick={() => setFilter('signals')}
           >
-            Alle Signale ({signalRows.length})
+            🎯 Nur Kauf/Verkauf Signale ({signalRows.length})
           </button>
           <button
             className={`tab-btn ${filter === 'correct' ? 'active' : ''}`}
@@ -79,12 +86,6 @@ export function SignalsLog({ chartData }) {
             style={{ color: filter === 'incorrect' ? '#EF4444' : undefined }}
           >
             ✗ Fehlsignale ({incorrectRows.length})
-          </button>
-          <button
-            className={`tab-btn ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
-          >
-            Alle Tage ({chartData.length})
           </button>
         </div>
       </div>

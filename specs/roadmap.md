@@ -51,11 +51,31 @@ gantt
 
 ---
 
-## 📌 Phase 3: Automatisierung, Alerting & Ausblick (In Planung)
+## 📌 Phase 3: Alternative Data APIs & Signal Hardening (Aktiv)
 
-- [ ] **Daily EOD Automation**:
-  - Automatisiertes Ausführen der Analyse einmal täglich nach Börsenschluss (z. B. 22:30 Uhr).
+- [x] **Finnhub Live API Integration**:
+  - Live Company News Feed & Form 4 SEC Insider Disclosures für präzisere Swing-Signale.
+- [ ] **Alpha Vantage Integration**:
+  - Historische News-Sentiment-Zeitreihen & US-Makroindikatoren (10Y Yield, Fed Rate, Inflation).
+- [ ] **Daily EOD Automation & Caching**:
+  - Automatisiertes inkrementelles Delta-Update einmal täglich nach Börsenschluss.
 - [ ] **Benachrichtigungssystem**:
   - Versenden von Top-Signalen des Tages per Email oder Telegram Bot.
-- [ ] **Broker-Schnittstellen (Ausblick/Option)**:
-  - Optionale Vorbereitung für automatischen Order-Export oder Schnittstellen zu Brokern (z. B. Interactive Brokers API).
+
+---
+
+## 📌 Phase 4: Automated Trading with Interactive Brokers (In Arbeit)
+
+- [ ] **Feature F1: IBKR Connection Layer (`specs/features/ibkr-connection.md`)**:
+  - TWS / IB Gateway API Anbindung via `ib_insync`.
+  - Abrufen von Account Summary (Net Liquidity, Available Funds, Cash in CHF/USD) & Depot-Positionen.
+  - Integration in FastAPI Endpunkte (`/api/broker/*`).
+- [ ] **Feature F2: Order Execution Engine**:
+  - Erstellen, Validieren und Ausführen von Orders (Market / Limit).
+  - Order-Status-Tracking & Execution Reports.
+- [ ] **Feature F3: Trading Strategy & Scheduler**:
+  - Signal-to-Trade Mapping (Bullish Signal -> 3x Leveraged ETF Buy).
+  - Position Sizing (~50 CHF), Take-Profit (+8%), Time Exit (5 Tage Max Hold).
+- [ ] **Feature F4: Safety & Monitoring (Circuit Breaker & Kill Switch)**:
+  - Max Daily Loss Protection, Single Position Cap, Dashboard Emergency Kill-Switch.
+

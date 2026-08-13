@@ -26,9 +26,12 @@ export function AblationTable({ summary, bestExperiment }) {
           <tbody>
             {summary.map((row, idx) => {
               const isBest = row.experiment === bestExperiment;
-              const winRate = ((row.win_rate || 0) * 100).toFixed(1);
-              const retPct = ((row.total_return || 0) * 100).toFixed(1);
-              const maxDd = ((row.max_drawdown || 0) * 100).toFixed(1);
+              const rawWin = row.win_rate || 0;
+              const winRate = (rawWin > 1 ? rawWin : rawWin * 100).toFixed(1);
+              const rawRet = row.total_return || 0;
+              const retPct = (Math.abs(rawRet) > 1 ? rawRet : rawRet * 100).toFixed(1);
+              const rawDd = row.max_drawdown || 0;
+              const maxDd = (Math.abs(rawDd) > 1 ? rawDd : rawDd * 100).toFixed(1);
 
               return (
                 <tr key={idx} className={isBest ? 'best-row' : ''}>

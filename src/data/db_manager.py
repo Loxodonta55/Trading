@@ -1,12 +1,13 @@
 import sqlite3
+import logging
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
-import sys
+from typing import Optional, Any, List, Dict
 
-# Ensure config path is accessible
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 from config import DATA_DIR
+
+logger = logging.getLogger(__name__)
 
 class DatabaseManager:
     """
@@ -14,17 +15,26 @@ class DatabaseManager:
     storage of structured market features, model predictions, and backtest metrics.
     Supports incremental delta updates (UPSERT).
     """
-    def __init__(self, db_path: Path = None):
+    def __init__(self, db_path: Optional[Path] = None) -> None:
         if db_path is None:
             self.db_path = DATA_DIR / "trading_data.db"
         else:
             self.db_path = db_path
         self._init_db()
 
-    def _get_connection(self):
+    def __enter__(self) -> 'DatabaseManager':
+        """Enter context manager."""
+        return self
+
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+        """Exit context manager."""
+        pass
+
+    def _get_connection(self) -> sqlite3.Connection:
+        """Get a new SQLite connection."""
         return sqlite3.connect(self.db_path)
 
-    def _init_db(self):
+    def _init_db(self) -> None:
         """Initialize relational database schema if not already existing."""
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -107,9 +117,19 @@ class DatabaseManager:
                 profit_factor REAL
             );
             """)
+
+            # 4. Table for Pipeline Metadata and Persistent State Tracking
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS pipeline_metadata (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """)
+
             conn.commit()
 
-    def save_features(self, df: pd.DataFrame, ticker: str = "TSLA"):
+    def save_features(self, df: pd.DataFrame, ticker: str = "TSLA") -> None:
         """Save/update feature dataset to SQLite database using UPSERT (INSERT OR REPLACE)."""
         save_df = df.copy()
         if 'date' not in save_df.columns:
@@ -130,9 +150,9 @@ class DatabaseManager:
             records = save_df[valid_cols].values.tolist()
             conn.executemany(sql, records)
             conn.commit()
-            print(f"[DatabaseManager] Delta/Upsert: Saved {len(save_df)} feature rows for {ticker} to DB.")
+            logger.info(f"[DatabaseManager] Delta/Upsert: Saved {len(save_df)} feature rows for {ticker} to DB.")
 
-    def save_predictions(self, results_df: pd.DataFrame, model_name: str = "TabFM", ticker: str = "TSLA"):
+    def save_predictions(self, results_df: pd.DataFrame, model_name: str = "TabFM", ticker: str = "TSLA") -> None:
         """Save model predictions to SQLite database with UPSERT (ON CONFLICT REPLACE)."""
         records = []
         for idx, row in results_df.iterrows():
@@ -157,8 +177,8 @@ class DatabaseManager:
             conn.executemany(sql, pred_df[cols].values.tolist())
             conn.commit()
 
-    def save_backtest_run(self, summary_records: list):
-        """Save summary ablation results for a pipeline run."""
+    def save_backtest_run(self, summary_records: List[Dict[str, Any]]) -> None:
+        """Save backtest run summary to database."""
         summary_df = pd.DataFrame(summary_records)
         if 'experiment' in summary_df.columns:
             summary_df.rename(columns={'experiment': 'experiment_name'}, inplace=True)
@@ -166,7 +186,7 @@ class DatabaseManager:
             summary_df.to_sql('backtest_runs', conn, if_exists='replace', index=False)
 
     def load_features(self, ticker: str = "TSLA") -> pd.DataFrame:
-        """Load stored market features from database."""
+        """Load features from database."""
         with self._get_connection() as conn:
             query = "SELECT * FROM market_features WHERE ticker = ? ORDER BY date ASC"
             df = pd.read_sql_query(query, conn, params=(ticker,), parse_dates=['date'])
@@ -174,15 +194,44 @@ class DatabaseManager:
                 df.set_index('date', inplace=True)
             return df
 
-    def load_predictions(self, model_name: str = "TabFM", ticker: str = "TSLA") -> pd.DataFrame:
-        """Load stored predictions from database."""
+    def get_metadata(self, key: str, default: Optional[str] = None) -> Optional[str]:
+        """Get metadata value."""
         with self._get_connection() as conn:
-            query = "SELECT * FROM swing_predictions WHERE ticker = ? AND model_name = ? ORDER BY date ASC"
-            df = pd.read_sql_query(query, conn, params=(ticker, model_name), parse_dates=['date'])
-            if not df.empty:
-                df.set_index('date', inplace=True)
-            return df
+            cursor = conn.cursor()
+            cursor.execute("SELECT value FROM pipeline_metadata WHERE key = ?", (key,))
+            row = cursor.fetchone()
+            return row[0] if row else default
+
+    def set_metadata(self, key: str, value: str) -> None:
+        """Set metadata value."""
+        with self._get_connection() as conn:
+            conn.execute(
+                "INSERT OR REPLACE INTO pipeline_metadata (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)",
+                (key, str(value))
+            )
+            conn.commit()
+
+    def get_last_data_date(self, ticker: str) -> Optional[str]:
+        """Get last date for which data was fetched."""
+        val = self.get_metadata(f"last_data_date_{ticker}")
+        if val:
+            return val
+        
+        # Fallback: check max date in market_features table
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT MAX(date) FROM market_features WHERE ticker = ?", (ticker,))
+            row = cursor.fetchone()
+            if row and row[0]:
+                date_str = str(row[0])[:10]
+                self.set_metadata(f"last_data_date_{ticker}", date_str)
+                return date_str
+        return None
+
+    def set_last_data_date(self, ticker: str, date_str: str) -> None:
+        """Set last date for which data was fetched."""
+        self.set_metadata(f"last_data_date_{ticker}", date_str)
 
 if __name__ == "__main__":
     db = DatabaseManager()
-    print("Database manager ready with UPSERT support.")
+    logger.info("Database manager ready with UPSERT and pipeline_metadata support.")

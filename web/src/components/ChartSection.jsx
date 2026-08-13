@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,18 +24,49 @@ ChartJS.register(
 );
 
 export function ChartSection({ chartData, ticker }) {
-  const [activeTab, setActiveTab] = useState('equity'); // 'equity' | 'price'
+  const [activeTab, setActiveTab] = useState('price'); // default to 'price' so users see stock chart immediately
+  const [timeframe, setTimeframe] = useState('ALL'); // '1M' | '3M' | '6M' | 'YTD' | 'ALL'
 
   if (!chartData || chartData.length === 0) return null;
 
-  const dates = chartData.map((d) => d.date);
+  // Filter data according to selected timeframe
+  const filteredData = useMemo(() => {
+    if (!chartData || chartData.length === 0) return [];
+    if (timeframe === 'ALL') return chartData;
+
+    const lastDate = new Date(chartData[chartData.length - 1].date);
+    let cutoff = new Date(lastDate);
+
+    if (timeframe === '1M') {
+      cutoff.setDate(cutoff.getDate() - 30);
+    } else if (timeframe === '3M') {
+      cutoff.setDate(cutoff.getDate() - 90);
+    } else if (timeframe === '6M') {
+      cutoff.setDate(cutoff.getDate() - 180);
+    } else if (timeframe === 'YTD') {
+      cutoff = new Date(lastDate.getFullYear(), 0, 1);
+    }
+
+    const res = chartData.filter((d) => new Date(d.date) >= cutoff);
+    return res.length > 0 ? res : chartData;
+  }, [chartData, timeframe]);
+
+  const dates = filteredData.map((d) => d.date);
+  const firstDate = filteredData[0]?.date;
+  const lastDate = filteredData[filteredData.length - 1]?.date;
+
+  // Calculate signal points for price chart
+  const pointRadii = filteredData.map((d) => (d.signal !== 0 ? 5 : 0));
+  const pointColors = filteredData.map((d) =>
+    d.signal === 1 ? '#10B981' : d.signal === -1 ? '#EF4444' : 'transparent'
+  );
 
   const equityData = {
     labels: dates,
     datasets: [
       {
         label: 'TabFM Strategy Equity',
-        data: chartData.map((d) => d.equity_curve),
+        data: filteredData.map((d) => d.equity_curve),
         borderColor: '#10B981',
         backgroundColor: 'rgba(16, 185, 129, 0.08)',
         fill: true,
@@ -45,7 +76,7 @@ export function ChartSection({ chartData, ticker }) {
       },
       {
         label: `${ticker} Buy & Hold`,
-        data: chartData.map((d) => d.buy_hold_equity),
+        data: filteredData.map((d) => d.buy_hold_equity),
         borderColor: '#6B7280',
         borderDash: [5, 5],
         borderWidth: 1.5,
@@ -59,12 +90,15 @@ export function ChartSection({ chartData, ticker }) {
     labels: dates,
     datasets: [
       {
-        label: `${ticker} Close Price ($)`,
-        data: chartData.map((d) => d.close),
+        label: `${ticker} Kurs ($)`,
+        data: filteredData.map((d) => d.close),
         borderColor: '#06B6D4',
         borderWidth: 2,
         fill: false,
-        pointRadius: 0,
+        pointRadius: pointRadii,
+        pointBackgroundColor: pointColors,
+        pointBorderColor: pointColors,
+        pointHoverRadius: 7,
       },
     ],
   };
@@ -86,6 +120,16 @@ export function ChartSection({ chartData, ticker }) {
         bodyColor: '#9CA3AF',
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderWidth: 1,
+        callbacks: {
+          afterLabel: function (context) {
+            const dataIndex = context.dataIndex;
+            const item = filteredData[dataIndex];
+            if (!item) return '';
+            if (item.signal === 1) return '🚀 TabFM Signal: BUY (+5% Ziel)';
+            if (item.signal === -1) return '📉 TabFM Signal: TAKE PROFIT';
+            return '👁️ TabFM: HOLD (Neutral)';
+          },
+        },
       },
     },
     scales: {
@@ -102,21 +146,43 @@ export function ChartSection({ chartData, ticker }) {
 
   return (
     <section className="chart-panel card">
-      <div className="panel-header">
-        <h2>{ticker} Performance & TabFM Prediction Visualisierung</h2>
-        <div className="tab-controls">
-          <button
-            className={`tab-btn ${activeTab === 'equity' ? 'active' : ''}`}
-            onClick={() => setActiveTab('equity')}
-          >
-            Equity Curve
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'price' ? 'active' : ''}`}
-            onClick={() => setActiveTab('price')}
-          >
-            Kursverlauf & Signale
-          </button>
+      <div className="panel-header" style={{ flexWrap: 'wrap', gap: '12px' }}>
+        <div>
+          <h2>{ticker} Performance & TabFM Prediction Visualisierung</h2>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Datenbereich: <strong>{firstDate}</strong> bis <strong>{lastDate}</strong> ({filteredData.length} Handelstage)
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          {/* Timeframe Controls */}
+          <div className="tab-controls" style={{ background: 'rgba(255,255,255,0.03)', padding: '2px' }}>
+            {['1M', '3M', '6M', 'YTD', 'ALL'].map((tf) => (
+              <button
+                key={tf}
+                className={`tab-btn ${timeframe === tf ? 'active' : ''}`}
+                style={{ padding: '4px 10px', fontSize: '12px' }}
+                onClick={() => setTimeframe(tf)}
+              >
+                {tf}
+              </button>
+            ))}
+          </div>
+
+          {/* Type Controls */}
+          <div className="tab-controls">
+            <button
+              className={`tab-btn ${activeTab === 'price' ? 'active' : ''}`}
+              onClick={() => setActiveTab('price')}
+            >
+              Kursverlauf & Signale
+            </button>
+            <button
+              className={`tab-btn ${activeTab === 'equity' ? 'active' : ''}`}
+              onClick={() => setActiveTab('equity')}
+            >
+              Equity Curve
+            </button>
+          </div>
         </div>
       </div>
       <div className="chart-wrapper">

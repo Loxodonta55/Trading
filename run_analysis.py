@@ -1,9 +1,13 @@
 import os
-import json
 import sys
+import json
+import logging
+import argparse
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from datetime import datetime, timedelta
+from typing import Dict, Any, Tuple, Optional
 
 from src.features.builder import FeatureBuilder
 from src.backtest.engine import WalkForwardBacktester
@@ -11,19 +15,100 @@ from src.analysis.evaluator import SensitivityEvaluator
 from src.data.db_manager import DatabaseManager
 from config import DATA_DIR
 
-def run_main_pipeline():
-    print("\n========================================================")
-    print("  TABFM TESLA & ALPHABET SWING PREDICTION ENGINE        ")
-    print("========================================================\n")
+logger = logging.getLogger(__name__)
+
+
+def _safe_float(row: pd.Series, col: str, default: float = 0.0) -> float:
+    """Helper to safely extract float from row."""
+    val = row.get(col, default)
+    if pd.isna(val):
+        return default
+    return float(val)
+
+def _safe_int(row: pd.Series, col: str, default: int = 0) -> int:
+    """Helper to safely extract int from row."""
+    val = row.get(col, default)
+    if pd.isna(val):
+        return default
+    return int(val)
+
+
+def _needs_update(db: DatabaseManager) -> bool:
+    """
+    Check if the pipeline needs to run by comparing the last pipeline run date
+    against the current date. Skips weekends/holidays awareness — simply checks
+    if at least one new trading day may have occurred since the last run.
+    """
+    last_run = db.get_metadata("pipeline_last_run_date")
+    if not last_run:
+        logger.info("[Pipeline] No previous run recorded. Full run needed.")
+        return True
+
+    last_run_date = datetime.strptime(last_run, "%Y-%m-%d").date()
+    today = datetime.now().date()
+    days_since = (today - last_run_date).days
+
+    if days_since <= 0:
+        logger.info(f"[Pipeline] Already ran today ({last_run}). No update needed.")
+        return False
+
+    logger.info(f"[Pipeline] Last run: {last_run} ({days_since} days ago). Update needed.")
+    return True
+
+
+def _purge_caches_for_full_run() -> None:
+    """Delete cached CSV files to force a complete re-download from START_DATE."""
+    cache_files = list(DATA_DIR.glob("*_daily.csv")) + list(DATA_DIR.glob("benchmarks_daily.csv"))
+    for f in cache_files:
+        logger.info(f"[Pipeline] Purging cache: {f.name}")
+        f.unlink(missing_ok=True)
+
+
+def run_main_pipeline(force: bool = False, full: bool = False) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """
+    Runs the main analysis pipeline for feature engineering, calibration,
+    and backtesting.
+
+    Args:
+        force: If True, run even if data appears up-to-date.
+        full:  If True, delete all caches and re-download from START_DATE.
+
+    Returns:
+        A tuple containing multi-ticker data and dashboard export data.
+    """
+    logger.info("\n========================================================")
+    logger.info("  TABFM TESLA & ALPHABET SWING PREDICTION ENGINE        ")
+    logger.info("========================================================\n")
     
     db = DatabaseManager()
+
+    # --- Delta check: skip if already up-to-date ---
+    if not force and not full and not _needs_update(db):
+        # Load existing dashboard data and return it
+        json_path = Path(__file__).resolve().parent / "web" / "backtest_dashboard_data.json"
+        if json_path.exists():
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            logger.info("[Pipeline] Data is current. Returning cached dashboard data.")
+            return data.get("data", {}), data
+        # If JSON doesn't exist, fall through to full run
+        logger.info("[Pipeline] No cached JSON found despite recent run date. Running pipeline.")
+
+    # --- Full mode: purge all caches ---
+    if full:
+        logger.info("[Pipeline] FULL MODE: Purging all cached data for fresh download...")
+        _purge_caches_for_full_run()
+        # Clear last-data-date metadata so fetcher does initial download
+        for ticker in ["TSLA", "GOOGL", "SPCX", "NVDA"]:
+            db.set_metadata(f"last_data_date_{ticker}", "")
+
     evaluator = SensitivityEvaluator()
 
     tickers = ["TSLA", "GOOGL", "SPCX", "NVDA"]
     multi_ticker_data = {}
 
     for ticker in tickers:
-        print(f"\n>>> Running Feature Engineering & Evaluation Pipeline for: {ticker} <<<")
+        logger.info(f"\n>>> Running Feature Engineering & Evaluation Pipeline for: {ticker} <<<")
         builder = FeatureBuilder(ticker=ticker)
         df = builder.build_dataset()
         db.save_features(df, ticker=ticker)
@@ -31,7 +116,7 @@ def run_main_pipeline():
         summary_df, exp_dfs = evaluator.run_ablation_experiments(df=df, ticker=ticker)
 
         best_exp_name = summary_df.sort_values(by='sharpe_ratio', ascending=False).iloc[0]['experiment']
-        print(f"[Pipeline] Best Feature Strategy for {ticker}: '{best_exp_name}'")
+        logger.info(f"[Pipeline] Best Feature Strategy for {ticker}: '{best_exp_name}'")
         best_df = exp_dfs[best_exp_name]
 
         for exp_name, exp_df in exp_dfs.items():
@@ -43,44 +128,42 @@ def run_main_pipeline():
 
         for idx, row in best_df.iterrows():
             date_str = idx.strftime('%Y-%m-%d')
-            eq_val = float(row['equity_curve']) if not pd.isna(row['equity_curve']) else 1.0
-            bh_val = float(row['buy_hold_equity']) if not pd.isna(row['buy_hold_equity']) else 1.0
             
             chart_data.append({
                 "date": date_str,
-                "open": float(row['open']) if not pd.isna(row['open']) else 0.0,
-                "high": float(row['high']) if not pd.isna(row['high']) else 0.0,
-                "low": float(row['low']) if not pd.isna(row['low']) else 0.0,
-                "close": float(row['close']) if not pd.isna(row['close']) else 0.0,
-                "volume": int(row['volume']) if not pd.isna(row['volume']) else 0,
-                "rsi_14": float(row['rsi_14']) if not pd.isna(row['rsi_14']) else 50.0,
-                "news_sentiment": float(row['news_sentiment']) if ('news_sentiment' in row and not pd.isna(row['news_sentiment'])) else 0.0,
-                "news_sentiment_3d_ma": float(row['news_sentiment_3d_ma']) if ('news_sentiment_3d_ma' in row and not pd.isna(row['news_sentiment_3d_ma'])) else 0.0,
-                "political_trade_signal": int(row['political_trade_signal']) if ('political_trade_signal' in row and not pd.isna(row['political_trade_signal'])) else 0,
-                "x_sentiment_score": float(row['x_sentiment_score']) if ('x_sentiment_score' in row and not pd.isna(row['x_sentiment_score'])) else 0.0,
-                "options_iv_skew": float(row['options_iv_skew']) if ('options_iv_skew' in row and not pd.isna(row['options_iv_skew'])) else 0.0,
-                "put_call_oi_ratio": float(row['put_call_oi_ratio']) if ('put_call_oi_ratio' in row and not pd.isna(row['put_call_oi_ratio'])) else 1.0,
-                "rel_strength_spy": float(row['tsla_vs_spy_rel_strength']) if ('tsla_vs_spy_rel_strength' in row and not pd.isna(row['tsla_vs_spy_rel_strength'])) else 0.0,
-                "swing_target": int(row['swing_target']) if not pd.isna(row['swing_target']) else 1,
-                "signal": int(row['signal']) if not pd.isna(row['signal']) else 0,
-                "prob_up": float(row['prob_up']) if not pd.isna(row['prob_up']) else 0.0,
-                "prob_down": float(row['prob_down']) if not pd.isna(row['prob_down']) else 0.0,
-                "equity_curve": eq_val,
-                "buy_hold_equity": bh_val
+                "open": _safe_float(row, 'open'),
+                "high": _safe_float(row, 'high'),
+                "low": _safe_float(row, 'low'),
+                "close": _safe_float(row, 'close'),
+                "volume": _safe_int(row, 'volume'),
+                "rsi_14": _safe_float(row, 'rsi_14', default=50.0),
+                "news_sentiment": _safe_float(row, 'news_sentiment'),
+                "news_sentiment_3d_ma": _safe_float(row, 'news_sentiment_3d_ma'),
+                "political_trade_signal": _safe_int(row, 'political_trade_signal'),
+                "x_sentiment_score": _safe_float(row, 'x_sentiment_score'),
+                "options_iv_skew": _safe_float(row, 'options_iv_skew'),
+                "put_call_oi_ratio": _safe_float(row, 'put_call_oi_ratio', default=1.0),
+                "rel_strength_spy": _safe_float(row, 'tsla_vs_spy_rel_strength'),
+                "swing_target": _safe_int(row, 'swing_target', default=1),
+                "signal": _safe_int(row, 'signal'),
+                "prob_up": _safe_float(row, 'prob_up'),
+                "prob_down": _safe_float(row, 'prob_down'),
+                "equity_curve": _safe_float(row, 'equity_curve', default=1.0),
+                "buy_hold_equity": _safe_float(row, 'buy_hold_equity', default=1.0)
             })
 
         multi_ticker_data[ticker] = {
             "summary": clean_summary,
             "best_experiment": best_exp_name,
-            "tsla_chart_data": chart_data
+            "chart_data": chart_data
         }
 
     dashboard_export = {
         "tickers": tickers,
         "data": multi_ticker_data,
-        "summary": multi_ticker_data["TSLA"]["summary"],
-        "best_experiment": multi_ticker_data["TSLA"]["best_experiment"],
-        "tsla_chart_data": multi_ticker_data["TSLA"]["tsla_chart_data"]
+        "summary": multi_ticker_data[tickers[0]]["summary"],
+        "best_experiment": multi_ticker_data[tickers[0]]["best_experiment"],
+        "tsla_chart_data": multi_ticker_data[tickers[0]]["chart_data"]
     }
 
     export_file = DATA_DIR / "backtest_dashboard_data.json"
@@ -92,9 +175,26 @@ def run_main_pipeline():
     with open(web_export_file, "w") as f:
         json.dump(dashboard_export, f, indent=2)
 
-    print(f"\n[Pipeline] Successfully exported multi-ticker dashboard data to: {export_file} and {web_export_file}")
-    print(f"[Pipeline] Database persistence active at: {db.db_path}")
+    # Record successful run timestamp
+    db.set_metadata("pipeline_last_run_date", datetime.now().strftime("%Y-%m-%d"))
+    db.set_metadata("pipeline_last_run_ts", datetime.now().isoformat())
+
+    logger.info(f"\n[Pipeline] Successfully exported multi-ticker dashboard data to: {export_file} and {web_export_file}")
+    logger.info(f"[Pipeline] Database persistence active at: {db.db_path}")
     return multi_ticker_data, dashboard_export
 
+
 if __name__ == "__main__":
-    run_main_pipeline()
+    parser = argparse.ArgumentParser(description="TabFM Trading Analysis Pipeline")
+    parser.add_argument(
+        "--full", action="store_true",
+        help="Purge all caches and re-download data from START_DATE. Full re-computation."
+    )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Force pipeline run even if data appears up-to-date today."
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO)
+    run_main_pipeline(force=args.force, full=args.full)

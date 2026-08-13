@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Sparkles, Newspaper, ExternalLink, Globe } from 'lucide-react';
+import { Sparkles, ExternalLink, Globe } from 'lucide-react';
 
 export function MetricsOverview({ latestSignal, ticker }) {
   const [newsList, setNewsList] = useState([]);
@@ -69,7 +69,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
 
       {/* 6 Top Decision KPI Cards */}
       <div className="metrics-grid">
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="Prognostiziertes Handelssignal auf Basis von Google TabFM, technischen Indikatoren und Sentiment-Analysen.">
           <div className="metric-label">1. Signal für Heute</div>
           <div className={`metric-value ${isBuy ? 'positive' : isSell ? 'negative' : 'gold'}`}>
             {isBuy ? 'BUY SWING 🚀' : isSell ? 'TAKE PROFIT 📉' : 'HOLD 👁️'}
@@ -77,7 +77,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
           <div className="metric-sub">Kurs: ${latestSignal.close?.toFixed(2) || '0.00'}</div>
         </div>
 
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="P(Up Swing) ist die vom Google TabFM AI-Foundation-Modell berechnete Wahrscheinlichkeit, dass die Aktie in den nächsten 5 Trading-Tagen einen positiven Kurssprung von mindestens 5% erzielt. Ein Wert >= 60% gilt als statistisch valides Kausignal.">
           <div className="metric-label">2. KI-Konfidenz P(Up)</div>
           <div className={`metric-value ${probUp >= 60 ? 'positive' : 'gold'}`}>
             {probUp}%
@@ -85,7 +85,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
           <div className="metric-sub">Gewinn-Wahrscheinlichkeit</div>
         </div>
 
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="Der RSI (14) misst die Geschwindigkeit und Dynamik von Kursbewegungen auf einer Skala von 0 bis 100. Werte unter 40 deuten auf eine überverkaufte Aktie hin (mögliche Trendwende nach oben), während Werte über 60 eine überkaufte Marktphase anzeigen.">
           <div className="metric-label">3. RSI (14) Momentum</div>
           <div className={`metric-value ${rsi < 40 ? 'positive' : rsi > 60 ? 'negative' : ''}`}>
             {rsi}
@@ -93,7 +93,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
           <div className="metric-sub">{rsi < 40 ? 'Überverkauft (Kauf-Chance)' : rsi > 60 ? 'Überkaufte Zone' : 'Neutraler Bereich'}</div>
         </div>
 
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="Das News Sentiment bewertet den Stimmungstrend aktueller Finanznachrichten und Marktberichte über einen gleitenden 3-Tages-Durchschnitt (-1.0 bis +1.0). Ein positiver Wert signalisiert Rückenwind durch fundamentale Marktkatalysatoren.">
           <div className="metric-label">4. News Sentiment (3D MA)</div>
           <div className={`metric-value ${parseFloat(sentiment) > 0.05 ? 'positive' : parseFloat(sentiment) < -0.05 ? 'negative' : ''}`}>
             {sentiment > 0 ? `+${sentiment}` : sentiment}
@@ -101,7 +101,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
           <div className="metric-sub">{parseFloat(sentiment) > 0.05 ? 'Bullischer Nachrichtenfluss' : 'Bärischer Druck'}</div>
         </div>
 
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="Der Option IV Skew vergleicht die implizite Volatilität von Call- und Put-Optionen am Derivatemarkt. Ein negativer Skew zeigt, dass institutionelle Anleger höhere Prämien für Call-Optionen zahlen (bullische Positionierung des Smart Moneys).">
           <div className="metric-label">5. Options IV Skew</div>
           <div className="metric-value">
             {optionsSkew}
@@ -109,7 +109,7 @@ export function MetricsOverview({ latestSignal, ticker }) {
           <div className="metric-sub">{parseFloat(optionsSkew) < 0 ? 'Bullische Call-Prämie' : 'Put-Nachfrage dominierend'}</div>
         </div>
 
-        <div className="card metric-card decision-kpi">
+        <div className="card metric-card decision-kpi" title="US-Kongress Trades signalisieren offengelegte Insider-Käufe amerikanischer Politiker.">
           <div className="metric-label">6. US-Kongress Trades</div>
           <div className={`metric-value ${hasCongressTrade ? 'positive' : ''}`}>
             {hasCongressTrade ? 'BUY 🏛️' : 'Keine Käufe'}

@@ -1,13 +1,14 @@
+import logging
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple, Any
-import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-from config import TRAIN_WINDOW_DAYS, SWING_HORIZON_DAYS, SWING_UP_THRESHOLD, SWING_DOWN_THRESHOLD
+from config import TRAIN_WINDOW_DAYS, SWING_HORIZON_DAYS, SWING_UP_THRESHOLD, SWING_DOWN_THRESHOLD, RETRAIN_EVERY_N_DAYS
 from src.models.tabfm_wrapper import TabFMWrapper
 from src.models.baseline_models import BaselineClassifier
+
+logger = logging.getLogger(__name__)
 
 class WalkForwardBacktester:
     """
@@ -18,12 +19,23 @@ class WalkForwardBacktester:
     - Time & Signal Inversion Exits
     - Interactive Brokers Commission & Slippage Deductions
     """
+    IBKR_COST_PER_ORDER = 0.0005
+    ANNUALIZATION_FACTOR = 252
+
     def __init__(
         self, 
         confidence_threshold: float = 0.55,
         stop_loss_pct: float = 0.025,   # -2.5% Stop-Loss
         take_profit_pct: float = 0.05   # +5.0% Take-Profit
-    ):
+    ) -> None:
+        """
+        Initializes the WalkForwardBacktester.
+        
+        Args:
+            confidence_threshold: The threshold for entering a position.
+            stop_loss_pct: The stop-loss percentage.
+            take_profit_pct: The take-profit percentage.
+        """
         self.confidence_threshold = confidence_threshold
         self.stop_loss_pct = stop_loss_pct
         self.take_profit_pct = take_profit_pct
@@ -36,7 +48,20 @@ class WalkForwardBacktester:
         target_col: str = "swing_target",
         use_news_filter: bool = True
     ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
-        print(f"[WalkForwardBacktester] Starting walk-forward backtest for {model_name} with Stop-Loss (-{self.stop_loss_pct*100:.1f}%) and Take-Profit (+{self.take_profit_pct*100:.1f}%)...")
+        """
+        Runs the walk-forward backtest.
+        
+        Args:
+            df: The dataset.
+            feature_cols: List of features to use.
+            model_name: The model to use.
+            target_col: The target column to predict.
+            use_news_filter: Whether to use the news sentiment filter.
+            
+        Returns:
+            A tuple containing the results dataframe and backtest metrics.
+        """
+        logger.info(f"[WalkForwardBacktester] Starting walk-forward backtest for {model_name} with Stop-Loss (-{self.stop_loss_pct*100:.1f}%) and Take-Profit (+{self.take_profit_pct*100:.1f}%)...")
 
         X = df[feature_cols]
         y = df[target_col]
@@ -64,7 +89,8 @@ class WalkForwardBacktester:
         else:
             model = BaselineClassifier(model_type="gbm")
 
-        from config import RETRAIN_EVERY_N_DAYS
+        # TODO: Standardize step_days across models for fair benchmark comparison
+        step_days = 20 if model_name.lower() == "tabfm" else RETRAIN_EVERY_N_DAYS
 
         # Position tracking state
         in_position = 0          # 0: None, 1: Long, -1: Short
@@ -74,7 +100,7 @@ class WalkForwardBacktester:
         # Walk-Forward Simulation Loop
         for i in range(min_train_size, n_samples):
             # Retrain model periodically
-            if (i - min_train_size) % RETRAIN_EVERY_N_DAYS == 0 or i == min_train_size:
+            if (i - min_train_size) % step_days == 0 or i == min_train_size:
                 X_train = X.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
                 y_train = y.iloc[max(0, i - TRAIN_WINDOW_DAYS):i]
                 model.fit(X_train, y_train)
@@ -158,12 +184,9 @@ class WalkForwardBacktester:
         # Detect Trade Execution Events (Entry, Reversal, Exit)
         trade_executions = (results_df['signal'].diff() != 0) & (results_df['signal'] != 0)
         
-        # Interactive Brokers Fee Structure ($1.00 min order fee + 3 bps slippage = ~0.05% per order side)
-        ibkr_cost_per_order = 0.0005 
-        
         gross_strategy_return = (results_df['signal'].shift(1) * results_df['daily_return']).fillna(0.0)
         # Subtract transaction cost on execution days
-        net_strategy_return = gross_strategy_return - (trade_executions.astype(float) * ibkr_cost_per_order)
+        net_strategy_return = gross_strategy_return - (trade_executions.astype(float) * self.IBKR_COST_PER_ORDER)
         
         results_df['strategy_return'] = net_strategy_return
         results_df['equity_curve'] = (1.0 + results_df['strategy_return']).cumprod().fillna(1.0)
@@ -173,12 +196,21 @@ class WalkForwardBacktester:
         metrics = self._calculate_metrics(results_df)
         metrics['model_name'] = model_name
 
-        print(f"[WalkForwardBacktester] {model_name} Backtest Complete.")
-        print(f"Total Return: {metrics['total_return']:.2f}% | Win Rate: {metrics['win_rate']:.1f}% | Sharpe Ratio: {metrics['sharpe_ratio']:.2f} | Max Drawdown: {metrics['max_drawdown']:.2f}%")
+        logger.info(f"[WalkForwardBacktester] {model_name} Backtest Complete.")
+        logger.info(f"Total Return: {metrics['total_return']:.2f}% | Win Rate: {metrics['win_rate']:.1f}% | Sharpe Ratio: {metrics['sharpe_ratio']:.2f} | Max Drawdown: {metrics['max_drawdown']:.2f}%")
 
         return results_df, metrics
 
     def _calculate_metrics(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """
+        Calculates performance metrics from the backtest results.
+        
+        Args:
+            df: The results dataframe.
+            
+        Returns:
+            A dictionary of metrics.
+        """
         returns = df['strategy_return'].iloc[TRAIN_WINDOW_DAYS:]
         equity = df['equity_curve'].iloc[TRAIN_WINDOW_DAYS:]
         
@@ -194,10 +226,10 @@ class WalkForwardBacktester:
         gross_loss = abs(losses.sum())
         profit_factor = (gross_profit / gross_loss) if gross_loss > 0 else (gross_profit if gross_profit > 0 else 1.0)
 
-        # Sharpe Ratio (annualized, assuming 252 trading days)
+        # Sharpe Ratio
         mean_ret = returns.mean()
         std_ret = returns.std()
-        sharpe = (mean_ret / (std_ret + 1e-9)) * np.sqrt(252) if std_ret > 0 else 0.0
+        sharpe = (mean_ret / (std_ret + 1e-9)) * np.sqrt(self.ANNUALIZATION_FACTOR) if std_ret > 0 else 0.0
 
         # Max Drawdown
         peak = equity.cummax()
@@ -215,8 +247,9 @@ class WalkForwardBacktester:
         }
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     from src.features.builder import FeatureBuilder
     df = FeatureBuilder().build_dataset()
     bt = WalkForwardBacktester()
     res, m = bt.run_backtest(df, ['rsi_14', 'macd'], "TabFM")
-    print(m)
+    logger.info(m)
